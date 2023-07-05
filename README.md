@@ -11,7 +11,7 @@ Assignments (30%), Midterm (30%), Final Exam (40%). Neither a tutorial nor a lab
 
 There are no formal prerequisites for the course, but as this is a 700-level (advanced graduate) course I will be expecting you to know:
 
-- basics of linear models (as in [STATS 3A03](https://academiccalendars.romcmaster.ca/preview_course_nopop.php?catoid=53&coid=266607)
+- basics of linear models (as in [STATS 3A03](https://academiccalendars.romcmaster.ca/preview_course_nopop.php?catoid=53&coid=266607))
 - basics of generalized linear models (as in [STATS 4C03/6C03](https://academiccalendars.romcmaster.ca/preview_course_nopop.php?catoid=53&coid=266618)), including knowledge of exponential family distributions
 - inferential statistics: sampling distributions, Central Limit theorem, hypothesis testing, Wald tests, maximum likelihood estimation
 - ideally, *basic* knowledge of Bayesian statistics and Markov chain Monte Carlo estimation
