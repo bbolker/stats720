@@ -1,6 +1,6 @@
 ---
-title: "Statistical learning (STATS 790)"
-bibliography: stat790.bib
+title: "Statistical modeling (STATS 720)"
+bibliography: stat720.bib
 ---
 
 <!-- from https://www.w3schools.com/css/css_table.asp -->
@@ -23,19 +23,14 @@ Materials on this web page are **under construction** and **subject to change**
 
 ### Course meetings
 
-- 3:30-5:30 Mon (Toronto time), [IWC (Ivor Wynne Centre) 223](https://osm.org/go/ZXtIyrMv?m=) ([floor plan](https://www.mcmaster.ca/uts/maps/iwc2.html))
-- 9:30-10:30 Weds, Hamilton Hall 102
-- For Fields attendees: by [zoom](https://zoom.us/j/94032290804?pwd=bHlYYWNkSkZlbXhRVFY4emFaOThvZz09)
+- 2:30-3:30 Tues, 2-4 Thurs, Hamilton Hall 410
 
 ### Misc info
 
 - Textbooks:
-  - T. Hastie, R. Tibshirani, and J. Friedman. *The Elements of Statistical Learning*, 2nd ed. https://web.stanford.edu/~hastie/Papers/ESLII.pdf
-  - Cosma Shalizi. *Advanced Data Analysis from an Elementary Point of View*. https://www.stat.cmu.edu/~cshalizi/ADAfaEPoV/
-- Software: R, Julia, Quarto, TeX, (recommended) VS Code: see [software page](software/README.html)
-- Platforms: Avenue to Learn, course web page (see below)
-- [Full course bibliography](stat790_bib.html)
-- Expected preparation: While there are no formal prerequisites, to succeed in this course you will need to be comfortable with (1)  multivariable calculus; (2) linear algebra (focusing on numerical computation, e.g. at the level of [MATH 3NA3](https://mcmasteru365.sharepoint.com/:w:/s/sci-course-outlines/ETS28ygy6rZBs3-oLnuLkRYBMthhG_x681iQsnGSbPjHMw?e=d3VrR8)); (3) basics of linear regression (e.g. at the level of [STATS 3A03](https://mcmasteru365.sharepoint.com/:w:/s/sci-course-outlines/EX5q-QIB-lRGvCleB8YStCIB1pfpenDKNb4Uc-53WEGBrg?e=ScAtu8)); (4) Some programming language; R is recommended, but knowledge of Python/Matlab/Java should be transferable; (5) basic knowledge of data science methods (e.g. lasso/ridge regression, random forests, boosting), at the level of [STATS/CSE 780](https://mcmasteru365.sharepoint.com/:w:/s/sci-course-outlines/EVigYZ1rvklEm6iuA0SkY2YBtXn_oXAFGJQnNmm9St-y_w?e=jajZ3H) (recommended; to catch up in this area, try @jamesintroduction2013 chapters 2, 5-8).
+   - none, but references will be listed
+- [Full course bibliography](stat720_bib.html)
+- Expected preparation: 
 - Notes on [plagiarism/collaboration/attribution](./honesty.html)
 
 ### Where to find stuff
@@ -46,11 +41,10 @@ Materials on this web page are **under construction** and **subject to change**
 
 ### Links
 
-- [Lecture recordings](https://www.youtube.com/playlist?list=PLArBKNfJxuuks3YRWAO-fBxX18QCrTmon)
-- [Piazza](https://piazza.com/mcmaster.ca/spring2023/stats790) (course forum/communications)
+- Lecture recordings (TBA)
+- [Piazza](https://piazza.com/mcmaster.ca/spring2023/stats720) (course forum/communications)
 - [Course outline](outline.docx)
-- [Assignments](./assignments/README.html) (due dates in schedule below)
-- [The back-end for this site](https://github.com/bbolker/stat790)
+- [The back-end for this site](https://github.com/bbolker/stat720)
 - [Notes on academic integrity](./honesty.html)
 - [R style guide](./R_style.html)
 
@@ -58,12 +52,8 @@ Materials on this web page are **under construction** and **subject to change**
 
 - instructor: [Ben Bolker](http://www.math.mcmaster.ca/~bolker/)
     - General questions (anything you don't consider private) are best asked in the appropriate channel on Teams
-    - Otherwise e-mail to `bolker@mcmaster.ca` with "STATS 790" in the subject line; include your MacID in your message (if applicable) if not e-mailing from your McMaster e-mail account
+    - Otherwise e-mail to `bolker@mcmaster.ca` with "STATS 720" in the subject line; include your MacID in your message (if applicable) if not e-mailing from your McMaster e-mail account
 	- office hours TBA
-- teaching assistant: TBA
-    - weekly office hours, TBA
-    - please contact ...
-	- will answer as soon as possible, but will be more readily available during normal working hours (9 AM to 5 PM Toronto time)
 	- responses are **not** guaranteed within 24 hours of an assignment deadline; please plan ahead!
 
 ## Schedule
@@ -77,7 +67,7 @@ library(readr)
 
 mk_url <- function(x) {
   ifelse(nchar(trimws(x))==0,x,
-         sprintf("[%s](https://bbolker.github.io/stat790/%s.html)",
+         sprintf("[%s](https://bbolker.github.io/stat720/%s.html)",
                  x,x))
 }
 
