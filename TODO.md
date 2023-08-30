@@ -47,3 +47,13 @@
 
 * @shamsudheenShould2021
 
+## Linear modeling machinery
+
+* model matrices
+* general linear model
+* understanding coefficients
+   * contrasts
+       * orthogonality
+   * principle of marginality
+* contrasts notes from 4C03, plus comparisons vignette of emmeans
+* emmeans, effects, marginaleffects

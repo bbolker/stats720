@@ -1,0 +1,69 @@
+---
+title: "Introduction<br>(week 1, part 1)"
+reference-location: margin
+citation-location: margin
+bibliography: ../stat720.bib
+date: today
+date-format: "D MMM YYYY"
+---
+
+<!-- typically renders in docs/ dir  -->
+
+## Logistics
+
+* (almost) everything at course web page, https://bbolker.github.io/stat720
+* communication/forums ([Piazza](https://piazza.com/mcmaster.ca/fall2023/stats720))
+* assignment marks (Avenue)
+* Zoom/recordings (by request)
+
+## Integrity
+
+* [notes on honesty](../honesty.html)
+* why copying code is good
+* Stack Overflow, ChatGPT, and all that
+* group work
+
+## Prerequisites
+
+From the course outline:
+
+- basics of linear models (as in [STATS 3A03](https://academiccalendars.romcmaster.ca/preview_course_nopop.php?catoid=53&coid=266607)), with associated linear algebra
+- basics of generalized linear models (as in [STATS 4C03/6C03](https://academiccalendars.romcmaster.ca/preview_course_nopop.php?catoid=53&coid=266618)), including knowledge of exponential family distributions
+- inferential statistics: sampling distributions, Central Limit theorem, hypothesis testing, Wald tests, maximum likelihood estimation
+- ideally, *basic* knowledge of Bayesian statistics and Markov chain Monte Carlo estimation
+- intermediate knowledge of R
+
+# Goals
+
+* understand theory behind (novel) SL/ML methods
+* read papers
+* (choose methods)
+* implement methods
+* read/understand/improve existing methods
+
+## Technical skills & tools
+
+Not focal, but unavoidable and useful
+
+* R
+* reproducibility
+   * version control (Git/GitHub)
+   * documents: Quarto/Sweave/Jupyter notebooks
+* see also: [the missing semester](https://missing.csail.mit.edu/)
+
+## about me
+
+* weird background (physics/math u/g, Zoology PhD, epidemiological modeling)
+* math biology (ecology/evolution/epidemiology)
+* computational statistics (mixed models, Bayesian stats)
+
+## things I like/obsess about
+
+* scientific inference $\gg$ pure prediction (but see @navarroScience2019)
+* generative models
+* data visualization
+* solving problems in context, practical issues
+* bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
+
+# Overview of material/themes
+

@@ -1,0 +1,7 @@
+#! /bin/bash
+for i in intro; do
+    for j in pdf html; do ## html docx pdf slides.html
+    	make docs/notes/$i.$j
+    done
+    ## mv notes/$i.slides.html docs/notes  ## hack
+done
