@@ -2,13 +2,12 @@
 
 ## Set-up tasks
 
+* Quiz/terminology intro (for completion credit)? e.g. coverage, likelihood profile, model misspecification, pseudoreplication, p-hacking/snooping/HARKing, post-selection inference, ... ?
+* keep working on lin models (consult Faraway)
 * Piazza (quiz framework etc.?)
 * preliminary assessment questions
-* set up GH pages (copy stat790, also Navarro Makefile machinery <https://blog.djnavarro.net/posts/2023-06-30_makefiles/>)
-* Quiz/terminology intro (for completion credit)? e.g. coverage, likelihood profile, model misspecification, pseudoreplication, p-hacking/snooping/HARKing, post-selection inference, ... ?
+* clean up Makefiles?
 * homework/test scheduling
-* annotated bibliography?
-   * Harrell, Faraway, Thyregod and Madsden, Searle, etc.
 
 ## Week 1/intro
 
