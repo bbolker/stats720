@@ -32,6 +32,7 @@ Materials on this web page are **under construction** and **subject to change**
 - [Full course bibliography](stat720_bib.html)
 - Expected preparation: 
 - Notes on [plagiarism/collaboration/attribution](./honesty.html)
+- [Software notes](software.md)
 
 ### Where to find stuff
 

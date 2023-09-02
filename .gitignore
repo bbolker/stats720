@@ -6,3 +6,6 @@ private/
 *.toc
 *.bak
 **/*_files
+\#*
+\.~*
+\.#*

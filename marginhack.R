@@ -7,7 +7,7 @@ caption_locs <- grep("\\caption", r)
 if (length(caption_locs) > 0 ) {
     for (L in caption_locs) {
         rng <- L:(L+search_range)
-        r[rng] <- gsub("marginpar", "marginnote", r[rng])
+        r[rng] <- gsub("\\marginpar", "\\marginnote", r[rng])
     }
 }
 writeLines(r, fn)

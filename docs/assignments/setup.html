@@ -11,7 +11,7 @@
 
 
 
-<title>README</title>
+<title>software installation</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -348,11 +348,114 @@ display: none;
 
 
 
+<h1 class="title toc-ignore">software installation</h1>
 
 </div>
 
 
-<p>Here are assignments for the class.</p>
+<p><em>Note</em>: some people use the <a href="https://www.anaconda.com/">Anaconda</a> stack to manage their
+installations of Python (and other languages). It is slightly notorious
+for not playing nicely with other software; if you use it I’m happy for
+you but you may have to find Anaconda-specific instructions for
+installing all the bits and pieces below.</p>
+<div id="git-and-github" class="section level2">
+<h2>Git and GitHub</h2>
+<div id="install-git" class="section level3">
+<h3>Install Git</h3>
+<ul>
+<li>downloads from <a href="https://git-scm.com/downloads/">here</a></li>
+<li><a href="https://happygitwithr.com/">Happy Git with R</a> has
+detailed instructions designed around R/RStudio;</li>
+<li><a href="https://www.jcchouinard.com/install-git-in-vscode/" class="uri">https://www.jcchouinard.com/install-git-in-vscode/</a> has
+VSCode-centred instructions</li>
+</ul>
+</div>
+<div id="set-up-github" class="section level3">
+<h3>Set up GitHub</h3>
+<ul>
+<li>get a Github user name (if you don’t have one already)
+<ul>
+<li>Apply for <a href="https://docs.github.com/en/billing/managing-the-plan-for-your-github-account/discounted-plans-for-github-accounts">student
+benefits</a> on GitHub if you like (more free stuff: private accounts
+etc)</li>
+</ul></li>
+<li>create a repository called <code>stat720</code></li>
+<li>add me as a collaborator (Settings &gt; Collaborators &gt; enter
+<code>bbolker</code>)</li>
+<li><a href="https://code.visualstudio.com/docs/sourcecontrol/overview" class="uri">https://code.visualstudio.com/docs/sourcecontrol/overview</a></li>
+<li>send me a message on Piazza telling me your GH user name</li>
+</ul>
+</div>
+<div id="learn-about-github" class="section level3">
+<h3>Learn about Git(Hub)</h3>
+<ul>
+<li>Software Carpentry has a basic (command-line oriented) Git/Github
+lesson <a href="https://swcarpentry.github.io/git-novice/">here</a></li>
+<li><a href="https://happygitwithr.com/">Happy Git with R</a> for
+R/RStudio</li>
+<li><a href="https://code.visualstudio.com/docs/sourcecontrol/overview">Git
+with VSCode</a></li>
+</ul>
+</div>
+</div>
+<div id="r" class="section level2">
+<h2>R</h2>
+<p>R is a domain-specific language for statistics and data science.</p>
+<p>If you already have R installed, please make sure that you have
+upgraded to the latest version!</p>
+<ul>
+<li>Download links: <a href="https://cloud.r-project.org/" class="uri">https://cloud.r-project.org/</a> or <a href="https://mirror.csclub.uwaterloo.ca/CRAN/" class="uri">https://mirror.csclub.uwaterloo.ca/CRAN/</a></li>
+<li>in the course of the term you may need compilation tools for
+building R code that includes compiled (C/Fortran) code
+<ul>
+<li><a href="https://mac.r-project.org/tools/">MacOS tools</a></li>
+<li><a href="https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html">Windows
+tools</a></li>
+<li>if you use Linux you are likely to have most of these tools already,
+but see <a href="https://cran.r-project.org/bin/linux/">here</a> (and go
+to the subdirectory appropriate for your distribution); you may also
+want to use <a href="https://github.com/eddelbuettel/r2u#r2u-cran-as-ubuntu-binaries">r2u</a>
+to simplify and speed up package installation</li>
+</ul></li>
+</ul>
+</div>
+<div id="quarto-preferred" class="section level2">
+<h2>Quarto (preferred)</h2>
+<p><a href="https://quarto.org/">Quarto</a> is a scientific
+publishing/reporting system for integrating code and output in a
+document or notebook.</p>
+<ul>
+<li><a href="https://quarto.org/docs/get-started/" class="uri">https://quarto.org/docs/get-started/</a></li>
+</ul>
+</div>
+<div id="tex-preferred" class="section level2">
+<h2>TeX (preferred)</h2>
+<p><a href="https://en.wikipedia.org/wiki/TeX">TeX</a> is an ancient
+(first released in the 1970s) typesetting/document creation system that
+is still standard in mathematics and many technical fields - <a href="https://quarto.org/docs/output-formats/pdf-engine.html">install
+TinyTeX for quarto</a></p>
+</div>
+<div id="vscode-optional" class="section level2">
+<h2>VSCode (optional)</h2>
+<p><a href="https://code.visualstudio.com/">Visual Studio Code</a>
+(VSCode) is an integrated development environment (IDE). While it
+primarily targets software development rather than data analysis, it
+handles multiple languages better than RStudio (see below).</p>
+<ul>
+<li><a href="https://code.visualstudio.com/download" class="uri">https://code.visualstudio.com/download</a></li>
+<li>(<code>sudo apt install code -y</code> on recent Debian-based
+linux)</li>
+</ul>
+</div>
+<div id="extras" class="section level2">
+<h2>extras</h2>
+<ul>
+<li>For VSCode: recommended <code>radian</code> R console (also need
+Python installed!) <code>pip install radian</code>; update settings. See
+<a href="https://code.visualstudio.com/docs/languages/r" class="uri">https://code.visualstudio.com/docs/languages/r</a></li>
+<li>spellchecker?</li>
+</ul>
+</div>
 
 
 

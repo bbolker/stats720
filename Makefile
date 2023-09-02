@@ -4,8 +4,11 @@ all: docs/assignments/README.html docs/index.html docs/${COURSE}_bib.html docs/s
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all
-allnotes:
+notes:
 	./mkallnotes
+
+assignments:
+	./mkallassignments
 
 ## these must come FIRST so we don't trash .md files by moving
 ## them to docs!
@@ -52,7 +55,6 @@ docs/software/%: software/%
 	quarto render $(@D)/tmp.qmd --to docx --toc   
 	mv $(@D)/tmp.docx $*.docx
 
-
 %.html: %.md
 	Rscript  -e "rmarkdown::render('$<')"
 
@@ -60,13 +62,15 @@ docs/software/%: software/%
 	Rscript -e "rmarkdown::render('$<', output_format = tufte::tufte_handout())" ## , params = list('latex-engine'='xelatex'))"
 
 
-## hack: assumes we will only be doing this for notes/ docs
+
 %.pdf: %.qmd
-	quarto render $< --to latex --toc
-	@echo $(patsubst %.qmd,%.tex,$<)
-	Rscript marginhack.R $(patsubst %.qmd,%.tex,$<)
-	texi2dvi -p $(patsubst %.qmd,%.tex,$<)
-	mv $(patsubst notes/%.qmd,%.pdf,$<) docs/notes
+	quarto render $< --to pdf
+## margin-citations hack: assumes we will only be doing this for notes/ docs
+##	quarto render $< --to latex --toc
+##	@echo $(patsubst %.qmd,%.tex,$<)
+## Rscript marginhack.R $(patsubst %.qmd,%.tex,$<)
+##	texi2dvi -p $(patsubst %.qmd,%.tex,$<)
+##	mv $(patsubst notes/%.qmd,%.pdf,$<) docs/notes
 
 %.pdf: %.tex
 	pdflatex $<

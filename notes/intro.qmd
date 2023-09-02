@@ -1,10 +1,14 @@
 ---
 title: "Introduction<br>(week 1, part 1)"
-reference-location: margin
-citation-location: margin
-bibliography: ../stat720.bib
+bibliography: "../stat720.bib"
 date: today
 date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+
 ---
 
 <!-- typically renders in docs/ dir  -->
@@ -13,8 +17,8 @@ date-format: "D MMM YYYY"
 
 ## Logistics
 
-* (almost) everything at course web page, https://bbolker.github.io/stat720
-* communication/forums ([Piazza](https://piazza.com/mcmaster.ca/fall2023/stats720))
+* (almost) everything at the [course web page](https://bbolker.github.io/stat720)
+* communication/forums ([Piazza](https://piazza.com/mcmaster.ca/fall2023/stats720)); e-mail if necessary
 * assignment marks (Avenue)
 * Zoom/recordings (by request)
 
@@ -40,7 +44,8 @@ From the course outline:
 * principles/practices of statistical modeling
     * choosing a model
 	* diagnostics and troubleshooting
-* good intermediate understanding of the tools (ridge/lasso, (G)(LA)MMs; unifying principles
+* good intermediate understanding of the tools (ridge/lasso, (G)(LA)MMs); unifying principles of regression modeling, shrinkage/penalized estimators
+    * similarity of Bayesian and frequentist approaches
 * awareness of computational foundations/scaling
 
 ## Technical skills & tools
@@ -67,6 +72,20 @@ Not focal, but unavoidable and useful
 * bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
 
 # The modeling cycle
+
+## Before you start
+
+* you need to know what the question is!
+* this is hard for statisticians
+* what is a large effect? what is an interesting effect?
+* a low $p$-value is not inherently interesting!
+
+## Effect sizes
+
+* standardized measures like Cohen's $d$ ($(\bar x_1 - \bar x_2)/s$, where $s$ is some measure of pooled standard deviation: [Wikipedia](https://en.wikipedia.org/wiki/Effect_size#Standardized_and_unstandardized_effect_sizes)) are common ...
+* but shouldn't be used mindlessly. Real-world, unstandardized effects are usually more meaningful 
+* effects estimated on the log or logit scale are unitless and hence *may* be easier to generalize
+* scaling predictors and responses may help [@schielzethSimple2010]
 
 ## An iterative process ...
 
@@ -103,7 +122,44 @@ knitr::include_graphics("pix/forking_paths.jpg")
 ## Solutions?
 
 * pre-registration (formal or informal); report deviations from planned analysis
-* choose model complexity (see @harrellRegression2015 ch. 3), do diagnostics etc., **without reference to response variable** or metrics of significance
+* choose model complexity (see Harrell RMS ch. 3), do diagnostics etc., **without reference to response variable** or metrics of significance
+
+## Choosing model complexity
+
+* see Harrell ch. 3
+* rules of thumb for inferential models with adequate power
+    * e.g. $p < n/10$ or $n/20$
+	* effective $n$ depends on data type (binary < small counts < continuous)
+	* how does clustering/correlation in data change effective $n$?
+* simplest if done **a priori**
+    * data-driven choice of model complexity (e.g. by cross-validation), *while maintaining valid inference*, is delicate
+
+## Model diagnostics
+
+* all models make assumptions
+* results *may* be sensitive to **misspecification**: bias, inefficiency, inflated/deflated type I error, poor coverage ...
+* hypothesis tests (e.g. Shapiro-Wilk) are deprecated
+
+Harvey Motulsky on [CrossValidated](https://stats.stackexchange.com/a/2501/2126):
+
+> The question normality tests answer: Is there convincing evidence of any deviation from the Gaussian ideal? With moderately large real data sets, the answer is almost always yes.
+
+> The question scientists often expect the normality test to answer: Do the data deviate enough from the Gaussian ideal to "forbid" use of a test that assumes a Gaussian distribution? Scientists often want the normality test to be the referee that decides when to abandon conventional (ANOVA, etc.) tests and instead analyze transformed data or use a rank-based nonparametric test or a resampling or bootstrap approach. For this purpose, normality tests are not very useful.
+
+* "is there a statistically significant deviation from the model assumptions?" vs. "are the violations of the assumptions large enough to mess up my conclusions?" (**never** "are the data normally distributed?")
+    * **data "too big"**: will reject assumptions even when it's OK
+	* **data "too small"**: will fail to reject assumptions even when they're problematic (???)
+* **two-stage testing** often has bad properties [@campbell_consequences_2014; @campbellconsequences2021a; @rochon_test_2012; @zimmermannote2004]
+
+* graphical diagnostics are often recommended
+* but how do we judge whether deviations are too large? ([Q-Q plot survey](https://ms.mcmaster.ca/~bolker/misc/qq_analysis.html))
+
+
+## References
+
+
+::: {#refs}
+:::
 
 
 
