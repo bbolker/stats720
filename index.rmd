@@ -28,7 +28,7 @@ Materials on this web page are **under construction** and **subject to change**
 ### Misc info
 
 - Textbooks:
-   - none, but references will be listed
+   - none, but references will be listed: see [here](./books.html) for a list of useful books
 - [Full course bibliography](stat720_bib.html)
 - Expected preparation: 
 - Notes on [plagiarism/collaboration/attribution](./honesty.html)
