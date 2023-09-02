@@ -8,6 +8,12 @@ nocite: |
  @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
 ---
 
+<style>
+.csl-block {
+ color: #3399ff;
+}
+</style>
+
 <!-- typically renders in docs/ dir  -->
 
 I haven't found one book that covers everything in this course exactly the way I would like. Here is a selection of books that I like.
