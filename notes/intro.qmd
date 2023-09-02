@@ -66,38 +66,44 @@ Not focal, but unavoidable and useful
 * solving problems in context, practical issues
 * bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
 
-# Modeling loop
+# The modeling cycle
 
-## cyclic
+## An iterative process ...
 
 ```{r tidyfig, echo = FALSE}
 #| fig-cap: "original from [Mine Çetinkaya-Rundel](https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/)"
 knitr::include_graphics("pix/tidyverse_model.png")
 ```
+
 ```{r boxfig, echo = FALSE}
-#| out-width: 8in
+#| out-width: 7in
 #| fig-cap: "From @boxScience1976b"
 #| fig-scap: "Box"
 knitr::include_graphics("pix/box_cycle.png")
 ```
 
-<!-- need more recent pandoc to handle '\vadjust pre{' 
-  otherwise including caption as #| fig-cap: from @boxScience1976b gives
-
-Runaway argument?
-{from Box (1976)\marginpar {\begin {footnotesize}\leavevmode \vadjust \ETC.
-! Paragraph ended before \caption@prepareanchor was complete.
-<to be read again> 
-                   \par 
-l.355 ...949}.\vspace{2mm}\par\end{footnotesize}}}
-
--->
+\  <!-- hack for spacing -->
 
 ```{r MNfig, echo = FALSE}
-#| out-width: 10in
+#| out-width: 7in
 #| fig-cap: "From @mccullaghGeneralized1989 p. 392: 'The introduction of this loop changes profoundly the process of analysis and the reliability of the final models found.'" 
 #| fig-scap: "MN"
 knitr::include_graphics("pix/MN_cycle.png")
 ```
+
+## Beware the garden of forking paths!
+
+```{r forking_paths, echo=FALSE}
+#| fig-cap: "from [Art Share LA](https://artsharela.org/event/carillon-quartet-the-garden-of-forking-paths/)"
+knitr::include_graphics("pix/forking_paths.jpg")
+```
+* "researcher degrees of freedom", "HARKing", etc.
+* @simmons_false-positive_2011; @gelman_statistical_2014
+
+## Solutions?
+
+* pre-registration (formal or informal); report deviations from planned analysis
+* choose model complexity (see @harrellRegression2015 ch. 3), do diagnostics etc., **without reference to response variable** or metrics of significance
+
 
 

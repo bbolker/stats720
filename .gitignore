@@ -5,3 +5,4 @@ private/
 *.tex
 *.toc
 *.bak
+**/*_files
