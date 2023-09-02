@@ -4,10 +4,11 @@ all: docs/assignments/README.html docs/index.html docs/${COURSE}_bib.html docs/s
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all
-notes:
+## distinguish from directories (case-sensitive)
+Notes:
 	./mkallnotes
 
-assignments:
+Assignments:
 	./mkallassignments
 
 ## these must come FIRST so we don't trash .md files by moving

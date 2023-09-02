@@ -48,6 +48,15 @@ From the course outline:
     * similarity of Bayesian and frequentist approaches
 * awareness of computational foundations/scaling
 
+## Scope
+
+* the components:
+   * linear model matrices/basis spaces
+   * link functions
+   * conditional distributions (GLM "families")
+   * penalization/shrinkage
+* includes a vast range of useful models
+
 ## Technical skills & tools
 
 Not focal, but unavoidable and useful
@@ -154,12 +163,28 @@ Harvey Motulsky on [CrossValidated](https://stats.stackexchange.com/a/2501/2126)
 * graphical diagnostics are often recommended
 * but how do we judge whether deviations are too large? ([Q-Q plot survey](https://ms.mcmaster.ca/~bolker/misc/qq_analysis.html))
 
+## Untestable issues are often the worst problems
+
+* biased/non-representative sampling [@mengStatistical2018]
+* lack of randomization 
+* problems with causal inference: unobserved confounders, etc.
+* non-independence
+  * pseudo-replication [@hurlbertPseudoreplication1984]
+  * temporal/spatial structure
+
+## More on model diagnostics
+
+* assumptions apply to **conditional** distribution of the response (not the marginal distribution, not the predictor variables)
+* test assumptions in order of importance (George Box: "It is inappropriate to be concerned about mice when there are tigers abroad.")
+   * bias/nonlinearity (residuals vs fitted plot)
+   * heteroscedasticity (scale-location plot)
+   * influential points/outliers (Cook's distance, leverage, etc.)
+   * distributional assumptions (Q-Q plot)
+   * ¿¿ correlated predictors ??
+* `performance`, `DHARMa` packages: more later
 
 ## References
 
 
 ::: {#refs}
 :::
-
-
-
