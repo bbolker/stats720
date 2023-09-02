@@ -2606,6 +2606,9 @@ vertical-align: -.125em;
 <li>we’ll embrace the assumptions (which are needed for inference!)</li>
 </ul>
 </section>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+</section>
 <section id="model-matrices" class="level2">
 <h2 class="anchored" data-anchor-id="model-matrices">Model matrices</h2>
 <ul>
@@ -2618,15 +2621,24 @@ vertical-align: -.125em;
 </ul></li>
 </ul>
 </section>
-<section id="wilkinson-rogers-formulas-wilkinsonsymbolic1973a" class="level2">
-<h2 class="anchored" data-anchor-id="wilkinson-rogers-formulas-wilkinsonsymbolic1973a">Wilkinson-Rogers formulas <span class="citation" data-cites="wilkinsonSymbolic1973a">(<a href="#ref-wilkinsonSymbolic1973a" role="doc-biblioref">Wilkinson and Rogers 1973</a>)</span></h2>
+<section id="wilkinson-rogers-formulas" class="level2">
+<h2 class="anchored" data-anchor-id="wilkinson-rogers-formulas">Wilkinson-Rogers formulas</h2>
 <ul>
+<li><span class="citation" data-cites="wilkinsonSymbolic1973a">Wilkinson and Rogers (<a href="#ref-wilkinsonSymbolic1973a" role="doc-biblioref">1973</a>)</span>, updated by <span class="citation" data-cites="chambersStatistical1991">Chambers and Hastie (<a href="#ref-chambersStatistical1991" role="doc-biblioref">1991</a>, ch. 2)</span></li>
 <li>operators: <code>+</code>, <code>*</code>, <code>:</code>, <code>/</code>, <code>-</code>, <code>^</code></li>
 <li><code>I()</code></li>
 </ul>
 </section>
 <section id="contrasts" class="level2">
 <h2 class="anchored" data-anchor-id="contrasts">Contrasts</h2>
+</section>
+<section id="marginality" class="level2">
+<h2 class="anchored" data-anchor-id="marginality">Marginality</h2>
+<ul>
+<li><span class="citation" data-cites="venablesExegeses1998">Venables (<a href="#ref-venablesExegeses1998" role="doc-biblioref">1998</a>)</span></li>
+<li>‘type (X) sums of squares’</li>
+<li>scaling and centering <span class="citation" data-cites="schielzethSimple2010">(<a href="#ref-schielzethSimple2010" role="doc-biblioref">Schielzeth 2010</a>)</span></li>
+</ul>
 </section>
 <section id="computation" class="level2">
 <h2 class="anchored" data-anchor-id="computation">Computation</h2>
@@ -2642,10 +2654,25 @@ vertical-align: -.125em;
 </section>
 <section id="diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="diagnostics">Diagnostics</h2>
+<ul>
+<li>linearity,</li>
+<li>base R: <code>stats::plot.lm()</code></li>
+<li><code>performance::check_model()</code></li>
+<li><code>DHARMa</code> (<code>simulateResiduals(., plot = TRUE)</code>)</li>
+</ul>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-chambersStatistical1991" class="csl-entry" role="doc-biblioentry">
+Chambers, J. M., and T. J. Hastie, eds. 1991. <em>Statistical <span>Models</span> in <span>S</span></em>. 1st ed. Chapman; Hall/CRC.
+</div>
+<div id="ref-schielzethSimple2010" class="csl-entry" role="doc-biblioentry">
+Schielzeth, Holger. 2010. <span>“Simple Means to Improve the Interpretability of Regression Coefficients: <span>Interpretation</span> of Regression Coefficients.”</span> <em>Methods in Ecology and Evolution</em> 1 (2): 103–13. <a href="https://doi.org/10.1111/j.2041-210X.2010.00012.x">https://doi.org/10.1111/j.2041-210X.2010.00012.x</a>.
+</div>
+<div id="ref-venablesExegeses1998" class="csl-entry" role="doc-biblioentry">
+Venables, W. N. 1998. <span>“Exegeses on <span>Linear</span> <span>Models</span>.”</span> In. 1998 <span>International</span> <span>S</span>-<span>PLUS</span> <span>User</span> <span>Conference</span>. Washington, DC. <a href="http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf">http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf</a>.
+</div>
 <div id="ref-wilkinsonSymbolic1973a" class="csl-entry" role="doc-biblioentry">
 Wilkinson, G. N., and C. E. Rogers. 1973. <span>“Symbolic <span>Description</span> of <span>Factorial</span> <span>Models</span> for <span>Analysis</span> of <span>Variance</span>.”</span> <em>Journal of the Royal Statistical Society. Series C (Applied Statistics)</em> 22 (3): 392–99. <a href="https://doi.org/10.2307/2346786">https://doi.org/10.2307/2346786</a>.
 </div>

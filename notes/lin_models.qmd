@@ -3,6 +3,7 @@ title: "Review of linear models"
 bibliography: "../stat720.bib"
 date: today
 date-format: "D MMM YYYY"
+csl: apa.csl
 format:
   pdf:
     mainfont: TeX Gyre Pagella
@@ -30,6 +31,8 @@ $$
 is the BLUE (or MVUE).
 * we'll embrace the assumptions (which are needed for inference!)
 
+## Inference
+
 ## Model matrices
 
 * everything has to be converted to $\X$ before we start
@@ -38,12 +41,19 @@ is the BLUE (or MVUE).
    * interactions
    * basis expansions (e.g. polynomials)
 
-## Wilkinson-Rogers formulas [@wilkinsonSymbolic1973a]
+## Wilkinson-Rogers formulas 
 
+- @wilkinsonSymbolic1973a, updated by @chambersStatistical1991 [ch. 2]
 - operators: `+`, `*`, `:`, `/`, `-`, `^`
 - `I()`
 
 ## Contrasts
+
+## Marginality
+
+* @venablesExegeses1998
+* 'type (X) sums of squares'
+* scaling and centering [@schielzethSimple2010]
 
 ## Computation
 
@@ -54,6 +64,11 @@ is the BLUE (or MVUE).
    * $p$ vs. $n$ vs. many-small-regressions vs. ...
    
 ## Diagnostics
+
+* linearity, 
+* base R: `stats::plot.lm()`
+* `performance::check_model()`
+* `DHARMa` (`simulateResiduals(., plot = TRUE)`)
 
 ## References
 
