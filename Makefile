@@ -74,4 +74,7 @@ index.html: index.rmd sched.csv
 ${COURSE}_bib.html: ${COURSE}_bib.md ${COURSE}.bib
 	Rscript  -e "rmarkdown::render('$<')"
 
+docs/books.html: books.qmd ${COURSE}.bib
+	quarto render $(<F) -M embed-resources:true
+	mv books.html docs/
 
