@@ -1,0 +1,62 @@
+---
+title: "Review of linear models"
+bibliography: "../stat720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+<!-- typically renders in docs/ dir  -->
+
+## Basics
+
+* assume $\y \sim \textrm{Normal}(\X \bbeta, \sigma)$^[Notation-abuse warning ...]
+* $\X$ is the *model matrix*, can be anything we want it to be
+* the *Gauss-Markov theorem* ([Wikipedia](https://en.wikipedia.org/wiki/Gauss%E2%80%93Markov_theorem)) makes weaker assumptions: $\y = \X \bbeta + \beps$; as long as $\beps$ is mean-zero, homoscedastic with finite variance, and uncorrelated ... then the OLS solution
+$$
+\hat{\bbeta} = (\t{\X} \X)^{-1} \t{\X} \y
+$$
+is the BLUE (or MVUE).
+* we'll embrace the assumptions (which are needed for inference!)
+
+## Model matrices
+
+* everything has to be converted to $\X$ before we start
+   * transformations
+   * encoding of categorical variables: **contrasts**
+   * interactions
+   * basis expansions (e.g. polynomials)
+
+## Wilkinson-Rogers formulas [@wilkinsonSymbolic1973a]
+
+- operators: `+`, `*`, `:`, `/`, `-`, `^`
+- `I()`
+
+## Contrasts
+
+## Computation
+
+* matrix decompositions (QR with pivoting)
+* big problems: `biglm`, `speedglm`, `RcppEigen::fastLm`
+   * optimized BLAS, kernel trick, etc.
+   * memory vs speed vs robustness ...
+   * $p$ vs. $n$ vs. many-small-regressions vs. ...
+   
+## Diagnostics
+
+## References
+
+
+::: {#refs}
+:::

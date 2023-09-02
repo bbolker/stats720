@@ -41,7 +41,7 @@ docs/software/%: software/%
 
 %.html: %.qmd
 ## @F = file: https://stackoverflow.com/questions/59446839/get-filename-from-in-makefile
-	cd notes; quarto render $(<F) -M embed-resources:true
+	cd notes; quarto render $(<F) --to html -M embed-resources:true
 
 ## %.html: %.qmd
 ## 	quarto render $< --to revealjs
