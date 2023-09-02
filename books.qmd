@@ -5,7 +5,7 @@ csl: chicago-annotated-bibliography.csl
 date: today
 date-format: "D MMM YYYY"
 nocite: |
- @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
+ @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
 ---
 
 <style>

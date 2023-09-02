@@ -9,6 +9,8 @@ date-format: "D MMM YYYY"
 
 <!-- typically renders in docs/ dir  -->
 
+# Basics
+
 ## Logistics
 
 * (almost) everything at course web page, https://bbolker.github.io/stat720
@@ -35,21 +37,20 @@ From the course outline:
 
 # Goals
 
-* understand theory behind (novel) SL/ML methods
-* read papers
-* (choose methods)
-* implement methods
-* read/understand/improve existing methods
+* principles/practices of statistical modeling
+    * choosing a model
+	* diagnostics and troubleshooting
+* good intermediate understanding of the tools (ridge/lasso, (G)(LA)MMs; unifying principles
+* awareness of computational foundations/scaling
 
 ## Technical skills & tools
 
 Not focal, but unavoidable and useful
 
-* R
+* R (base + some [tidyverse](https://www.tidyverse.org/))
 * reproducibility
    * version control (Git/GitHub)
    * documents: Quarto/Sweave/Jupyter notebooks
-* see also: [the missing semester](https://missing.csail.mit.edu/)
 
 ## about me
 
@@ -65,5 +66,38 @@ Not focal, but unavoidable and useful
 * solving problems in context, practical issues
 * bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
 
-# Overview of material/themes
+# Modeling loop
+
+## cyclic
+
+```{r tidyfig, echo = FALSE}
+#| fig-cap: "original from [Mine Çetinkaya-Rundel](https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/)"
+knitr::include_graphics("pix/tidyverse_model.png")
+```
+```{r boxfig, echo = FALSE}
+#| out-width: 8in
+#| fig-cap: "From @boxScience1976b"
+#| fig-scap: "Box"
+knitr::include_graphics("pix/box_cycle.png")
+```
+
+<!-- need more recent pandoc to handle '\vadjust pre{' 
+  otherwise including caption as #| fig-cap: from @boxScience1976b gives
+
+Runaway argument?
+{from Box (1976)\marginpar {\begin {footnotesize}\leavevmode \vadjust \ETC.
+! Paragraph ended before \caption@prepareanchor was complete.
+<to be read again> 
+                   \par 
+l.355 ...949}.\vspace{2mm}\par\end{footnotesize}}}
+
+-->
+
+```{r MNfig, echo = FALSE}
+#| out-width: 10in
+#| fig-cap: "From @mccullaghGeneralized1989 p. 392: 'The introduction of this loop changes profoundly the process of analysis and the reliability of the final models found.'" 
+#| fig-scap: "MN"
+knitr::include_graphics("pix/MN_cycle.png")
+```
+
 

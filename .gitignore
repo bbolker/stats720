@@ -1,2 +1,7 @@
 *~
 private/
+*.aux
+*.log
+*.tex
+*.toc
+*.bak

@@ -59,8 +59,14 @@ docs/software/%: software/%
 %.pdf: %.rmd
 	Rscript -e "rmarkdown::render('$<', output_format = tufte::tufte_handout())" ## , params = list('latex-engine'='xelatex'))"
 
+
+## hack: assumes we will only be doing this for notes/ docs
 %.pdf: %.qmd
-	quarto render $< --to pdf --toc   
+	quarto render $< --to latex --toc
+	@echo $(patsubst %.qmd,%.tex,$<)
+	Rscript marginhack.R $(patsubst %.qmd,%.tex,$<)
+	texi2dvi -p $(patsubst %.qmd,%.tex,$<)
+	mv $(patsubst notes/%.qmd,%.pdf,$<) docs/notes
 
 %.pdf: %.tex
 	pdflatex $<
@@ -78,3 +84,7 @@ docs/books.html: books.qmd ${COURSE}.bib
 	quarto render $(<F) -M embed-resources:true
 	mv books.html docs/
 
+PANDOC=pandoc-3.1.7-1-amd64.deb
+new-pandoc:
+	wget https://github.com/jgm/pandoc/releases/download/3.1.7/${PANDOC}
+	sudo dpkg -i ${PANDOC}
