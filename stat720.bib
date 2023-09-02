@@ -71,3 +71,91 @@
   keywords = {Computer software,Control systems,Data management,Data processing,Programming languages,Reproducibility,Software tools,Source code},
   file = {/home/bolker/Zotero/storage/7FVVG9HG/Wilson et al. - 2017 - Good enough practices in scientific computing.pdf;/home/bolker/Zotero/storage/MRE6NA97/article.html}
 }
+
+@book{harrellRegression2015,
+  title = {Regression Modeling Strategies: With Applications to Linear Models, Logistic and Ordinal Regression, and Survival Analysis},
+  shorttitle = {Regression {{Modeling Strategies}}},
+  author = {Harrell Jr., Frank E.},
+  year = {2015},
+  month = aug,
+  edition = {2d},
+  publisher = {Springer},
+  isbn = {978-3-319-19424-0},
+  langid = {english},
+  note = {This book presents the best blend I've ever found of practical yet rigorous advice for statistical modeling (testing model assumptions, limiting model complexity in a way that preserves reliable inference, dealing with missing data, etc.). It covers linear and generalized linear regression, logistic regression, ordinal responses, and survival analysis thoroughly; it has a chapter on longitudinal data. It does not go deeply into mixed models, nor does it cover more exotic responses (count or non-binary binomial responses, zero-inflation, ordinal responses).}
+  }
+
+@book{farawayExtending2016,
+  title = {Extending the {{Linear Model}} with {{R}}: {{Generalized Linear}}, {{Mixed Effects}} and {{Nonparametric Regression Models}}, {{Second Edition}}},
+  shorttitle = {Extending the {{Linear Model}} with {{R}}},
+  author = {Faraway, Julian J.},
+  year = {2016},
+  month = mar,
+  publisher = {{CRC Press}},
+  abstract = {Start Analyzing a Wide Range of Problems  Since the publication of the bestselling, highly recommended first edition, R has considerably expanded both in popularity and in the number of packages available. Extending the Linear Model with R: Generalized Linear, Mixed Effects and Nonparametric Regression Models, Second Edition takes advantage of the greater functionality now available in R and substantially revises and adds several topics. New to the Second Edition  Expanded coverage of binary and binomial responses, including proportion responses, quasibinomial and beta regression, and applied considerations regarding these models  New sections on Poisson models with dispersion, zero inflated count models, linear discriminant analysis, and sandwich and robust estimation for generalized linear models (GLMs)  Revised chapters on random effects and repeated measures that reflect changes in the lme4 package and show how to perform hypothesis testing for the models using other methods New chapter on the Bayesian analysis of mixed effect models that illustrates the use of STAN and presents the approximation method of INLA  Revised chapter on generalized linear mixed models to reflect the much richer choice of fitting software now available Updated coverage of splines and confidence bands in the chapter on nonparametric regression New material on random forests for regression and classification  Revamped R code throughout, particularly the many plots using the ggplot2 package Revised and expanded exercises with solutions now included Demonstrates the Interplay of Theory and Practice This textbook continues to cover a range of techniques that grow from the linear regression model. It presents three extensions to the linear framework: GLMs, mixed effect models, and nonparametric regression models. The book explains data analysis using real examples and includes all the R commands necessary to reproduce the analyses. The level is good for upper-level undergraduate statisticians and beyond, possibly tough for biologists.},
+  googlebooks = {XAzYCwAAQBAJ},
+  isbn = {978-1-4987-2098-4},
+  langid = {english},
+  keywords = {Mathematics / Probability \& Statistics / General},
+  note = {A good, broad book that covers most of the material we'll discuss in this class. It starts with a little bit more basic coverage of (G)LMs, but has good discussions of intermediate-level GLM issues (conditional logistic regression, alternative link functions, etc.). It goes on to cover mixed models and additive models, as well as a brief introduction to tree-based models and neural networks (which we'll skip in this class).}
+}
+
+@book{gelmanData2006,
+  title = {Data {{Analysis Using Regression}} and {{Multilevel}}/{{Hierarchical Models}}},
+  author = {Gelman, Andrew and Hill, Jennifer},
+  year = {2006 xx xx},
+  publisher = {{Cambridge University Press}},
+  address = {{Cambridge, England}},
+  note = {Clear, comprehensive discussion of multilevel/hierarchical models. 99\% Bayesian treatment; examples are mostly from social science. Covers linear, logistic, count-data (Poisson/negative binomial) regressions. Causal inference, regression diagnostics, etc.. Reliance on the BUGS language is now slightly old-fashioned (Gelman et al 2020 is an update for the non-mixed model material; these authors and others are working on an updated mixed model book, nominally available \href{http://www.stat.columbia.edu/~gelman/armm/}{around the end of 2024}).}
+}
+
+@book{gelmanRegression2020,
+  title = {Regression and {{Other Stories}}},
+  author = {Gelman, Andrew and Hill, Jennifer and Vehtari, Aki},
+  year = {2020},
+  month = jul,
+  edition = {1st edition},
+  publisher = {{Cambridge University Press}},
+  address = {{Cambridge New York, NY Port Melbourne, VIC New Delhi Singapore}},
+  abstract = {Most textbooks on regression focus on theory and the simplest of examples. Real statistical problems, however, are complex and subtle. This is not a book about the theory of regression. It is about using regression to solve real problems of comparison, estimation, prediction, and causal inference. Unlike other books, it focuses on practical issues such as sample size and missing data and a wide range of goals and techniques. It jumps right in to methods and computer code you can use immediately. Real examples, real stories from the authors' experience demonstrate what regression can do and its limitations, with practical advice for understanding assumptions and implementing methods for experiments and observational studies. They make a smooth transition to logistic regression and GLM. The emphasis is on computation in R and Stan rather than derivations, with code available online. Graphics and presentation aid understanding of the models and model fitting.},
+  isbn = {978-1-107-67651-0},
+  langid = {english},
+  note = {I haven't read this book yet but based on the authors' past work I expect it to be excellent.}
+}
+
+
+@book{hodgesRichly2013,
+  title = {Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects},
+  shorttitle = {Richly Parameterized Linear Models},
+  author = {Hodges, James S.},
+  year = {2013},
+  publisher = {{CRC Press}},
+  note = {Technical. An in-depth exploration of the ways that hierarchical Gaussian models can be extended to handle different kinds of correlation structures and smooth functions. Discusses details you won't find anywhere else.}
+}
+
+@book{mcelreathStatistical2020,
+  title = {Statistical {{Rethinking}}: {{A Bayesian Course}} with {{Examples}} in {{R}} and {{STAN}}},
+  shorttitle = {Statistical {{Rethinking}}},
+  author = {McElreath, Richard},
+  year = {2020},
+  month = mar,
+  publisher = {{CRC Press}},
+  abstract = {Statistical Rethinking: A Bayesian Course with Examples in R and Stan builds your knowledge of and confidence in making inferences from data. Reflecting the need for scripting in today's model-based statistics, the book pushes you to perform step-by-step calculations that are usually automated. This unique computational approach ensures that you understand enough of the details to make reasonable choices and interpretations in your own modeling work.  The text presents causal inference and generalized linear multilevel models from a simple Bayesian perspective that builds on information theory and maximum entropy. The core material ranges from the basics of regression to advanced multilevel models. It also presents measurement error, missing data, and Gaussian process models for spatial and phylogenetic confounding.  The second edition emphasizes the directed acyclic graph (DAG) approach to causal inference, integrating DAGs into many examples. The new edition also contains new material on the design of prior distributions, splines, ordered categorical predictors, social relations models, cross-validation, importance sampling, instrumental variables, and Hamiltonian Monte Carlo. It ends with an entirely new chapter that goes beyond generalized linear modeling, showing how domain-specific scientific models can be built into statistical analyses.  Features   Integrates working code into the main text   Illustrates concepts through worked data analysis examples   Emphasizes understanding assumptions and how assumptions are reflected in code   Offers more detailed explanations of the mathematics in optional sections   Presents examples of using the dagitty R package to analyze causal graphs   Provides the rethinking R package on the author's website and on GitHub},
+  googlebooks = {6H\_WDwAAQBAJ},
+  isbn = {978-0-429-63914-2},
+  langid = {english},
+  keywords = {Mathematics / Probability \& Statistics / General},
+  note = {Bayesian statistics from first principles. Aimed at non-statisticians. Relies on Stan for analysis (the \texttt{rethinking} package provides a nice front end for graphical models). Heavy on mechanistic models and causal inference.}
+}
+
+@book{woodGeneralized2017,
+  title = {Generalized {{Additive Models}}: {{An Introduction}} with {{R}}},
+  author = {Wood, Simon N.},
+  year = {2017},
+  series = {{{CRC Texts}} in {{Statistical Science}}},
+  publisher = {{Chapman \& Hall}},
+  urldate = {2017-11-28},
+  file = {/home/bolker/Zotero/storage/Q79P94BB/ref=sr_1_1.html},
+  note = {Comprehensive coverage of additive models from a penalized-basis point of view, from the master (the author of R's \texttt{mgcv} package). Includes brief reviews of the theory behind linear and GLMs. Technical bits are tough for non-statisticians.}
+}
+

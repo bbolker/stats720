@@ -1,0 +1,17 @@
+---
+title: "Annotated bibliography"
+bibliography: stat720.bib
+csl: chicago-annotated-bibliography.csl
+date: today
+date-format: "D MMM YYYY"
+nocite: |
+ @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
+---
+
+<!-- typically renders in docs/ dir  -->
+
+I haven't found one book that covers everything in this course exactly the way I would like. Here is a selection of books that I like.
+
+To add: Zuur, Witten, Hastie et al, BDA?
+
+## references
