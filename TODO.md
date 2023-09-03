@@ -2,6 +2,7 @@
 
 ## Set-up tasks
 
+* land acknowledgement
 * Quiz/terminology intro (for completion credit)? e.g. coverage, likelihood profile, model misspecification, pseudoreplication, p-hacking/snooping/HARKing, post-selection inference, ... ?
 * keep working on lin models (consult Faraway)
 * Piazza (quiz framework etc.?)
