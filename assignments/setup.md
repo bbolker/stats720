@@ -39,6 +39,8 @@ If you already have R installed, please make sure that you have upgraded to the 
    * [Windows tools](https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html)
    * if you use Linux you are likely to have most of these tools already, but see [here](https://cran.r-project.org/bin/linux/) (and go to the subdirectory appropriate for your distribution); you may also want to use [r2u](https://github.com/eddelbuettel/r2u#r2u-cran-as-ubuntu-binaries) to simplify and speed up package installation
 
+For convenience, you can install a lot of packages we'll use in this class by running the code [here](https://github.com/bbolker/stats720/blob/main/code/install_pkgs.R).
+
 ## Quarto (preferred)
 
 [Quarto](https://quarto.org/) is a scientific publishing/reporting system for integrating code and output in a document or notebook.

@@ -1,4 +1,4 @@
-download.file()
+download.file("https://raw.githubusercontent.com/bbolker/stats720/main/code/pkg_list.txt", dest = "pkg_list.txt")
 pkgs <- scan("pkg_list.txt", what = character())
 i1 <- installed.packages()
 pkgs <- setdiff(pkgs, rownames(i1))
