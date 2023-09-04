@@ -1,6 +1,6 @@
 ---
 title: "Annotated bibliography"
-bibliography: stat720.bib
+bibliography: stats720.bib
 csl: chicago-annotated-bibliography.csl
 date: today
 date-format: "D MMM YYYY"
@@ -18,6 +18,15 @@ nocite: |
 
 I haven't found one book that covers everything in this course exactly the way I would like. Here is a selection of books that I like.
 
-To add: Zuur, Witten, Hastie et al, BDA?
+## Primary references
 
-## references
+::: {#refs}
+:::
+
+## Peripheral references
+
+* Books by Alain Zuur *et al.* are basic books oriented toward ecology; handle spatial/temporal structure with INLA, 'exotic' conditional distributions (zero-inflation etc.)
+* Statistical learning: Witten *et al.* *Introduction to Statistical Learning*, Hastie *et al.* *Elements of Statistical Learning*
+* Gelman *et al.* *Bayesian Data Analysis* 3d ed. (complete and technical)
+
+

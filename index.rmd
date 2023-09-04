@@ -1,6 +1,6 @@
 ---
 title: "Statistical modeling (STATS 720)"
-bibliography: stat720.bib
+bibliography: stats720.bib
 ---
 
 <!-- from https://www.w3schools.com/css/css_table.asp -->
@@ -29,7 +29,7 @@ Materials on this web page are **under construction** and **subject to change**
 
 - Textbooks:
    - none, but references will be listed: see [here](./books.html) for a list of useful books
-- [Full course bibliography](stat720_bib.html)
+- [Full course bibliography](stats720_bib.html)
 - Expected preparation: 
 - Notes on [plagiarism/collaboration/attribution](./honesty.html)
 - [Software notes](software.md)
@@ -45,7 +45,7 @@ Materials on this web page are **under construction** and **subject to change**
 - Lecture recordings (TBA)
 - [Piazza](https://piazza.com/mcmaster.ca/spring2023/stats720) (course forum/communications)
 - [Course outline](outline.docx)
-- [The back-end for this site](https://github.com/bbolker/stat720)
+- [The back-end for this site](https://github.com/bbolker/stats720)
 - [Notes on academic integrity](./honesty.html)
 - [R style guide](./R_style.html)
 

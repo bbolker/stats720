@@ -1,6 +1,6 @@
 ---
 title: "Review of linear models"
-bibliography: "../stat720.bib"
+bibliography: "../stats720.bib"
 date: today
 date-format: "D MMM YYYY"
 csl: apa.csl

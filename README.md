@@ -1,6 +1,6 @@
 # Stat 720
 
-Github pages front end [here](https://bbolker.github.io/stat720)
+Github pages front end [here](https://bbolker.github.io/stats720)
 
 This course exposes students to modern ideas in statistical modelling. These include topics such as the general linear
 model, penalized regression and the LASSO, random effects and mixed models, generalized linear models, generalized

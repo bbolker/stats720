@@ -1,4 +1,4 @@
-COURSE=stat720
+COURSE=stats720
 
 all: docs/assignments/README.html docs/index.html docs/${COURSE}_bib.html docs/software/README.html docs/honesty.html docs/R_style.html docs/books.html
 ## allnotes docs/assignments/midterm-topics.html

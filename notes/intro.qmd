@@ -1,6 +1,6 @@
 ---
 title: "Introduction<br>(week 1, part 1)"
-bibliography: "../stat720.bib"
+bibliography: "../stats720.bib"
 date: today
 date-format: "D MMM YYYY"
 format:
@@ -17,7 +17,7 @@ format:
 
 ## Logistics
 
-* (almost) everything at the [course web page](https://bbolker.github.io/stat720)
+* (almost) everything at the [course web page](https://bbolker.github.io/stats720)
 * communication/forums ([Piazza](https://piazza.com/mcmaster.ca/fall2023/stats720)); e-mail if necessary
 * assignment marks (Avenue)
 * Zoom/recordings (by request)
@@ -79,6 +79,11 @@ Not focal, but unavoidable and useful
 * data visualization
 * solving problems in context, practical issues
 * bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
+
+## a tiny bit of philosophy
+
+* frequentist vs. Bayesian
+
 
 # The modeling cycle
 

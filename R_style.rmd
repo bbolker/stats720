@@ -1,7 +1,7 @@
 ---
 title: "theobio style guide"
 date: Updated October 2021
-bibliography: "stat720.bib"
+bibliography: "stats720.bib"
 ---
 
 <!-- FIXME: why do square brackets get mangled??? -->

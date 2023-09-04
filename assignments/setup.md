@@ -16,7 +16,7 @@ title: "software installation"
 
 * get a Github user name (if you don't have one already)
     * Apply for [student benefits](https://docs.github.com/en/billing/managing-the-plan-for-your-github-account/discounted-plans-for-github-accounts) on GitHub if you like (more free stuff: private accounts etc)
-* create a repository called `stat720`
+* create a repository called `stats720`
 * add me as a collaborator (Settings > Collaborators > enter `bbolker`)
 * https://code.visualstudio.com/docs/sourcecontrol/overview
 * send me a message on Piazza telling me your GH user name
