@@ -1,0 +1,5 @@
+download.file()
+pkgs <- scan("pkg_list.txt", what = character())
+i1 <- installed.packages()
+pkgs <- setdiff(pkgs, rownames(i1))
+install.packages(pkgs, repos = "https://cloud.r-project.org")

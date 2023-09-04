@@ -10,3 +10,4 @@ private/
 \.~*
 \.#*
 .Rhistory
+*.Rout
