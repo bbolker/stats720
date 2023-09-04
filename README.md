@@ -1,4 +1,4 @@
-# Stat 720
+# STATS 720
 
 Github pages front end [here](https://bbolker.github.io/stats720)
 
