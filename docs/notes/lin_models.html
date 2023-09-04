@@ -2584,7 +2584,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2 Sep 2023</p>
+      <p class="date">3 Sep 2023</p>
     </div>
   </div>
   
@@ -2606,13 +2606,34 @@ vertical-align: -.125em;
 <li>we’ll embrace the assumptions (which are needed for inference!)</li>
 </ul>
 </section>
+<section id="computation" class="level2">
+<h2 class="anchored" data-anchor-id="computation">Computation</h2>
+<ul>
+<li>matrix decompositions (QR with pivoting)</li>
+<li>big problems: <code>biglm</code>, <code>speedglm</code>, <code>RcppEigen::fastLm</code>
+<ul>
+<li>optimized BLAS, kernel trick, etc.</li>
+<li>memory vs speed vs robustness …</li>
+<li><span class="math inline">\(p\)</span> vs. <span class="math inline">\(n\)</span> vs. many-small-regressions vs. …</li>
+</ul></li>
+</ul>
+</section>
 <section id="inference" class="level2">
 <h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<ul>
+<li><span class="math inline">\(\sigma^2\)</span> (residual variance) is <span class="math inline">\(\textrm{RSS}/(n-p)\)</span></li>
+<li>The covariance matrix is <span class="math inline">\(\sigma^2 ({\mathbf X}^\top {\mathbf X})^{-1}\)</span>.</li>
+<li>Individual coefficients are <span class="math inline">\(t\)</span>-distributed</li>
+<li>Linear combinations of coefficients are <span class="math inline">\(F\)</span>-distributed</li>
+<li>Wald and likelihood ratio test comparisons are equivalent<br>
+(but need to be careful about marginality)</li>
+</ul>
 </section>
 <section id="model-matrices" class="level2">
 <h2 class="anchored" data-anchor-id="model-matrices">Model matrices</h2>
 <ul>
-<li>everything has to be converted to <span class="math inline">\({\mathbf X}\)</span> before we start
+<li>model definition converted to <span class="math inline">\({\mathbf X}\)</span> before we start</li>
+<li><strong>input variables</strong> vs <strong>predictor variables</strong> (<span class="citation" data-cites="schielzethSimple2010">Schielzeth (<a href="#ref-schielzethSimple2010" role="doc-biblioref">2010</a>)</span>, <span class="citation" data-cites="gelmanData2006">Gelman &amp; Hill (<a href="#ref-gelmanData2006" role="doc-biblioref">2006</a>)</span>, <a href="https://stats.stackexchange.com/questions/511455/terminology-for-raw-vs-derived-predictor-variables">CV</a>)
 <ul>
 <li>transformations</li>
 <li>encoding of categorical variables: <strong>contrasts</strong></li>
@@ -2624,7 +2645,7 @@ vertical-align: -.125em;
 <section id="wilkinson-rogers-formulas" class="level2">
 <h2 class="anchored" data-anchor-id="wilkinson-rogers-formulas">Wilkinson-Rogers formulas</h2>
 <ul>
-<li><span class="citation" data-cites="wilkinsonSymbolic1973a">Wilkinson and Rogers (<a href="#ref-wilkinsonSymbolic1973a" role="doc-biblioref">1973</a>)</span>, updated by <span class="citation" data-cites="chambersStatistical1991">Chambers and Hastie (<a href="#ref-chambersStatistical1991" role="doc-biblioref">1991</a>, ch. 2)</span></li>
+<li><span class="citation" data-cites="wilkinsonSymbolic1973a">Wilkinson &amp; Rogers (<a href="#ref-wilkinsonSymbolic1973a" role="doc-biblioref">1973</a>)</span>, updated by <span class="citation" data-cites="chambersStatistical1991">Chambers &amp; Hastie (<a href="#ref-chambersStatistical1991" role="doc-biblioref">1991</a>, ch. 2)</span></li>
 <li>operators: <code>+</code>, <code>*</code>, <code>:</code>, <code>/</code>, <code>-</code>, <code>^</code></li>
 <li><code>I()</code></li>
 </ul>
@@ -2637,19 +2658,16 @@ vertical-align: -.125em;
 <ul>
 <li><span class="citation" data-cites="venablesExegeses1998">Venables (<a href="#ref-venablesExegeses1998" role="doc-biblioref">1998</a>)</span></li>
 <li>‘type (X) sums of squares’</li>
-<li>scaling and centering <span class="citation" data-cites="schielzethSimple2010">(<a href="#ref-schielzethSimple2010" role="doc-biblioref">Schielzeth 2010</a>)</span></li>
+<li>scaling and centering <span class="citation" data-cites="schielzethSimple2010">(<a href="#ref-schielzethSimple2010" role="doc-biblioref">Schielzeth, 2010</a>)</span></li>
 </ul>
 </section>
-<section id="computation" class="level2">
-<h2 class="anchored" data-anchor-id="computation">Computation</h2>
+<section id="downstream-methods" class="level2">
+<h2 class="anchored" data-anchor-id="downstream-methods">Downstream methods</h2>
 <ul>
-<li>matrix decompositions (QR with pivoting)</li>
-<li>big problems: <code>biglm</code>, <code>speedglm</code>, <code>RcppEigen::fastLm</code>
-<ul>
-<li>optimized BLAS, kernel trick, etc.</li>
-<li>memory vs speed vs robustness …</li>
-<li><span class="math inline">\(p\)</span> vs. <span class="math inline">\(n\)</span> vs. many-small-regressions vs. …</li>
-</ul></li>
+<li>prediction, effects plots</li>
+<li>uncertainty of predictions</li>
+<li><code>emmeans</code>, <code>marginaleffects</code>, <code>effects</code>, <code>sjPlot</code> …</li>
+<li><code>tidy()</code>, <code>performance</code>, <code>insight</code>, etc. …</li>
 </ul>
 </section>
 <section id="diagnostics" class="level2">
@@ -2663,18 +2681,21 @@ vertical-align: -.125em;
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="doc-bibliography">
 <div id="ref-chambersStatistical1991" class="csl-entry" role="doc-biblioentry">
-Chambers, J. M., and T. J. Hastie, eds. 1991. <em>Statistical <span>Models</span> in <span>S</span></em>. 1st ed. Chapman; Hall/CRC.
+Chambers, J. M., &amp; Hastie, T. J. (Eds.). (1991). <em>Statistical <span>Models</span> in <span>S</span></em> (1st ed.). Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-gelmanData2006" class="csl-entry" role="doc-biblioentry">
+Gelman, A., &amp; Hill, J. (2006). <em>Data <span>Analysis Using Regression</span> and <span>Multilevel</span>/<span>Hierarchical Models</span></em>. <span>Cambridge University Press</span>.
 </div>
 <div id="ref-schielzethSimple2010" class="csl-entry" role="doc-biblioentry">
-Schielzeth, Holger. 2010. <span>“Simple Means to Improve the Interpretability of Regression Coefficients: <span>Interpretation</span> of Regression Coefficients.”</span> <em>Methods in Ecology and Evolution</em> 1 (2): 103–13. <a href="https://doi.org/10.1111/j.2041-210X.2010.00012.x">https://doi.org/10.1111/j.2041-210X.2010.00012.x</a>.
+Schielzeth, H. (2010). Simple means to improve the interpretability of regression coefficients: <span>Interpretation</span> of regression coefficients. <em>Methods in Ecology and Evolution</em>, <em>1</em>(2), 103–113. <a href="https://doi.org/10.1111/j.2041-210X.2010.00012.x">https://doi.org/10.1111/j.2041-210X.2010.00012.x</a>
 </div>
 <div id="ref-venablesExegeses1998" class="csl-entry" role="doc-biblioentry">
-Venables, W. N. 1998. <span>“Exegeses on <span>Linear</span> <span>Models</span>.”</span> In. 1998 <span>International</span> <span>S</span>-<span>PLUS</span> <span>User</span> <span>Conference</span>. Washington, DC. <a href="http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf">http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf</a>.
+Venables, W. N. (1998). <em>Exegeses on <span>Linear</span> <span>Models</span></em>. <a href="http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf">http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf</a>
 </div>
 <div id="ref-wilkinsonSymbolic1973a" class="csl-entry" role="doc-biblioentry">
-Wilkinson, G. N., and C. E. Rogers. 1973. <span>“Symbolic <span>Description</span> of <span>Factorial</span> <span>Models</span> for <span>Analysis</span> of <span>Variance</span>.”</span> <em>Journal of the Royal Statistical Society. Series C (Applied Statistics)</em> 22 (3): 392–99. <a href="https://doi.org/10.2307/2346786">https://doi.org/10.2307/2346786</a>.
+Wilkinson, G. N., &amp; Rogers, C. E. (1973). Symbolic <span>Description</span> of <span>Factorial</span> <span>Models</span> for <span>Analysis</span> of <span>Variance</span>. <em>Journal of the Royal Statistical Society. Series C (Applied Statistics)</em>, <em>22</em>(3), 392–399. <a href="https://doi.org/10.2307/2346786">https://doi.org/10.2307/2346786</a>
 </div>
 </div>
 </section>

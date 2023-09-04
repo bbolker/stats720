@@ -62,9 +62,9 @@ From the course outline:
 Not focal, but unavoidable and useful
 
 * R (base + some [tidyverse](https://www.tidyverse.org/))
-* reproducibility
+* reproducibility [@bryanProjectoriented2017; @bryanExcuse2017]
    * version control (Git/GitHub)
-   * documents: Quarto/Sweave/Jupyter notebooks
+   * documents: [Quarto](http://quarto.org)
 
 ## about me
 
@@ -158,7 +158,7 @@ Harvey Motulsky on [CrossValidated](https://stats.stackexchange.com/a/2501/2126)
 * "is there a statistically significant deviation from the model assumptions?" vs. "are the violations of the assumptions large enough to mess up my conclusions?" (**never** "are the data normally distributed?")
     * **data "too big"**: will reject assumptions even when it's OK
 	* **data "too small"**: will fail to reject assumptions even when they're problematic (???)
-* **two-stage testing** often has bad properties [@campbell_consequences_2014; @campbellconsequences2021a; @rochon_test_2012; @zimmermannote2004]
+* **two-stage testing** often has bad properties [@campbell_consequences_2014; @campbellconsequences2021a; @rochon_test_2012; @zimmermannote2004; @shamsudheenShould2021]
 
 * graphical diagnostics are often recommended
 * but how do we judge whether deviations are too large? ([Q-Q plot survey](https://ms.mcmaster.ca/~bolker/misc/qq_analysis.html))
