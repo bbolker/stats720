@@ -62,7 +62,7 @@ From the course outline:
 Not focal, but unavoidable and useful
 
 * R (base + some [tidyverse](https://www.tidyverse.org/))
-* reproducibility [@bryanProjectoriented2017; @bryanExcuse2017]
+* reproducibility (@bryanProjectoriented2017; @bryanExcuse2017)
    * version control (Git/GitHub)
    * documents: [Quarto](http://quarto.org)
 
@@ -83,7 +83,19 @@ Not focal, but unavoidable and useful
 ## a tiny bit of philosophy
 
 * frequentist vs. Bayesian
+* I'm a *computational* or *pragmatic* Bayesian
+* in a perfect world either choice would be available for any problem
+   * Bayesian approaches generally more flexible but slower
+   * priors!
+* hierarchical/latent/mixed models make the boundaries fuzzy (*empirical Bayesian*)
 
+## strong feelings about p-values
+
+* if you use frequentist methods, please use them correctly
+* $H_0$ is almost never true
+* never accept the null hypothesis
+* a low $p$ value doesn't mean the effect is large or important
+* may help to frame results in terms of **clarity** [@dushoffcan2018]
 
 # The modeling cycle
 
