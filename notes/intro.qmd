@@ -8,12 +8,15 @@ format:
     mainfont: TeX Gyre Pagella
     include-in-header:
      - text: \usepackage{marginnote}
-
 ---
 
 <!-- typically renders in docs/ dir  -->
 
 # Basics
+
+## Land acknowledgement
+
+McMaster University (and this class) is on the traditional territories of the Mississauga and Haudenosaunee nations, and within the lands protected by the “Dish with One Spoon” wampum agreement. (**Why?** See ["Beyond Territorial Acknowledgements"](https://apihtawikosisan.com/2016/09/beyond-territorial-acknowledgments/))
 
 ## Logistics
 
@@ -44,12 +47,14 @@ From the course outline:
 * principles/practices of statistical modeling
     * choosing a model
 	* diagnostics and troubleshooting
-* good intermediate understanding of the tools (ridge/lasso, (G)(LA)MMs); unifying principles of regression modeling, shrinkage/penalized estimators
-    * similarity of Bayesian and frequentist approaches
+	* interpreting and communicating results
+* understanding the tools ((penalized) (G)L(A)(M)Ms; unifying principles of regression modeling, shrinkage/penalized estimators
+    * both frequentist and Bayesian approaches
 * awareness of computational foundations/scaling
 
 ## Scope
 
+* **regression** modeling
 * the components:
    * linear model matrices/basis spaces
    * link functions
@@ -75,15 +80,14 @@ Not focal, but unavoidable and useful
 ## things I like/obsess about
 
 * scientific inference $\gg$ pure prediction (but see @navarroScience2019)
-* generative models
 * data visualization
 * solving problems in context, practical issues
-* bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
+* battling bad statistical practice (p-value abuse, snooping, dichotomania, imbalance handling, ...)
 
 ## a tiny bit of philosophy
 
 * frequentist vs. Bayesian
-* I'm a *computational* or *pragmatic* Bayesian
+* *computational* or *pragmatic* Bayesian
 * in a perfect world either choice would be available for any problem
    * Bayesian approaches generally more flexible but slower
    * priors!
@@ -103,8 +107,9 @@ Not focal, but unavoidable and useful
 
 * you need to know what the question is!
 * this is hard for statisticians
-* what is a large effect? what is an interesting effect?
+   * when mining data, go back to the original paper(s)
 * a low $p$-value is not inherently interesting!
+* what is a large effect? what is an interesting effect?
 
 ## Effect sizes
 
@@ -160,6 +165,13 @@ knitr::include_graphics("pix/forking_paths.jpg")
 * simplest if done **a priori**
     * data-driven choice of model complexity (e.g. by cross-validation), *while maintaining valid inference*, is delicate
 
+## Comparing models with reality
+
+```{r hennig, echo=FALSE}
+#| fig-cap: "one view of models and reality, from @hennigTesting2022"
+knitr::include_graphics("pix/hennig_models.png")
+```
+
 ## Model diagnostics
 
 * all models make assumptions
@@ -179,6 +191,7 @@ Harvey Motulsky on [CrossValidated](https://stats.stackexchange.com/a/2501/2126)
 
 * graphical diagnostics are often recommended
 * but how do we judge whether deviations are too large? ([Q-Q plot survey](https://ms.mcmaster.ca/~bolker/misc/qq_analysis.html))
+* **open question**
 
 ## Untestable issues are often the worst problems
 

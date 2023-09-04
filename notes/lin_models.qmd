@@ -3,13 +3,11 @@ title: "Review of linear models"
 bibliography: "../stats720.bib"
 date: today
 date-format: "D MMM YYYY"
-csl: apa.csl
 format:
   pdf:
     mainfont: TeX Gyre Pagella
     include-in-header:
      - text: \usepackage{marginnote}
-
 ---
 
 ::: {.content-hidden}
@@ -19,6 +17,14 @@ $$
 :::
 
 <!-- typically renders in docs/ dir  -->
+
+```{r pkgs, message = FALSE}
+## it's nice to include packages at the top
+## (and NOT automatically install them)
+library(faux)
+library(grid)
+library(ggplot2); theme_set(theme_bw())
+```
 
 ## Basics
 
@@ -42,9 +48,10 @@ is the BLUE (or MVUE).
 ## Inference
 
 * $\sigma^2$ (residual variance) is $\textrm{RSS}/(n-p)$
-* The covariance matrix is $\sigma^2 (\t{\X} \X)^{-1}$. 
+* The covariance matrix is $\Sigma = \sigma^2 (\t{\X} \X)^{-1}$. 
 * Individual coefficients are $t$-distributed
-* Linear combinations of coefficients are $F$-distributed
+* Linear combinations of coefficients (contrasts or predictions) are $t$-distributed with covariance matrix $\t{\C} \Sigma^{-1} \C$
+* Joint hypotheses on coefficients are $F$-distributed
 * Wald and likelihood ratio test comparisons are equivalent  
 (but need to be careful about marginality)
 
@@ -65,12 +72,170 @@ is the BLUE (or MVUE).
 
 ## Contrasts
 
+### treatment contrasts
+
+* intercept = baseline, subsequent values are differences
+* $\{\beta_0 = \mu_0, \beta_i = \mu_i - \mu_0~\textrm{for}~i>0\}$
+* equivalently: $\{\mu_0 = \beta_0, \mu_i = \beta_0 + \beta_i~\textrm{for}~i>0\}$
+* **contrast matrix**:
+
+$$
+\C \bbeta = \left(\begin{array}{cccc}
+1 & 0 & 0 & \ldots \\
+1 & 1 & 0 & \ldots \\
+1 & 0 & 1 & \ldots \\
+\vdots & \vdots & \vdots & \ddots
+\end{array}
+\right)
+\left(\begin{array}{c}
+\beta_0 \\ \beta_1 \\ \beta_2 \\ \ldots
+\end{array}
+\right) =
+\left(\begin{array}{c}
+\mu_1 \\ \mu_2 \\ \mu_3 \\ \ldots
+\end{array}\right)  \quad .
+$$
+
+Maybe easier to start from the **inverse** contrast matrix: $\bbeta = \C^{-1} \bmu$.
+
+```{r invmat}
+C <- cbind(1, contr.treatment(3))  ## R omits the intercept by default
+solve(C)
+```
+
+We have to specify the baseline level (`contr.treatment` uses first level of a factor; `contr.SAS()` uses the last level).
+
+It's nice when contrasts are *orthogonal*, i.e. all rows are independent $\to \t{\C} \C$ is diagonal.
+
+### Sum-to-zero contrasts
+
+* intercept is the (unweighted!) average rather than baseline value ($\sum \mu_i/n$)
+* other parameters are differences between mean of level $i$ and intercept ($\mu_i - \sum \mu_i/n$)
+* **last** level is dropped 
+
+```{r sumtozero}
+mfun <- function(C) MASS::fractions(solve(C))
+(C <- cbind(1,contr.sum(3)))
+mfun(C)
+```
+
+### Helmert contrasts
+
+* Weird but orthogonal
+* intercept, diff of first two levels, diff of level 3 from 1 & 2, ...
+
+```{r helm}
+(C <- cbind(1,contr.helmert(3)))
+mfun(C)
+```
+
+### others
+
+* `MASS::contr.sdif()` (successive-differences)
+* `contr.poly()` (orthogonal polynomial contrasts)
+
+## practical issues
+
+* too many ways to set contrasts (`options()`, `contrasts(f) <-`, `lm(..., contrasts = list(...))`
+* terrible naming conventions: you can get used to it or use the `faux` package
+* OK to fit models and later use `emmeans` to recover desired contrasts (switching linear bases)
+
+```{r contrasts}
+mtcars$fcyl <- factor(mtcars$cyl)
+lm0 <- lm(mpg ~ fcyl, mtcars)
+cn <- function(x) names(coef(x))
+cn(lm0)
+update(lm0, contrasts = list(fcyl = contr.sum(3))) |> cn()
+update(lm0, contrasts = list(fcyl = contr.helmert(3))) |> cn()
+```
+
+## using faux
+
+```{r faux, message = FALSE}
+update(lm0, data = transform(mtcars, fcyl = contr_code_sum(fcyl))) |> cn()
+update(lm0, data = transform(mtcars, fcyl = contr_code_helmert(fcyl))) |> cn()
+```
+
+## Interactions
+
+* differences in differences
+* parameter values of main effects (and $p$ values etc.) depend on contrasts/centering!
+* overall model fit ($R^2$, predictions, etc.) is invariant
+
+Lizard data [@schoenerNonsynchronous1970]:
+
+```{r lizards_dataplot}
+#| code-fold: true
+data("lizards", package = "brglm2")
+ggplot(lizards, aes(time, grahami, colour = light)) +
+    stat_summary(fun.data = mean_cl_boot,
+                 position = position_dodge(width = 0.25))
+```
+
+```{r lizards_addplot}
+#| code-fold: true
+data("lizards", package = "brglm2")
+lmTL1 <- lm(grahami~time+light,data=lizards)
+pp <- with(lizards,expand.grid(time=levels(time),light=levels(light)))
+pp$grahami <- predict(lmTL1,newdata=pp)
+cc <- as.list(plyr::rename(coef(lmTL1),c(`(Intercept)`="int")))
+labelpos <- with(cc,
+  list(x=c(1,2,3,1),xend=c(1,2,3,1),
+      y=c(int,int,int,int),
+      yend=c(int,int+timemidday,int+timelate,int+lightshady)))
+xpos <- -0.1
+ggplot(pp,aes(x=time,y=grahami,colour=light))+geom_point()+
+  geom_line(aes(group=light))+
+  annotate("segment",x=labelpos$x,xend=labelpos$xend,y=labelpos$y,
+           yend=labelpos$yend,alpha=0.5,
+           arrow=arrow(length = unit(0.3,"cm"),ends="both"))+
+  annotate("text",x=with(labelpos,(x+xend)/2)+xpos,y=with(labelpos,(y+yend)/2),
+label=paste0("beta[",1:4,"]"),parse=TRUE)+
+  annotate("segment",x=labelpos$x[1],xend=labelpos$x[3],y=labelpos$y[1],
+           yend=labelpos$y[1],alpha=0.3,lty=2) +
+    labs(title = "additive model")
+```
+
+```{r intplot}
+#| code-fold: true
+lmTL2 <- lm(grahami~time*light,data=lizards)
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length=n+1)
+  hcl(h=hues, l=65, c=100)[1:n]
+}
+pp2 <- pp
+pp2$grahami <- predict(lmTL2,newdata=pp)
+cc <- as.list(plyr::rename(coef(lmTL2),c(`(Intercept)`="int",
+        `timemidday:lightshady`="midshady",`timelate:lightshady`="lateshady")))
+labelpos <- with(cc,
+  list(x=c(1,2,3,1,2,3),xend=c(1,2,3,1,2,3),
+      y=c(int,int,int,int,int+lightshady+timemidday,int+lightshady+timelate),
+      yend=c(int,int+timemidday,int+timelate,int+lightshady,
+             int+timemidday+lightshady+midshady,int+timelate+lightshady+lateshady)))
+xpos <- -0.1
+ggplot(pp2,aes(x=time,y=grahami,colour=light))+geom_point()+
+  geom_line(aes(group=light))+
+  annotate("segment",x=1:2,xend=2:3,
+           y=with(cc,c(int+lightshady,int+timemidday+lightshady)),
+           yend=with(cc,c(int+timemidday+lightshady,int+timelate+lightshady)),
+           colour=gg_color_hue(2)[2],lty=2)+
+  annotate("segment",x=labelpos$x,xend=labelpos$xend,y=labelpos$y,
+           yend=labelpos$yend,alpha=0.5) +
+           ## arrow=arrow(length = unit(0.3,"cm"),ends="both"))+
+  annotate("text",x=with(labelpos,(x+xend)/2)+xpos,y=with(labelpos,(y+yend)/2),
+label=paste0("beta[",1:6,"]"),parse=TRUE)+
+  annotate("segment",x=rep(labelpos$x[1],2),
+                     xend=rep(labelpos$x[3],2),
+                     y=labelpos$yend[c(1,4)],
+           yend=labelpos$yend[c(1,4)],alpha=0.3,lty=2) +
+    labs(title = "interaction model")
+```
+
 ## Marginality
 
 * @venablesExegeses1998
 * 'type (X) sums of squares'
-* scaling and centering [@schielzethSimple2010]
-
+* scaling and centering [@schielzethSimple2010] alleviates many problems; sum-to-zero contrasts (weighted or unweighted?)
 
 ## Downstream methods
 
