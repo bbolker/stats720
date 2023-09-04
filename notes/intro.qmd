@@ -97,7 +97,7 @@ Not focal, but unavoidable and useful
 
 * if you use frequentist methods, please use them correctly
 * $H_0$ is almost never true
-* never accept the null hypothesis
+* never accept the null hypothesis (use *equivalence tests* if you really care)
 * a low $p$ value doesn't mean the effect is large or important
 * may help to frame results in terms of **clarity** [@dushoffcan2018]
 

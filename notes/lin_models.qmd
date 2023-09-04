@@ -21,9 +21,21 @@ $$
 ```{r pkgs, message = FALSE}
 ## it's nice to include packages at the top
 ## (and NOT automatically install them)
+## try not to carry over packages you don't use
 library(faux)
-library(grid)
+library(brglm2) ## for lizards data
 library(ggplot2); theme_set(theme_bw())
+## diagnostics
+library(performance)
+library(DHARMa)
+## downstream model evaluation
+library(broom)
+library(dotwhisker)
+library(emmeans)
+library(effects)
+library(marginaleffects)
+library(parameters)
+## library(ggeffects)
 ```
 
 ## Basics
@@ -133,6 +145,23 @@ mfun(C)
 
 * `MASS::contr.sdif()` (successive-differences)
 * `contr.poly()` (orthogonal polynomial contrasts)
+* custom (e.g., "none" vs "symbiont effect" vs "crabs vs shrimp" vs "two-symbiont effect") (@mckeonMultiple2012b; data [here](https://github.com/bbolker/mixedmodels-misc/blob/master/data/culcita.RData))
+
+```{r symbionts}
+#| code-fold: true
+cc_inv <- matrix(c(1/4,1/4,1/4,1/4,
+               1,-1/3,-1/3,-1/3,
+               0,1,-1,0,
+               0,1/2,1/2,-1),
+             byrow=TRUE,
+             nrow=4,
+             dimnames=list(c("intercept","avg_symb","C.vs.S","twosymb"),
+                           c("none","C","S","CS")))
+## inverse contrast matrix
+MASS::fractions(cc_inv)
+## contrast matrix
+mfun(cc_inv)
+```
 
 ## practical issues
 
@@ -149,7 +178,7 @@ update(lm0, contrasts = list(fcyl = contr.sum(3))) |> cn()
 update(lm0, contrasts = list(fcyl = contr.helmert(3))) |> cn()
 ```
 
-## using faux
+## using `faux`
 
 ```{r faux, message = FALSE}
 update(lm0, data = transform(mtcars, fcyl = contr_code_sum(fcyl))) |> cn()
@@ -162,7 +191,7 @@ update(lm0, data = transform(mtcars, fcyl = contr_code_helmert(fcyl))) |> cn()
 * parameter values of main effects (and $p$ values etc.) depend on contrasts/centering!
 * overall model fit ($R^2$, predictions, etc.) is invariant
 
-Lizard data [@schoenerNonsynchronous1970]:
+Lizard data (@schoenerNonsynchronous1970, from the `brglm2` package):
 
 ```{r lizards_dataplot}
 #| code-fold: true
@@ -237,12 +266,7 @@ label=paste0("beta[",1:6,"]"),parse=TRUE)+
 * 'type (X) sums of squares'
 * scaling and centering [@schielzethSimple2010] alleviates many problems; sum-to-zero contrasts (weighted or unweighted?)
 
-## Downstream methods
-
-* prediction, effects plots
-* uncertainty of predictions
-* `emmeans`, `marginaleffects`, `effects`, `sjPlot` ...
-* `tidy()`, `performance`, `insight`, etc. ...
+# Model interpretation, visualization, testing
 
 ## Diagnostics
 
@@ -250,6 +274,33 @@ label=paste0("beta[",1:6,"]"),parse=TRUE)+
 * base R: `stats::plot.lm()`
 * `performance::check_model()`
 * `DHARMa` (`simulateResiduals(., plot = TRUE)`)
+
+```{r check}
+performance::check_model(lmTL2)
+```
+
+```{r interpret}
+summary(lmTL2)
+broom::tidy(lmTL2)
+## automatically drop intercept; optional by_2sd argument
+dotwhisker::dwplot(lmTL2) + geom_vline(xintercept = 0, lty = 2) +
+    labs(x="difference in grahami count")
+```
+
+## Interpretation and testing
+
+* Look at coefficient tables: `summary()` or `coef(summary())`
+* model comparison: `drop1()`, `anova()`, `car::Anova()`
+* coefficient *plots*: `broom` + `ggplot2`, `dotwhisker`
+
+## Downstream methods
+
+* plot predictions **with data**
+* partial residuals plots (e.g. [remef package](https://github.com/hohenstein/remef))
+* prediction, effects plots
+* uncertainty of predictions
+* `emmeans`, `marginaleffects`, `effects`, `sjPlot` ...
+
 
 ## References
 
