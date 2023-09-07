@@ -44,7 +44,7 @@ Materials on this web page are **under construction** and **subject to change**
 
 - Lecture recordings (TBA)
 - [Piazza](https://piazza.com/mcmaster.ca/spring2023/stats720) (course forum/communications)
-- [Course outline](stat720_f2023_outline.docx)
+- [Course outline](stats720_f2023_outline.docx)
 - [The back-end for this site](https://github.com/bbolker/stats720)
 - [Notes on academic integrity](./honesty.html)
 - [R style guide](./R_style.html)
