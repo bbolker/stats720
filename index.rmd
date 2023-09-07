@@ -68,7 +68,7 @@ library(readr)
 
 mk_url <- function(x) {
   ifelse(nchar(trimws(x))==0,x,
-         sprintf("[%s](https://bbolker.github.io/stat720/%s.html)",
+         sprintf("[%s](https://bbolker.github.io/stats720/%s.html)",
                  x,x))
 }
 
