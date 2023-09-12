@@ -111,6 +111,13 @@ Not focal, but unavoidable and useful
 * a low $p$-value is not inherently interesting!
 * what is a large effect? what is an interesting effect?
 
+## From X/Twitter
+
+```{r twitQ, echo = FALSE}
+#| fig-cap: "from [user rheum_cat on X](https://x.com/rheum_cat/status/1699952880763941310?s=20)"
+knitr::include_graphics("pix/twitter_question.png")
+```
+
 ## Effect sizes
 
 * standardized measures like Cohen's $d$ ($(\bar x_1 - \bar x_2)/s$, where $s$ is some measure of pooled standard deviation: [Wikipedia](https://en.wikipedia.org/wiki/Effect_size#Standardized_and_unstandardized_effect_sizes)) are common ...
