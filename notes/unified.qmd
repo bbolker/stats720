@@ -1,0 +1,106 @@
+---
+title: "Overview of models"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+<!-- typically renders in docs/ dir  -->
+
+This is an attempt
+
+## Linear models
+
+$$
+y_i = (\X \bbeta)_i + \epsilon_i, ~~ \epsilon \sim \textrm{Normal}(0, \sigma^2)
+$$
+
+or
+
+$$
+y_i \sim \textrm{Normal}((\X \bbeta)_i, \sigma^2)
+$$
+
+(this form generalizes better to response distributions where we can't shift the location by adding a term)
+
+or
+
+$$
+\y \sim \textrm{MVN}(\X \bbeta, \sigma^2 I)
+$$
+
+## Generalized linear models
+
+As above, but add a monotonic, pre-determined (no free parameters) *link function* $f$ and a distribution $\textrm{Dist}$ from the **exponential family**.  Then
+
+$$
+y_i \sim \textrm{Dist}(f^{-1}(\X \bbeta)_i, \phi)
+$$
+
+where $\phi$ is a **scale parameter**.
+
+In the case where $\textrm{Dist}$ is Gaussian, $f$ is the identity, and $\phi = \sigma^2$, this reduces to the linear model. When (for example) $\textrm{Dist}$ is Bernoulli, $f$ is $\log(p/(1-p)$ (the *logit* or log-odds function), and $\phi=1$, this is **logistic regression**.
+
+## Additive models
+
+Make $\X$ a piecewise polynomial basis with continuous derivatives, most often cubic. There are lots of ways to set up such bases.
+
+## Ridge regression
+
+There are a variety of ways to set this up.  The most common is as a **penalized** regression, i.e. say that we want
+
+$$
+\argmin{\beta} ||(\X \bbeta - \y)||_2^2 + \lambda ||\bbeta||_2^2
+$$
+i.e., we want to minimize the sum of squared deviations of the regression model from the data, plus the sum of squared beta values, with a penalty weight of $\lambda$. We could equivalently set this up as a likelihood problem: find the MLE of 
+
+$$
+\int {\cal L}(y|\bbeta,\sigma_r^2) \cdot {\cal L}(\beta|\sigma_g^2) \, d \bbeta
+$$
+where we assume that $y_i \sim \textrm{Normal}((\X\bbeta)_i, \sigma_r^2)$ and $\beta_i \sim \textrm{Normal}(0, \sigma_g^2)$.
+
+(The integral disappears for linear mixed models.)
+
+This is also equivalent to a Bayesian model where we impose iid Normal zero-centred priors on the elements of $\bbeta$ (to make it fully Bayesian, we would need to specify priors for $\sigma^2_r$ and $\sigma^2_g).
+
+
+## Mixed models
+
+Similar, but instead of putting the penalty on the regression parameters (or equivalently treating the regression parameters as having , we will put the priors on **random effects** parameters that describe the deviation of cluster-level values from population values.
+
+The simplest case (described in an R formula as `y ~ 1 + (1|g)`) is a model with a population-level intercept $\beta_0$ and group-level deviations from the population mean $b_i$.
+
+This case, and more complex cases, can be written as
+
+$$
+\begin{split}
+y_i & \sim \textrm{Normal}((\X \bbeta + \Z \bb)_i, \sigma^2_r) \\
+\bb & \sim \textrm{MVN}(\bzero, \Sigma(\btheta))
+\end{split}
+$$
+where $\btheta$ is a vector of parameters that defines the covariance matrix $\Sigma$.
+
+## Generalized linear mixed models
+
+The same, but add a link function and an exponential-family distribution.
+
+## Generalized additive mixed models
+
+The same, but allow the parameters describing the spline (or whatever) basis to be penalized/shrunk toward zero.
+
+## References
+
+
+::: {#refs}
+:::

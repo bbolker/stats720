@@ -23,10 +23,11 @@ I haven't found one book that covers everything in this course exactly the way I
 ::: {#refs}
 :::
 
-## Peripheral references
+## Peripheral references/to add (?)
 
 * Books by Alain Zuur *et al.* are basic books oriented toward ecology; handle spatial/temporal structure with INLA, 'exotic' conditional distributions (zero-inflation etc.)
 * Statistical learning: Witten *et al.* *Introduction to Statistical Learning*, Hastie *et al.* *Elements of Statistical Learning*
 * Gelman *et al.* *Bayesian Data Analysis* 3d ed. (complete and technical)
-
+* Shalizi "Advanced Data Analysis"
+* Wood *Core Statistics*
 
