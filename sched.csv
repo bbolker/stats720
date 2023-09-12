@@ -1,5 +1,5 @@
 week, start_date, topic, readings, assignments, notes
-1,2023-09-05,intro,@harrellRegression2015 [chapter 3](https://link-springer-com.libaccess.lib.mcmaster.ca/chapter/10.1007/978-3-319-19425-7_4),[software setup](assignments/setup.html); complete [assessment quiz](https://forms.gle/kdvfy3A8WaMNETkK6),[intro](notes/intro.html) ([PDF](notes/intro.pdf))
+1,2023-09-05,intro,@harrellRegression2015 [chapter 3](https://link-springer-com.libaccess.lib.mcmaster.ca/chapter/10.1007/978-3-319-19425-7_4),[software setup](assignments/setup.html); complete [assessment quiz](https://forms.gle/kdvfy3A8WaMNETkK6),[intro](notes/intro.html) ([PDF](notes/intro.pdf)); [unified](notes/unified.html) ([PDF](notes/unified.pdf))
 2,2023-09-12,linear models 1,,,[linear models](notes/lin_models.html) ([PDF](notes/lin_models.pdf))
 3,2023-09-19,linear models 2,,,
 4,2023-09-26,GLMs 1,,,

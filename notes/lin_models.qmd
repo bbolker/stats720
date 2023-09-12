@@ -122,7 +122,7 @@ It's nice when contrasts are *orthogonal*, i.e. all rows are independent $\to \t
 ### Sum-to-zero contrasts
 
 * intercept is the (unweighted!) average rather than baseline value ($\sum \mu_i/n$)
-* other parameters are differences between mean of level $i$ and intercept ($\mu_i - \sum \mu_i/n$)
+* other parameters are differences between mean of level $i$ and intercept ($\mu_i - \sum_j \mu_j/n$)
 * **last** level is dropped 
 
 ```{r sumtozero}
@@ -270,14 +270,51 @@ label=paste0("beta[",1:6,"]"),parse=TRUE)+
 
 ## Diagnostics
 
-* linearity, 
+* linearity > heteroscedasticity, outliers > normality
+* upstream problems can induce downstream problems first
+* universal plots are universal, but less interpretable than problem-specific exploration (try to identify problematic predictors/groups/etc.)
+
+## Graphical diagnostics
+
 * base R: `stats::plot.lm()`
 * `performance::check_model()`
 * `DHARMa` (`simulateResiduals(., plot = TRUE)`)
+   * (`plotResiduals(simout, form = pred_var)`)
+* `broom::augment()` + plot-your-own (`ggplot2`)
 
 ```{r check}
 performance::check_model(lmTL2)
 ```
+
+```{r DHARMa}
+ss <- simulateResiduals(lmTL2)
+plot(ss)
+plot(ss, form = lizards$time)
+```
+
+## Solutions to problems
+
+- **nonlinearity**: transformation, add covariates (??), add interactions, add polynomial terms etc.
+- **outliers**: drop values (report both!), use robust regression
+- **heteroscedasticity**: transformation, model dispersion explicitly, GLMs
+- **non-Normality**: transformation, GLMs
+
+## Transformation
+
+* May do too much at once (GLMs and GAMs allow more flexibility)
+* Log-transformation is often interpretable and solves problems
+* Transforming boundary values (e.g. $\log(0)$) is problematic
+* **Box-Cox transformations**: $y \to \frac{y^\lambda - 1}{\lambda}$ (include Jacobian term $\textrm{GM}^{\lambda-1}$ in denominator to keep log-likelihood comparable)
+   * flexible 
+   * in practice people often use 'round numbers': $\lambda = 0$ (log), 1/2 (square root), etc.
+   * `MASS::boxcox()`
+   * hard to interpret!
+
+## What about correlated predictors?
+
+- Can compute *variance inflation factors* (VIFs)
+- Dropping correlated factors is dubious: @grahamConfronting2003, @dormannCollinearity2012, @morrisseyMultiple2018a, @vanhoveCollinearity2021
+- perfect collinearity gets handled automatically by R's pivoting, but may want to change contrasts/model setup
 
 ```{r interpret}
 summary(lmTL2)
@@ -301,9 +338,7 @@ dotwhisker::dwplot(lmTL2) + geom_vline(xintercept = 0, lty = 2) +
 * uncertainty of predictions
 * `emmeans`, `marginaleffects`, `effects`, `sjPlot` ...
 
-
 ## References
-
 
 ::: {#refs}
 :::
