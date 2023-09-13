@@ -8,6 +8,8 @@ nocite: |
  @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
 ---
 
+<!-- https://github.com/pandoc-ext/multibib -->
+
 <style>
 .csl-block {
  color: #a14c9a; <!-- was ## 3399ff; -->
