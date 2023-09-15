@@ -31,7 +31,7 @@ In addition:
 		- if you load `tidyverse`, you don't need to explicitly load any of the contained packages (`dplyr`, `tidyr`, `ggplot2`, etc.)
     - use `library()` instead of `require()` to load packages
 - **don't** depend on case sensitivity for anything important
-- **don't** put `rm(list=ls())` at the top of your code [@bryan_project-oriented_2017]
+- **don't** put `rm(list=ls())` at the top of your code [@bryanProjectoriented2017]
 	- instead, get in the habit of restarting R (`Session > Restart R` or via hotkey in RStudio)
 - similarly, don't put `setwd(...)` at the head of your file (instead, assume that the user has set their working directory correctly; this can be done (1) by hand with `setwd()`; (2) in RStudio, via the `Session` menu; (3) automatically in RStudio, by using an R project (home directory is stored in the `.Rproj` file); (4) using the `here` package	
 - always use `TRUE` and `FALSE` rather than `T`/`F` (is this in the other style guides already???)

@@ -1,0 +1,60 @@
+---
+title: "homework 1"
+---
+
+**Due:** Tues Sep 27, 11:59 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+
+**Please make sure your code is reproducible**:
+
+* no absolute path names (e.g. `"C:\My Files\homework"`)
+* include any `library()` statements at the top of your file (do not include `install.packages()` statements unless they are commented out)
+* make sure I have access to any data files you use in your examples
+
+See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
+
+If your code isn't reproducible I will return it immediately and ask you to fix it.
+
+1. Pick a data set **for which you think you understand the predictors and response variables well enough to interpret the results in real-world terms**; for example, you might pick data predicting crime rates or housing prices or incomes, for which most people living in modern society have some intuition (e.g., "0.1 fewer murders per year per million people, per million dollars invested in crime prevention" could be judged to be a small effect).
+
+Pick a data set that seems appropriate for linear regression (e.g., there is one continuous variable in the data set that can be sensibly chosen as the dependent/response variable).
+
+Some places to look for interesting data: `?datasets` in base R; the `faraway` or `mlbench` package (although the latter has only a few continuous-response, regression-type data sets; more are about classification).
+
+a. State which possible predictor variables you're going to include; justify your choice (refer to Harrell chapter 3 for rules of thumb about appropriate numbers of predictors).
+b. State the units of the response variable and of each predictor variable you plan to include; for each variable, state what you would consider as a reasonable threshold for a small change in that variable.
+c. Fit the model.
+d. Diagnose the model (you must use graphical diagnostics and interpret the output; you may run null hypothesis tests as well if you want, but be careful how you interpret them). You may use base R (`plot.lm()`), `performance::check_model()`, `DHARMa`, or some other framework.
+e. If the model has any problems, make adjustments.
+f. Show a coefficient plot of the results (you can use, e.g. `dwplot::dotwhisker`). Scale and center the predictors if appropriate (state whether you are or are not scaling and centering, and justify your choice).  
+g. Show an effects plot (predicted values or effects, using e.g. `effects::allEffects()` or `plot(emmeans(.))`); describe the results.
+
+2. Before-after-control-impact (BACI) designs are popular in ecology. In this design, we have two sampling types (Control and Impact), and take samples in two time periods (Before and After). The allocation of subjects to Control and Impact is done before measurement, but the treatment is only applied in the After period (so we expect Control and Impact to be identical before treatment).
+
+In BACI designs, we want to estimate the following effects:
+
+* intercept (average value of Control and Impact during the Before period)
+* difference between Control and Impact before treatment
+* difference between (average of Control and Impact) between Before and After
+* difference between (C-I) difference between Before and After periods (this is the effect of primary interest)
+
+Construct a set of contrasts to quantify these effects. Use `model.matrix()` to set up the minimal model matrix for this example. Compare the model matrix with the results of the models `~ Period*Treatment` and `~ Period:Treatment`.
+
+3. Simulation exercises to model misspecification.
+
+You will write a function to simulate data that don't quite match the assumptions of a linear model (linearity, homoscedascity, conditional Normality). A basic model for simulating data for a linear regression could like this:
+
+```{r}
+sim_fun <- function(n = 100, slope = 1, sd = 1, intercept = 0) {
+    x <- runif(n)
+    y <- rnorm(n, intercept + slope * x, sd = sd)
+    data.frame(x, y)
+}
+```
+
+* For a linear model `m` with one covariate, you can extract the estimated slope via `slope <- coef(m)[2]`; if you run a simulation many times , you can use the mean of `slope - true_slope` to compute bias, `sd()` of the slope to compute the standard error of the estimate, and the square root of the mean of `(slope-true_slope)^2` to compute root mean squared error (RMSE)
+* For a linear model `m` with one covariate, you can extract the p-value via `coef(summary(m))[2, "Pr(>|t|)"]`; if you run a simulation many times, you can use the mean of these values to evaluate the power.
+* The **coverage** is the probability that the confidence interval includes the true value.  For the same model `m`, you can find out whether the confidence interval for the slope (for a specified `alpha` level) includes the true value via `between <- function(a, b) (b[1] < a & a < b[2]); between(true_slope, confint(m)[2,], level = 1-alpha)`. If you run a simulation many times, you can use the mean of these values to evaluate the coverage.
+
+Pick one particular assumption to violate. For example, you could violate linearity by simulating a quadratic rather than a linear relationship; homoscedasticity by making `sd` be a (positive) function of `x`; or normality by sampling values from a t distribution rather than a Normal distribution (the `rt()` function doesn't take a mean and standard deviation value, so you would need `m+s*rt(n, df)` to generate t-distributed values with a specified mean `m` and standard deviation `s`). By running many simulations, determine the effect of several different levels of your chosen violation to on the bias, RMSE, power, and coverage of linear regression. Report your results in tabular or graphical format.
+
+**optional**: evaluate the power of a test for detecting the particular misspecification you implemented (e.g. test the significance of a quadratic term in the regression, do a Breusch-Pagan test for heteroscedasticity (e.g. `lmtest::bptest()`), or a Shapiro-Wilk test (`shapiro.test()`) for non-Normality). (Most statistical tests in R return `htest` objects, you can access the p-value of a statistical test by extracting the `$p.value` component.
