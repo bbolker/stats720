@@ -18,7 +18,7 @@ If your code isn't reproducible I will return it immediately and ask you to fix 
 
 Pick a data set that seems appropriate for linear regression (e.g., there is one continuous variable in the data set that can be sensibly chosen as the dependent/response variable).
 
-Some places to look for interesting data: `?datasets` in base R; the `faraway` or `mlbench` package (although the latter has only a few continuous-response, regression-type data sets; more are about classification).
+Some places to look for interesting data: `?datasets` in base R; the `faraway` or `mlbench` package (although the latter has only a few continuous-response, regression-type data sets; more are about classification). (Faraway recommends the data sets `swiss` [response: `Fertility`]; `rock` [response: `perm`]; `mtcars` [response: `mpg`]; `attitude` [response: `rating`]; `prostate` [response: `lpsa`]; and `teengamb` [response: `gamble`]).
 
 a. State which possible predictor variables you're going to include; justify your choice (refer to Harrell chapter 3 for rules of thumb about appropriate numbers of predictors).
 b. State the units of the response variable and of each predictor variable you plan to include; for each variable, state what you would consider as a reasonable threshold for a small change in that variable.
