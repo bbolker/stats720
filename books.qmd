@@ -1,11 +1,12 @@
 ---
 title: "Annotated bibliography"
-bibliography: stats720.bib
 csl: chicago-annotated-bibliography.csl
 date: today
 date-format: "D MMM YYYY"
-nocite: |
- @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
+bibliography:
+   main: main_books.bib
+filters:
+   - multibib
 ---
 
 <!-- https://github.com/pandoc-ext/multibib -->
@@ -22,7 +23,7 @@ I haven't found one book that covers everything in this course exactly the way I
 
 ## Primary references
 
-::: {#refs}
+::: {#refs.main}
 :::
 
 ## Peripheral references/to add (?)

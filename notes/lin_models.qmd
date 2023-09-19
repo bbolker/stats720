@@ -51,7 +51,7 @@ is the BLUE (or MVUE).
 
 ## Computation
 
-* matrix decompositions (QR with pivoting)
+* matrix decompositions (QR with pivoting; see [here](https://stackoverflow.com/questions/9071020/compute-projection-hat-matrix-via-qr-factorization-svd-and-cholesky-factoriz))
 * big problems: `biglm`, `speedglm`, `RcppEigen::fastLm`
    * optimized BLAS, kernel trick, etc.
    * memory vs speed vs robustness ...
