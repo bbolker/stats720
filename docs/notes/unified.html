@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-09-11">
+<meta name="dcterms.date" content="2023-09-20">
 
 <title>Overview of models</title>
 <style>
@@ -2585,7 +2585,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11 Sep 2023</p>
+      <p class="date">20 Sep 2023</p>
     </div>
   </div>
   
@@ -2629,7 +2629,7 @@ y_i \sim \textrm{Dist}(f^{-1}({\mathbf X}\boldsymbol \beta)_i, \phi)
 <h2 class="anchored" data-anchor-id="ridge-regression">Ridge regression</h2>
 <p>There are a variety of ways to set this up. The most common is as a <strong>penalized</strong> regression, i.e. say that we want</p>
 <p><span class="math display">\[
-\argmin{\beta} ||({\mathbf X}\boldsymbol \beta- \mathbf y)||_2^2 + \lambda ||\boldsymbol \beta||_2^2
+\mathop{\mathrm{arg\,min}}{\beta} ||({\mathbf X}\boldsymbol \beta- \mathbf y)||_2^2 + \lambda ||\boldsymbol \beta||_2^2
 \]</span> i.e., we want to minimize the sum of squared deviations of the regression model from the data, plus the sum of squared beta values, with a penalty weight of <span class="math inline">\(\lambda\)</span>. We could equivalently set this up as a likelihood problem: find the MLE of</p>
 <p><span class="math display">\[
 \int {\cal L}(y|\boldsymbol \beta,\sigma_r^2) \cdot {\cal L}(\beta|\sigma_g^2) \, d \boldsymbol \beta
