@@ -7,6 +7,8 @@ bibliography:
    main: main_books.bib
 filters:
    - multibib
+validate-yaml: false
+nocite: '@harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020'
 ---
 
 <!-- https://github.com/pandoc-ext/multibib -->
@@ -23,7 +25,7 @@ I haven't found one book that covers everything in this course exactly the way I
 
 ## Primary references
 
-::: {#refs.main}
+::: {#refs-main}
 :::
 
 ## Peripheral references/to add (?)
