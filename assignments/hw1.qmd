@@ -34,7 +34,7 @@ In BACI designs, we want to estimate the following effects:
 
 * intercept (average value of Control and Impact during the Before period, $(\mu_{BI}+\mu_{CI})/2$)
 * difference between Control and Impact before treatment (i.e. $\mu_{BI}-\mu_{BC}$)
-* difference between (average of Control and Impact) between Before and After (i.e. $\bar\mu_B - \bar\mu_A$, where $\bar\mu_{.} = (\mu_{.I} + \mu_{.C})/2$)
+* difference between (average of Control and Impact) between After and Before (i.e. $\bar\mu_A - \bar\mu_B$, where $\bar\mu_{.} = (\mu_{.I} + \mu_{.C})/2$)
 * difference of (C-I) difference between Before and After periods (this is the effect of primary interest), i.e. $\Delta(\mu_A) - \Delta(\mu_B)$, where $\Delta(\mu_.) = \mu_{.I}-\mu_{.C}$
 
 Construct a set of contrasts to quantify these effects. Use `model.matrix()` to set up the minimal model matrix for this example. Compare the model matrix with the results of the models `~ Period*Treatment` and `~ Period:Treatment`.
