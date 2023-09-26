@@ -3182,7 +3182,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <li>difference between (average of Control and Impact) between After and Before (i.e. <span class="math inline">\(\bar\mu_A - \bar\mu_B\)</span>, where <span class="math inline">\(\bar\mu_{.} = (\mu_{.I} + \mu_{.C})/2\)</span>)</li>
 <li>difference of (C-I) difference between Before and After periods (this is the effect of primary interest), i.e. <span class="math inline">\(\Delta(\mu_A) - \Delta(\mu_B)\)</span>, where <span class="math inline">\(\Delta(\mu_.) = \mu_{.I}-\mu_{.C}\)</span></li>
 </ul>
-<p>Construct a set of contrasts to quantify these effects. Use <code>model.matrix()</code> to set up the minimal model matrix for this example. Compare the model matrix with the results of the models <code>~ Period*Treatment</code> and <code>~ Period:Treatment</code>.</p>
+<p>Construct a set of contrasts to quantify these effects. Use <code>model.matrix()</code> to set up the minimal model matrix for this example. (By “minimal model matrix” I mean the model matrix with the <em>smallest number of unique rows</em>, in this case four [one for each (Before/After) × (Control/Impact) combination.) Compare the model matrix with the results of the models <code>~ Period*Treatment</code> and <code>~ 0 + Period:Treatment</code>. (<strong>Note</strong> <code>0+</code> in the last formula: R’s algorithm doesn’t recognize <code>Period:Treatment</code> as being collinear with the intercept term in this case …)</p>
 <ol start="3" type="1">
 <li>Simulation exercises to model misspecification.</li>
 </ol>

@@ -37,7 +37,7 @@ In BACI designs, we want to estimate the following effects:
 * difference between (average of Control and Impact) between After and Before (i.e. $\bar\mu_A - \bar\mu_B$, where $\bar\mu_{.} = (\mu_{.I} + \mu_{.C})/2$)
 * difference of (C-I) difference between Before and After periods (this is the effect of primary interest), i.e. $\Delta(\mu_A) - \Delta(\mu_B)$, where $\Delta(\mu_.) = \mu_{.I}-\mu_{.C}$
 
-Construct a set of contrasts to quantify these effects. Use `model.matrix()` to set up the minimal model matrix for this example. Compare the model matrix with the results of the models `~ Period*Treatment` and `~ Period:Treatment`.
+Construct a set of contrasts to quantify these effects. Use `model.matrix()` to set up the minimal model matrix for this example. (By "minimal model matrix" I mean the model matrix with the *smallest number of unique rows*, in this case four [one for each (Before/After) × (Control/Impact) combination.) Compare the model matrix with the results of the models `~ Period*Treatment` and `~ 0 + Period:Treatment`. (**Note** `0+` in the last formula: R's algorithm doesn't recognize `Period:Treatment` as being collinear with the intercept term in this case ...)
 
 3. Simulation exercises to model misspecification.
 

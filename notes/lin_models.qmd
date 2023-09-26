@@ -310,6 +310,41 @@ plot(ss, form = lizards$time)
    * `MASS::boxcox()`
    * hard to interpret!
 
+## Example
+
+```{r rocks, fig.height=8}
+library(faraway)
+m1 <- lm(perm ~ area, rock)
+performance::check_model(m1, check = c("linearity", "homogeneity", "outliers", "qq"))
+```
+
+```{r boxcox}
+m <- MASS::boxcox(m1, interp = FALSE)
+abline(v=1/4, col = 2)
+```
+
+```{r rocks2, fig.height= 8}
+m2 <- update(m1, perm^(1/4) ~ .)
+performance::check_model(m2, check = c("linearity", "homogeneity", "outliers", "qq"))
+```
+
+When we transform we have to add the logs of the *Jacobian* of the transform to the log-likelihood, or subtract $\sum\log(J_i)$ from the negative log-likelihood. e.g. if we log-transform, $\sum\log(J(y_i))=\sum\log\left(\partial(\log(y_i))/\partial y\right) = \sum \log(1/y_i) = -\sum\log y_i$. In this case $\sum\log(J(y_i))=\sum \log((1/4) P^(-3/4)) = -N \log 4 -3/4 \sum\log(P)$:
+
+Check:
+
+```{r}
+logJ <- -(nrow(rock)*log(4)  + 3/4*sum(log(rock$perm)))
+lm2 <- logLik(m2) + logJ
+lm1 <- logLik(m1)
+lm2-lm1
+## difference from Box-Cox sequence
+max(m$y)-m$y[m$x==1]
+```
+
+## Reminder about parameter scaling
+
+@schielzethSimple2010, @gelmanScaling2008
+
 ## What about correlated predictors?
 
 - Can compute *variance inflation factors* (VIFs)
