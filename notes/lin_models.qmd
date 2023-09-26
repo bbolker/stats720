@@ -343,7 +343,12 @@ max(m$y)-m$y[m$x==1]
 
 ## Reminder about parameter scaling
 
-@schielzethSimple2010, @gelmanScaling2008
+- @schielzethSimple2010, @gelmanScaling2008
+- centering ensures no problems with marginality (analogous to sum-to-zero contrasts)
+- scaling predictors gives coefficients equal units (analogous to Cohen's $d$)
+- scaling response makes coefficients *standardized partial regression coefficients* (equal to partial correlation coefficients if predictors are independent)
+- scaling by 2 SD makes coefficients equivalent to those from balanced binary predictors
+- scaling inputs or scaling predictors?
 
 ## What about correlated predictors?
 

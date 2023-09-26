@@ -1,5 +1,5 @@
 #! /bin/bash
-for i in intro lin_models unified; do
+for i in intro lin_models unified GLMs; do
     for j in pdf html; do ## html docx pdf slides.html
     	make docs/notes/$i.$j
     done
