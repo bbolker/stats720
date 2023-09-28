@@ -6,7 +6,7 @@ date-format: "D MMM YYYY"
 bibliography:
    main: main_books.bib
 filters:
-   - multibib
+-  /home/bolker/classes/stats720/multibib/multibib.lua
 validate-yaml: false
 nocite: '@harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020'
 ---
