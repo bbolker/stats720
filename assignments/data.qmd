@@ -1,0 +1,18 @@
+---
+title: "Information on data"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+## Kyphosis
+
+The `kyphosis` data set ...
+
+
+## Gopher tortoises

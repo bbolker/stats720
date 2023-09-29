@@ -14,3 +14,25 @@ See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
 If your code isn't reproducible I will return it immediately and ask you to fix it.
 
+1. Analyze the `kyphosis` data (from the `rpart` package). Pick an appropriate family/link function,  Compare the diagnostic plots from base R, from `performance::check_model()`, and from `DHARMa`. Interpret your results and draw coefficient plots.
+
+
+2. Gopher tortoise example
+
+```{r}
+
+```
+
+https://stackoverflow.com/questions/68686004/how-to-do-negative-binomial-regression-with-the-rms-package-in-r/68703392#68703392
+
+* fit
+* fit with `bbmle`
+* write your own negative log-likelihood function
+3. Complete separation example
+
+```{r}
+library(brglm2)
+```
+
+https://cran.r-project.org/web/packages/detectseparation/vignettes/separation.html
+
