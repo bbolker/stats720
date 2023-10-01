@@ -20,18 +20,26 @@ If your code isn't reproducible I will return it immediately and ask you to fix 
 2. Gopher tortoise example
 
 ```{r}
-
+g_url <- "https://raw.githubusercontent.com/bbolker/mm_workshops/master/data/gopherdat2.csv"
+g_data <- read.csv(g_url)
 ```
+
+
+https://github.com/bbolker/mm_workshops/blob/master/data/gophertortoise.txt
+
 
 https://stackoverflow.com/questions/68686004/how-to-do-negative-binomial-regression-with-the-rms-package-in-r/68703392#68703392
 
 * fit
 * fit with `bbmle`
 * write your own negative log-likelihood function
+
+
 3. Complete separation example
 
 ```{r}
 library(brglm2)
+data(endometrial)
 ```
 
 https://cran.r-project.org/web/packages/detectseparation/vignettes/separation.html
