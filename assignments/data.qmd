@@ -8,9 +8,12 @@ format:
     mainfont: TeX Gyre Pagella
     include-in-header:
      - text: \usepackage{marginnote}
+  html:
+    anchor-sections: true
 ---
 
-## Kyphosis
+
+## Kyphosis 
 
 The `kyphosis` data set is originally from @hastieGeneralized1990:
 
@@ -24,14 +27,19 @@ The `kyphosis` data set is originally from @hastieGeneralized1990:
 
 The version of the data set included in the `rpart` package only has 81 observations; two observations were judged to be outliers and excluded. (In addition the `end` variable was dropped, the variable names were capitalized, and the 0/1 response variable was changed to a factor with levels "absent" and "present".)
 
-
-
-
-
 ## Gopher tortoises
 
-Get these data from 
+From @ozgulUpper2009b
 
-https://github.com/bbolker/mm_workshops/blob/master/data/gophertortoise.txt
-https://github.com/bbolker/mm_workshops/blob/master/data/gopherdat2.csv
+> In addition to the [capture-mark-recapture] analysis, we analyzed the number of fresh (<40 months old) tortoise shell remains found in each site and year to establish whether either (1) the number of shell remains found was correlated with seroprevalence [frequency of antibodies to disease] in a given site and year or (2) the number of shell remains found was greater in high- than in low-prevalence sites. Specifically, we wanted to fit a statistical model that would allow (given the total population on a site) overdispersion in shell counts, possible variation among sites and years, and a positive effect of prevalence on shell counts.
+
+- `site`: sampling site
+- `year`: sampling year
+- `shells`: number of shells found
+- `type`: fresh (<40 months) or old (>40 months)
+- `area`: site area (km^2?)
+- `density`: population density
+- `prev`: seroprevalence of *M. agassizi*
+
+Get these data from [here](https://github.com/bbolker/mm_workshops/blob/master/data/gopherdat2.csv)
 

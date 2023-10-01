@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Annotated bibliography</title>
+<title>Information on data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3000,15 +3000,16 @@ vertical-align: -.125em;
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="data.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Annotated bibliography</h1>
+<h1 class="title">Information on data</h1>
 </div>
 
 
@@ -3029,52 +3030,50 @@ vertical-align: -.125em;
 
 </header>
 
-<!-- https://github.com/pandoc-ext/multibib -->
-<style>
-.csl-block {
-color: #a14c9a; <!-- was ## 3399ff; -->
-}
-</style>
-<!-- typically renders in docs/ dir  -->
-<p>I haven’t found one book that covers everything in this course exactly the way I would like. Here is a selection of books that I like.</p>
-<section id="primary-references" class="level2">
-<h2 class="anchored" data-anchor-id="primary-references">Primary references</h2>
-<div id="refs-main" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-farawayExtending2016" class="csl-entry" role="listitem">
-Faraway, Julian J. <em>Extending the <span>Linear Model</span> with <span>R</span>: <span>Generalized Linear</span>, <span>Mixed Effects</span> and <span>Nonparametric Regression Models</span>, <span>Second Edition</span></em>. <span>CRC Press</span>, 2016<div class="csl-block">A good, broad book that covers most of the material we’ll discuss in this class. It starts with a little bit more basic coverage of (G)LMs, but has good discussions of intermediate-level GLM issues (conditional logistic regression, alternative link functions, etc.). It goes on to cover mixed models and additive models, as well as a brief introduction to tree-based models and neural networks (which we’ll skip in this class).</div>
-</div>
-<div id="ref-gelmanData2006" class="csl-entry" role="listitem">
-Gelman, Andrew, and Jennifer Hill. <em>Data <span>Analysis Using Regression</span> and <span>Multilevel</span>/<span>Hierarchical Models</span></em>. <span>Cambridge, England</span>: <span>Cambridge University Press</span>, 2006<div class="csl-block">Clear, comprehensive discussion of multilevel/hierarchical models. 99% Bayesian treatment; examples are mostly from social science. Covers linear, logistic, count-data (Poisson/negative binomial) regressions. Causal inference, regression diagnostics, etc.. Reliance on the BUGS language is now slightly old-fashioned (Gelman et al 2020 is an update for the non-mixed model material; these authors and others are working on an updated mixed model book, nominally available <a href="http://www.stat.columbia.edu/~gelman/armm/">around the end of 2024</a>).</div>
-</div>
-<div id="ref-gelmanRegression2020" class="csl-entry" role="listitem">
-Gelman, Andrew, Jennifer Hill, and Aki Vehtari. <em>Regression and <span>Other Stories</span></em>. 1st edition. <span>Cambridge New York, NY Port Melbourne, VIC New Delhi Singapore</span>: <span>Cambridge University Press</span>, 2020<div class="csl-block">I haven’t read this book yet but based on the authors’ past work I expect it to be excellent.</div>
-</div>
-<div id="ref-harrellRegression2015" class="csl-entry" role="listitem">
-Harrell Jr., Frank E. <em>Regression Modeling Strategies: With Applications to Linear Models, Logistic and Ordinal Regression, and Survival Analysis</em>. 2d ed. Springer, 2015<div class="csl-block">This book presents the best blend I’ve ever found of practical yet rigorous advice for statistical modeling (testing model assumptions, limiting model complexity in a way that preserves reliable inference, dealing with missing data, etc.). It covers linear and generalized linear regression, logistic regression, ordinal responses, and survival analysis thoroughly; it has a chapter on longitudinal data. It does not go deeply into mixed models, nor does it cover more exotic responses (count or non-binary binomial responses, zero-inflation). It uses the author’s own <code>rms</code> package, which is useful but doesn’t always fit in perfectly with other frameworks.</div>
-</div>
-<div id="ref-hodgesRichly2013" class="csl-entry" role="listitem">
-Hodges, James S. <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>. <span>CRC Press</span>, 2013<div class="csl-block">A technical, in-depth exploration of the ways that hierarchical Gaussian linear models can be extended to a huge variety of different kinds of correlation structures and smooth functions. Worked examples of tricky real-world examples; discusses details you won’t find anywhere else.</div>
-</div>
-<div id="ref-mcelreathStatistical2020" class="csl-entry" role="listitem">
-McElreath, Richard. <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>STAN</span></em>. <span>CRC Press</span>, 2020<div class="csl-block">Bayesian statistics from first principles. Aimed at non-statisticians. Relies on Stan for analysis (the <code>rethinking</code> package provides a nice front end for graphical models). Heavy on mechanistic models and causal inference.</div>
-</div>
-<div id="ref-woodGeneralized2017" class="csl-entry" role="listitem">
-Wood, Simon N. <em>Generalized <span>Additive Models</span>: <span>An Introduction</span> with <span>R</span></em>. <span>CRC Texts</span> in <span>Statistical Science</span>. <span>Chapman &amp; Hall</span>, 2017<div class="csl-block">Comprehensive coverage of additive models from a penalized-basis point of view, from the master (the author of R’s <code>mgcv</code> package). Includes brief reviews of the theory behind linear and GLMs. Technical bits are tough for non-statisticians.</div>
-</div>
-</div>
+<section id="kyphosis" class="level2">
+<h2 class="anchored" data-anchor-id="kyphosis">Kyphosis</h2>
+<p>The <code>kyphosis</code> data set is originally from <span class="citation" data-cites="hastieGeneralized1990">Hastie and Tibshirani (<a href="#ref-hastieGeneralized1990" role="doc-biblioref">1990</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>Data were collected on 83 patients undergoing corrective spinal surgery. The objective was to determine important risk factors for kyphosis, or the forward flexion of the spine of at least 40 degrees from vertical, following surgery. The risk factors are location of the surgery along the spine and age. These data are analysed in some detail in Chapter 10, and listed in Appendix A.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Bell et al. (1989) studied multiple level thoracic and lumbar laminectomy, a corrective spinal surgery commonly performed in children for tumour and congenital or developmental abnormalities such as syrinx, diastematomyelia and tethered cord. The incidence of postoperative deformity is not known. The purpose of the study is to delineate the true incidence and nature of spinal deformities following this surgery and to assess the importance of age at time of surgery, as well as the effect of the number and location of vertebrae levels decompressed. The data in the study consists of retrospective measurements on 83 patients, one of the largest studies of this procedure to date.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The specific outcome of interest here is the presence (1) or absence (0) of kyphosis, defined to be a forward flexion of the spine of at least 40 degrees from vertical. The available predictors are <code>age</code> in months at time of the operation, the starting and ending range of vertebrae levels involved in the operation (<code>start</code> and <code>end</code>) and the number of levels involved (number). These last predictors are related by <code>number = end — start +1</code>. The goal of the analysis is to identify risk factors for kyphosis, and a natural approach is to model the prevalence of kyphosis as a function of the predictors. In order to investigate this relationship, we fit a number of generalized additive logistic models. By the results of Chapter 5, the exact linear dependence between the level variables cause an exact concurvity in any additive model involving all three of them. We therefore want to include only two of the three level variables in the model. The medical investigator felt a priori that <code>number</code> and <code>start</code> would be more interpretable, so we use these in the analysis. For <code>start</code>, the range 1-12 corresponds to the thoracic vertebrae, while 13-17 are the lumbar vertebrae; this dichotomy was felt to be an important one.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>There are 65 zeros and 18 ones for the response kyphosis. This is not a large sample, especially for binary data; we have to bear in mind the warnings of section 6.10 about overinterpreting additive logistic fits to binary data. Despite the small sample size, this study is the largest and considered to be one of the most important of its kind for studying kyphosis.</p>
+</blockquote>
+<p>The version of the data set included in the <code>rpart</code> package only has 81 observations; two observations were judged to be outliers and excluded. (In addition the <code>end</code> variable was dropped, the variable names were capitalized, and the 0/1 response variable was changed to a factor with levels “absent” and “present”.)</p>
 </section>
-<section id="peripheral-referencesto-add" class="level2">
-<h2 class="anchored" data-anchor-id="peripheral-referencesto-add">Peripheral references/to add (?)</h2>
+<section id="gopher-tortoises" class="level2">
+<h2 class="anchored" data-anchor-id="gopher-tortoises">Gopher tortoises</h2>
+<p>From <span class="citation" data-cites="ozgulUpper2009b">Ozgul et al. (<a href="#ref-ozgulUpper2009b" role="doc-biblioref">2009</a>)</span></p>
+<blockquote class="blockquote">
+<p>In addition to the [capture-mark-recapture] analysis, we analyzed the number of fresh (&lt;40 months old) tortoise shell remains found in each site and year to establish whether either (1) the number of shell remains found was correlated with seroprevalence [frequency of antibodies to disease] in a given site and year or (2) the number of shell remains found was greater in high- than in low-prevalence sites. Specifically, we wanted to fit a statistical model that would allow (given the total population on a site) overdispersion in shell counts, possible variation among sites and years, and a positive effect of prevalence on shell counts.</p>
+</blockquote>
 <ul>
-<li>Books by Alain Zuur <em>et al.</em> are basic books oriented toward ecology; handle spatial/temporal structure with INLA, ‘exotic’ conditional distributions (zero-inflation etc.)</li>
-<li>Statistical learning: Witten <em>et al.</em> <em>Introduction to Statistical Learning</em>, Hastie <em>et al.</em> <em>Elements of Statistical Learning</em></li>
-<li>Gelman <em>et al.</em> <em>Bayesian Data Analysis</em> 3d ed. (complete and technical)</li>
-<li>Shalizi “Advanced Data Analysis”</li>
-<li>Wood <em>Core Statistics</em></li>
+<li><code>site</code>: sampling site</li>
+<li><code>year</code>: sampling year</li>
+<li><code>shells</code>: number of shells found</li>
+<li><code>type</code>: fresh (&lt;40 months) or old (&gt;40 months)</li>
+<li><code>area</code>: site area (km^2?)</li>
+<li><code>density</code>: population density</li>
+<li><code>prev</code>: seroprevalence of <em>M. agassizi</em></li>
 </ul>
+<p>Get these data from <a href="https://github.com/bbolker/mm_workshops/blob/master/data/gopherdat2.csv">here</a></p>
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-hastieGeneralized1990" class="csl-entry" role="listitem">
+Hastie, T. J., and R. J. Tibshirani. 1990. <em>Generalized <span>Additive Models</span></em>. <span>CRC Press</span>.
+</div>
+<div id="ref-ozgulUpper2009b" class="csl-entry" role="listitem">
+Ozgul, Arpat, Madan K. Oli, Benjamin M. Bolker, and Carolina Perez-Heydrich. 2009. <span>“Upper Respiratory Tract Disease, Force of Infection, and Effects on Survival of Gopher Tortoises.”</span> <em>Ecological Applications</em> 19 (3): 786–98. <a href="https://doi.org/10.1890/08-0219.1">https://doi.org/10.1890/08-0219.1</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

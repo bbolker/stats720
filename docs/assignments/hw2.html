@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Annotated bibliography</title>
+<title>homework 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +20,40 @@ width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 }
 
-div.csl-bib-body { }
-div.csl-entry {
-clear: both;
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-margin-left:2em;
-text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-min-width:2em;
-float:left;
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
 }
-div.csl-right-inline {
-margin-left:2em;
-padding-left:1em;
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-indent {
-margin-left: 2em;
-}</style>
+</style>
 
 
 <script>/*!
@@ -3008,7 +3023,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Annotated bibliography</h1>
+<h1 class="title">homework 2</h1>
 </div>
 
 
@@ -3016,12 +3031,6 @@ vertical-align: -.125em;
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">1 Oct 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -3029,50 +3038,54 @@ vertical-align: -.125em;
 
 </header>
 
-<!-- https://github.com/pandoc-ext/multibib -->
-<style>
-.csl-block {
-color: #a14c9a; <!-- was ## 3399ff; -->
-}
-</style>
-<!-- typically renders in docs/ dir  -->
-<p>I haven’t found one book that covers everything in this course exactly the way I would like. Here is a selection of books that I like.</p>
-<section id="primary-references" class="level2">
-<h2 class="anchored" data-anchor-id="primary-references">Primary references</h2>
-<div id="refs-main" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-farawayExtending2016" class="csl-entry" role="listitem">
-Faraway, Julian J. <em>Extending the <span>Linear Model</span> with <span>R</span>: <span>Generalized Linear</span>, <span>Mixed Effects</span> and <span>Nonparametric Regression Models</span>, <span>Second Edition</span></em>. <span>CRC Press</span>, 2016<div class="csl-block">A good, broad book that covers most of the material we’ll discuss in this class. It starts with a little bit more basic coverage of (G)LMs, but has good discussions of intermediate-level GLM issues (conditional logistic regression, alternative link functions, etc.). It goes on to cover mixed models and additive models, as well as a brief introduction to tree-based models and neural networks (which we’ll skip in this class).</div>
-</div>
-<div id="ref-gelmanData2006" class="csl-entry" role="listitem">
-Gelman, Andrew, and Jennifer Hill. <em>Data <span>Analysis Using Regression</span> and <span>Multilevel</span>/<span>Hierarchical Models</span></em>. <span>Cambridge, England</span>: <span>Cambridge University Press</span>, 2006<div class="csl-block">Clear, comprehensive discussion of multilevel/hierarchical models. 99% Bayesian treatment; examples are mostly from social science. Covers linear, logistic, count-data (Poisson/negative binomial) regressions. Causal inference, regression diagnostics, etc.. Reliance on the BUGS language is now slightly old-fashioned (Gelman et al 2020 is an update for the non-mixed model material; these authors and others are working on an updated mixed model book, nominally available <a href="http://www.stat.columbia.edu/~gelman/armm/">around the end of 2024</a>).</div>
-</div>
-<div id="ref-gelmanRegression2020" class="csl-entry" role="listitem">
-Gelman, Andrew, Jennifer Hill, and Aki Vehtari. <em>Regression and <span>Other Stories</span></em>. 1st edition. <span>Cambridge New York, NY Port Melbourne, VIC New Delhi Singapore</span>: <span>Cambridge University Press</span>, 2020<div class="csl-block">I haven’t read this book yet but based on the authors’ past work I expect it to be excellent.</div>
-</div>
-<div id="ref-harrellRegression2015" class="csl-entry" role="listitem">
-Harrell Jr., Frank E. <em>Regression Modeling Strategies: With Applications to Linear Models, Logistic and Ordinal Regression, and Survival Analysis</em>. 2d ed. Springer, 2015<div class="csl-block">This book presents the best blend I’ve ever found of practical yet rigorous advice for statistical modeling (testing model assumptions, limiting model complexity in a way that preserves reliable inference, dealing with missing data, etc.). It covers linear and generalized linear regression, logistic regression, ordinal responses, and survival analysis thoroughly; it has a chapter on longitudinal data. It does not go deeply into mixed models, nor does it cover more exotic responses (count or non-binary binomial responses, zero-inflation). It uses the author’s own <code>rms</code> package, which is useful but doesn’t always fit in perfectly with other frameworks.</div>
-</div>
-<div id="ref-hodgesRichly2013" class="csl-entry" role="listitem">
-Hodges, James S. <em>Richly Parameterized Linear Models: Additive, Time Series, and Spatial Models Using Random Effects</em>. <span>CRC Press</span>, 2013<div class="csl-block">A technical, in-depth exploration of the ways that hierarchical Gaussian linear models can be extended to a huge variety of different kinds of correlation structures and smooth functions. Worked examples of tricky real-world examples; discusses details you won’t find anywhere else.</div>
-</div>
-<div id="ref-mcelreathStatistical2020" class="csl-entry" role="listitem">
-McElreath, Richard. <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>STAN</span></em>. <span>CRC Press</span>, 2020<div class="csl-block">Bayesian statistics from first principles. Aimed at non-statisticians. Relies on Stan for analysis (the <code>rethinking</code> package provides a nice front end for graphical models). Heavy on mechanistic models and causal inference.</div>
-</div>
-<div id="ref-woodGeneralized2017" class="csl-entry" role="listitem">
-Wood, Simon N. <em>Generalized <span>Additive Models</span>: <span>An Introduction</span> with <span>R</span></em>. <span>CRC Texts</span> in <span>Statistical Science</span>. <span>Chapman &amp; Hall</span>, 2017<div class="csl-block">Comprehensive coverage of additive models from a penalized-basis point of view, from the master (the author of R’s <code>mgcv</code> package). Includes brief reviews of the theory behind linear and GLMs. Technical bits are tough for non-statisticians.</div>
-</div>
-</div>
-</section>
-<section id="peripheral-referencesto-add" class="level2">
-<h2 class="anchored" data-anchor-id="peripheral-referencesto-add">Peripheral references/to add (?)</h2>
+<p><strong>Due:</strong> Weds … 11:59 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you’ve done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.</p>
+<p><strong>Please make sure your code is reproducible</strong>:</p>
 <ul>
-<li>Books by Alain Zuur <em>et al.</em> are basic books oriented toward ecology; handle spatial/temporal structure with INLA, ‘exotic’ conditional distributions (zero-inflation etc.)</li>
-<li>Statistical learning: Witten <em>et al.</em> <em>Introduction to Statistical Learning</em>, Hastie <em>et al.</em> <em>Elements of Statistical Learning</em></li>
-<li>Gelman <em>et al.</em> <em>Bayesian Data Analysis</em> 3d ed. (complete and technical)</li>
-<li>Shalizi “Advanced Data Analysis”</li>
-<li>Wood <em>Core Statistics</em></li>
+<li>no absolute path names (e.g. <code>&quot;C:\My Files\homework&quot;</code>)</li>
+<li>include any <code>library()</code> statements at the top of your file (do not include <code>install.packages()</code> statements unless they are commented out)</li>
+<li>make sure I have access to any data files you use in your examples</li>
 </ul>
-</section>
+<p>See also the <a href="https://bbolker.github.io/stats720/R_style.html">R style guide</a>.</p>
+<p>If your code isn’t reproducible I will return it immediately and ask you to fix it.</p>
+<ol type="1">
+<li>Analyze the <code>kyphosis</code> data (from the <code>rpart</code> package).</li>
+</ol>
+<ol type="a">
+<li>Based on the <a href="data.html/#kyphosis">description</a>, decide on your analysis strategy first (what predictors to include, what family/link function to use).</li>
+<li>Plot the data in some sensible way.</li>
+<li>Fit the model.</li>
+<li>Compare the diagnostic plots from base R, from <code>performance::check_model()</code>, and from <code>DHARMa</code>. Discuss any differences that seem interesting or important.</li>
+<li>Interpret your results and draw coefficient plots.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;kyphosis&quot;</span>, <span class="at">package =</span> <span class="st">&quot;rpart&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>kyphosis <span class="ot">&lt;-</span> <span class="fu">transform</span>(kyphosis, <span class="at">Kyphosis =</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(Kyphosis)) <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>Gopher tortoise example</li>
+</ol>
+<p>The data are described <a href="./data.html#gopher-tortoises">here</a></p>
+<p>Get the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g_url <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/bbolker/mm_workshops/master/data/gopherdat2.csv&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>g_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(g_url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li>Plot the data.</li>
+<li>Using <code>glm</code>, fit a GLM with <code>shells</code> as a response including at least <code>year</code> and <code>prev</code>, and including an offset to account for sampling area. Pick an appropriate model; don’t forget to consider the possibility of overdispersion.</li>
+<li>fit the same model with the formula interface of <code>bbmle</code> (see e.g. the <a href="https://cran.r-project.org/web/packages/bbmle/vignettes/mle2.pdf">mle2 vignette</a>, or this <a href="https://stackoverflow.com/questions/68686004/how-to-do-negative-binomial-regression-with-the-rms-package-in-r/68703392#68703392">Stack Overflow question</a> for how to use the <code>parameters</code> argument to specify a linear sub-model</li>
+<li>write your own negative log-likelihood function and use <code>bbmle</code> or <code>optim</code> to fit the GLM</li>
+<li>Compare the parameters from the different approaches (they should be nearly identical). Compare Wald and profile CIs.</li>
+</ol>
+<ol start="3" type="1">
+<li>Endometrial data.</li>
+</ol>
+<p>Analyze the <code>endometrial</code> data from the <code>brglm2</code> package (originally analyzed in <span class="citation" data-cites="heinzeSolution2002">@heinzeSolution2002</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brglm2)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(endometrial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use regular <code>glm()</code>, <code>arm::bayesglm()</code> and <code>glm(..., method = &quot;brglmFit&quot;)</code> to fit the same model. Compare the estimates, confidence intervals, and p-values, as well as the results of a likelihood ratio test of each parameter from the <code>glm</code> results. Why do the different methods give different results?</p>
 
 </main>
 <!-- /main column -->

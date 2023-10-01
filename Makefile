@@ -1,6 +1,6 @@
 COURSE=stats720
 
-all: docs/assignments/README.html docs/index.html docs/${COURSE}_bib.html docs/software/README.html docs/honesty.html docs/R_style.html docs/books.html
+all: docs/assignments/README.html docs/index.html docs/${COURSE}_bib.html docs/software/README.html docs/honesty.html docs/R_style.html docs/books.html docs/assignments/data.html
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all

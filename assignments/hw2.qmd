@@ -14,33 +14,45 @@ See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
 If your code isn't reproducible I will return it immediately and ask you to fix it.
 
-1. Analyze the `kyphosis` data (from the `rpart` package). Pick an appropriate family/link function,  Compare the diagnostic plots from base R, from `performance::check_model()`, and from `DHARMa`. Interpret your results and draw coefficient plots.
+1. Analyze the `kyphosis` data (from the `rpart` package). 
 
+a. Based on the [description](data.html/#kyphosis), decide on your analysis strategy first (what predictors to include, what family/link function to use). 
+b. Plot the data in some sensible way.
+c. Fit the model.
+d. Compare the diagnostic plots from base R, from `performance::check_model()`, and from `DHARMa`. Discuss any differences that seem interesting or important. 
+e. Interpret your results and draw coefficient plots.
+
+```{r kyph1, message = FALSE}
+data("kyphosis", package = "rpart")
+kyphosis <- transform(kyphosis, Kyphosis = as.numeric(factor(Kyphosis)) - 1)
+```
 
 2. Gopher tortoise example
+
+The data are described [here](./data.html#gopher-tortoises)
+
+Get the data:
 
 ```{r}
 g_url <- "https://raw.githubusercontent.com/bbolker/mm_workshops/master/data/gopherdat2.csv"
 g_data <- read.csv(g_url)
 ```
 
+a. Plot the data.
+b. Using `glm`, fit a GLM with `shells` as a response including at least `year` and `prev`, and including an offset to account for sampling area. Pick an appropriate model; don't forget to consider the possibility of overdispersion.
+c. fit the same model with the formula interface of `bbmle` (see e.g. the [mle2 vignette](https://cran.r-project.org/web/packages/bbmle/vignettes/mle2.pdf), or this [Stack Overflow question](https://stackoverflow.com/questions/68686004/how-to-do-negative-binomial-regression-with-the-rms-package-in-r/68703392#68703392) for how to use the `parameters` argument to specify a linear sub-model
+d. write your own negative log-likelihood function and use `bbmle` or `optim` to fit the GLM
+e. Compare the parameters from the different approaches (they should be nearly identical). Compare Wald and profile CIs.
 
-https://github.com/bbolker/mm_workshops/blob/master/data/gophertortoise.txt
+3. Endometrial data.
 
-
-https://stackoverflow.com/questions/68686004/how-to-do-negative-binomial-regression-with-the-rms-package-in-r/68703392#68703392
-
-* fit
-* fit with `bbmle`
-* write your own negative log-likelihood function
-
-
-3. Complete separation example
+Analyze the `endometrial` data from the `brglm2` package (originally analyzed in @heinzeSolution2002).
 
 ```{r}
 library(brglm2)
 data(endometrial)
 ```
 
-https://cran.r-project.org/web/packages/detectseparation/vignettes/separation.html
+Use regular `glm()`, `arm::bayesglm()` and `glm(..., method = "brglmFit")` to fit the same model. Compare the estimates, confidence intervals, and p-values, as well as the results of a likelihood ratio test of each parameter from the `glm` results. Why do the different methods give different results?
+
 
