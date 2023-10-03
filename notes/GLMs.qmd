@@ -69,6 +69,14 @@ library(parameters)
 * cloglog; *log-hazard* scale
 * inverse link: linear changes in the *rate* of events
 
+## Log-hazards and log-hazard offsets
+
+* if hazard is $h$, probability is $1-\exp(-h)$
+* $C(\mu) = \log(-\log(1-\mu))$
+* $C^{-1}(\eta) = 1- \exp(-\exp(\eta))$
+* $C^{-1}(\eta + \log(\Delta t)) = 1- \exp(-\exp(\eta) \cdot \Delta t)$
+* $\to 1-(1-\mu_0)^{\Delta t}$
+
 ## Computation
 
 * iteratively reweighted least squares
@@ -124,7 +132,29 @@ names(binomial)
 
 ## Complete separation
 
+* there is some linear combination of predictors that separates 0 from 1 responses (or 0 from non-zero responses in the case of count models)
+* infinite MLE
+* Hauck-Donner effect screws up Wald tests
+* likelihood ratio tests still OK (sort of)
+* Firth logistic regression (`brglm2` package), Bayesian priors (`arm::bayesglm`)
+
 ## Zero-inflation/hurdle models
+
+* finite mixture models
+
+## Most common GLM problems
+
+- binomial/Poisson models with non-integer data
+- failing to specify `family` (default Gaussian: $\to$ linear model);
+using `glm()` for linear models (unnecessary)
+- predictions on effect scale
+- using $(k,N)$ rather than $(k,N-k)$ with `family=binomial`
+- back-transforming SEs rather than CIs
+- neglecting overdispersion
+- Poisson for *underdispersed* responses
+- equating negative binomial with binomial rather than Poisson
+- worrying about overdispersion unnecessarily (binary/Gamma)
+- ignoring random effects
 
 ## References
 
