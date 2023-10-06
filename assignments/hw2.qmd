@@ -16,7 +16,7 @@ If your code isn't reproducible I will return it immediately and ask you to fix 
 
 1. Analyze the `kyphosis` data (from the `rpart` package). 
 
-a. Based on the [description](data.html/#kyphosis), decide on your analysis strategy first (what predictors to include, what family/link function to use). 
+a. Based on the [description](./data.html#kyphosis), decide on your analysis strategy first (what predictors to include, what family/link function to use). 
 b. Plot the data in some sensible way.
 c. Fit the model.
 d. Compare the diagnostic plots from base R, from `performance::check_model()`, and from `DHARMa`. Discuss any differences that seem interesting or important. 
