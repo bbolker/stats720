@@ -38,8 +38,8 @@ X <- model.matrix(~dilution, data = orob1)
 nll <- function(params) {
     ## separate params vector into location, dispersion components
     beta <- params[-length(params)]
-    theta <- exp(params[length(params)])
-    ## compute linear predictors for location & scale; inverse-link
+    theta <- exp(params[length(params)]) ## also apply inverse-link
+    ## compute linear predictor for location; inverse-link
     prob <- plogis(X %*% beta)
     size <- orob1$n
     ## negative log-likelihood for full data set

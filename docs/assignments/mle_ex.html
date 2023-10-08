@@ -2682,8 +2682,8 @@ x &amp; \sim \textrm{Binomial}(\hat p, N) \\
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>nll <span class="ot">&lt;-</span> <span class="cf">function</span>(params) {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="do">## separate params vector into location, dispersion components</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    beta <span class="ot">&lt;-</span> params[<span class="sc">-</span><span class="fu">length</span>(params)]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    theta <span class="ot">&lt;-</span> <span class="fu">exp</span>(params[<span class="fu">length</span>(params)])</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="do">## compute linear predictors for location &amp; scale; inverse-link</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    theta <span class="ot">&lt;-</span> <span class="fu">exp</span>(params[<span class="fu">length</span>(params)]) <span class="do">## also apply inverse-link</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="do">## compute linear predictor for location; inverse-link</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    prob <span class="ot">&lt;-</span> <span class="fu">plogis</span>(X <span class="sc">%*%</span> beta)</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    size <span class="ot">&lt;-</span> orob1<span class="sc">$</span>n</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="do">## negative log-likelihood for full data set</span></span>
