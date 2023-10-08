@@ -69,6 +69,4 @@ mle2(m ~ dbetabinom(prob = plogis(logitprob),
 
 By default `mle2` uses the BFGS quasi-Newton algorithm, although you may want to specify `method = "Nelder-Mead"` to switch to the more robust but slower Nelder-Mead algorithm if you run into computational troubles.
 
-See also
-
-## Refs
+There is much more detail on this general machinery in chapters 6 and 7 of @bolkerEcological2008 (and comparisons with GLMs in §9.4); see [here](https://math.mcmaster.ca/~bolker/emdbook/index.html) for PDFs of chapter drafts
