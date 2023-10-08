@@ -1,0 +1,68 @@
+---
+title: "MLE example"
+bibliography: "../stats720.bib"
+---
+
+```{r pkgs-data, message = FALSE}
+library(emdbook)
+library(bbmle)
+load(system.file("vignetteData","orob1.rda",package="bbmle"))
+```
+
+The beta-binomial is most usefully parameterized as
+
+$$
+\textrm{Prob}(x|p,\theta,N) = C(N,x) \frac{\textrm{Beta}(x+\theta p,N-x+\theta (1-p))}{\textrm{Beta}(\theta p,\theta(1-p))}
+$$
+
+where $\theta$ is a dispersion parameter (BB $\to$ Binomial as $\theta \to \infty$); this corresponds to parameterizing the underlying Beta distribution in terms of $\{p, \theta\}$ (location and dispersion) rather than $\{\alpha, \beta\}$ (two shape parameters), e.g. see @Morris1997. This is equivalent to the compound-distribution definition 
+$$
+\begin{split}
+x & \sim \textrm{Binomial}(\hat p, N) \\
+\hat p & \sim \textrm{Beta}(\alpha, \beta) \\
+\alpha & = \theta p; \beta = \theta(1-p) .
+\end{split}
+$$
+
+Data from @Crowder1978 on germination of a parasitic plant:
+
+1. Write down a negative log-likelihood function that takes the parameters as a single numeric vector and returns the negative log-likelihood; use `optim()` to find the parameters that minimize the function.
+
+- Here we refer explicitly to the data set `orob1` inside the function (not optimal if we want to play around with different data sets)
+- We define the model matrix `X` outside the function, to avoid re-computing it every time we run the function (this problem is so small that it doesn't really matter, might be better to do it internally for modularity)
+- we have to apply the inverse-link functions (`plogis()`, `exp()`) ourselves. Fitting the dispersion parameter with a log link isn't absolutely necessary (since it's a single, scalar parameter), but is computationally robust
+- We need to specify starting values. All-zero is reasonable for a GLM-like model where the response variables are on a reasonable scale by default (i.e., the intercept, $g^{-1}(0)$ is probably a sensible value; zeros for the other parameters represent "no effect")
+
+```{r optim}
+X <- model.matrix(~dilution, data = orob1)
+nll <- function(params) {
+    beta <- params[-length(params)]
+    theta <- exp(params[length(params)])
+    prob <- plogis(X %*% beta)
+    size <- orob1$n
+    -sum(dbetabinom(orob1$m, prob, size, theta, log=TRUE))
+}
+optim(par = rep(0,4), fn = nll)
+```
+
+By default `optim()` uses the Nelder-Mead simplex algorithm.
+
+2. Solve the same problem using `bbmle::mle2`'s `parameters` argument.
+
+- here we can give `mle2` a `data=` argument and use the columns of the data inside our log-likelihood expression
+- `mle2` automatically/internally converts the formula to a log-likelihood function (which looks more or less like the one we defined above)
+- the starting values are specified slightly differently (a single parameter for the $\beta$ vector that computes the location parameter, and one for the dispersion parameter)
+
+```{r mle2}
+mle2(m ~ dbetabinom(prob = plogis(logitprob), size = n,
+                    theta = exp(logtheta)),
+     parameters = list(logitprob ~ dilution),
+     data = orob1,
+     start = list(logitprob = 0, logtheta = 0))
+```
+
+By default `mle2` uses the BFGS quasi-Newton algorithm, although you may want to specify `method = "Nelder-Mead"` to switch to the more robust but slower Nelder-Mead algorithm if you run into computational troubles.
+
+See also
+
+## Refs
