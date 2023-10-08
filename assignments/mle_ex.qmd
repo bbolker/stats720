@@ -53,7 +53,7 @@ By default `optim()` uses the Nelder-Mead simplex algorithm.
 
 2. Solve the same problem using `bbmle::mle2`'s `parameters` argument.
 
-- here we can give `mle2` a `data=` argument and use the columns of the data inside our log-likelihood expression
+- here we can give `mle2` a `data=` argument and use the names of columns of the data inside our log-likelihood expression
 - `mle2` automatically/internally converts the formula to a log-likelihood function (which looks more or less like the one we defined above)
 - the starting values are specified slightly differently (a single parameter for the $\beta$ vector that computes the location parameter, and one for the dispersion parameter)
 

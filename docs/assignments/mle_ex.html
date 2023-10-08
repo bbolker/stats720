@@ -2714,7 +2714,7 @@ NULL</code></pre>
 <li>Solve the same problem using <code>bbmle::mle2</code>’s <code>parameters</code> argument.</li>
 </ol>
 <ul>
-<li>here we can give <code>mle2</code> a <code>data=</code> argument and use the columns of the data inside our log-likelihood expression</li>
+<li>here we can give <code>mle2</code> a <code>data=</code> argument and use the names of columns of the data inside our log-likelihood expression</li>
 <li><code>mle2</code> automatically/internally converts the formula to a log-likelihood function (which looks more or less like the one we defined above)</li>
 <li>the starting values are specified slightly differently (a single parameter for the <span class="math inline">\(\beta\)</span> vector that computes the location parameter, and one for the dispersion parameter)</li>
 </ul>
