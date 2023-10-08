@@ -4,15 +4,17 @@ bibliography: "../stats720.bib"
 ---
 
 ```{r pkgs-data, message = FALSE}
-library(emdbook)
+library(emdbook) ## for dbetabinom()
 library(bbmle)
 load(system.file("vignetteData","orob1.rda",package="bbmle"))
 ```
 
-The beta-binomial is most usefully parameterized as
+This example uses data from @Crowder1978 on germination of a parasitic plant, and models the conditional distribution as beta-binomial.
+
+For statistical modeling, the beta-binomial is most usefully parameterized as
 
 $$
-\textrm{Prob}(x|p,\theta,N) = C(N,x) \frac{\textrm{Beta}(x+\theta p,N-x+\theta (1-p))}{\textrm{Beta}(\theta p,\theta(1-p))}
+\textrm{Prob}(x|p,\theta,N) = {N \choose x} \frac{\textrm{Beta}(x+\theta p,N-x+\theta (1-p))}{\textrm{Beta}(\theta p,\theta(1-p))}
 $$
 
 where $\theta$ is a dispersion parameter (BB $\to$ Binomial as $\theta \to \infty$); this corresponds to parameterizing the underlying Beta distribution in terms of $\{p, \theta\}$ (location and dispersion) rather than $\{\alpha, \beta\}$ (two shape parameters), e.g. see @Morris1997. This is equivalent to the compound-distribution definition 
@@ -24,8 +26,6 @@ x & \sim \textrm{Binomial}(\hat p, N) \\
 \end{split}
 $$
 
-Data from @Crowder1978 on germination of a parasitic plant:
-
 1. Write down a negative log-likelihood function that takes the parameters as a single numeric vector and returns the negative log-likelihood; use `optim()` to find the parameters that minimize the function.
 
 - Here we refer explicitly to the data set `orob1` inside the function (not optimal if we want to play around with different data sets)
@@ -36,12 +36,16 @@ Data from @Crowder1978 on germination of a parasitic plant:
 ```{r optim}
 X <- model.matrix(~dilution, data = orob1)
 nll <- function(params) {
+    ## separate params vector into location, dispersion components
     beta <- params[-length(params)]
     theta <- exp(params[length(params)])
+    ## compute linear predictors for location & scale; inverse-link
     prob <- plogis(X %*% beta)
     size <- orob1$n
+    ## negative log-likelihood for full data set
     -sum(dbetabinom(orob1$m, prob, size, theta, log=TRUE))
 }
+## minimize NLL
 optim(par = rep(0,4), fn = nll)
 ```
 
@@ -54,8 +58,10 @@ By default `optim()` uses the Nelder-Mead simplex algorithm.
 - the starting values are specified slightly differently (a single parameter for the $\beta$ vector that computes the location parameter, and one for the dispersion parameter)
 
 ```{r mle2}
-mle2(m ~ dbetabinom(prob = plogis(logitprob), size = n,
+mle2(m ~ dbetabinom(prob = plogis(logitprob),
+                    size = n,
                     theta = exp(logtheta)),
+     ## specify linear submodel for logit(prob)
      parameters = list(logitprob ~ dilution),
      data = orob1,
      start = list(logitprob = 0, logtheta = 0))

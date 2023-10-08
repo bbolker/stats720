@@ -2652,13 +2652,14 @@ vertical-align: -.125em;
 </header>
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emdbook)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emdbook) <span class="do">## for dbetabinom()</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bbmle)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">system.file</span>(<span class="st">&quot;vignetteData&quot;</span>,<span class="st">&quot;orob1.rda&quot;</span>,<span class="at">package=</span><span class="st">&quot;bbmle&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The beta-binomial is most usefully parameterized as</p>
+<p>This example uses data from <span class="citation" data-cites="Crowder1978">Crowder (<a href="#ref-Crowder1978" role="doc-biblioref">1978</a>)</span> on germination of a parasitic plant, and models the conditional distribution as beta-binomial.</p>
+<p>For statistical modeling, the beta-binomial is most usefully parameterized as</p>
 <p><span class="math display">\[
-\textrm{Prob}(x|p,\theta,N) = C(N,x) \frac{\textrm{Beta}(x+\theta p,N-x+\theta (1-p))}{\textrm{Beta}(\theta p,\theta(1-p))}
+\textrm{Prob}(x|p,\theta,N) = {N \choose x} \frac{\textrm{Beta}(x+\theta p,N-x+\theta (1-p))}{\textrm{Beta}(\theta p,\theta(1-p))}
 \]</span></p>
 <p>where <span class="math inline">\(\theta\)</span> is a dispersion parameter (BB <span class="math inline">\(\to\)</span> Binomial as <span class="math inline">\(\theta \to \infty\)</span>); this corresponds to parameterizing the underlying Beta distribution in terms of <span class="math inline">\(\{p, \theta\}\)</span> (location and dispersion) rather than <span class="math inline">\(\{\alpha, \beta\}\)</span> (two shape parameters), e.g. see <span class="citation" data-cites="Morris1997">Morris (<a href="#ref-Morris1997" role="doc-biblioref">1997</a>)</span>. This is equivalent to the compound-distribution definition <span class="math display">\[
 \begin{split}
@@ -2667,7 +2668,6 @@ x &amp; \sim \textrm{Binomial}(\hat p, N) \\
 \alpha &amp; = \theta p; \beta = \theta(1-p) .
 \end{split}
 \]</span></p>
-<p>Data from <span class="citation" data-cites="Crowder1978">Crowder (<a href="#ref-Crowder1978" role="doc-biblioref">1978</a>)</span> on germination of a parasitic plant:</p>
 <ol type="1">
 <li>Write down a negative log-likelihood function that takes the parameters as a single numeric vector and returns the negative log-likelihood; use <code>optim()</code> to find the parameters that minimize the function.</li>
 </ol>
@@ -2680,13 +2680,17 @@ x &amp; \sim \textrm{Binomial}(\hat p, N) \\
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span>dilution, <span class="at">data =</span> orob1)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>nll <span class="ot">&lt;-</span> <span class="cf">function</span>(params) {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    beta <span class="ot">&lt;-</span> params[<span class="sc">-</span><span class="fu">length</span>(params)]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    theta <span class="ot">&lt;-</span> <span class="fu">exp</span>(params[<span class="fu">length</span>(params)])</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    prob <span class="ot">&lt;-</span> <span class="fu">plogis</span>(X <span class="sc">%*%</span> beta)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    size <span class="ot">&lt;-</span> orob1<span class="sc">$</span>n</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dbetabinom</span>(orob1<span class="sc">$</span>m, prob, size, theta, <span class="at">log=</span><span class="cn">TRUE</span>))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>), <span class="at">fn =</span> nll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="do">## separate params vector into location, dispersion components</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    beta <span class="ot">&lt;-</span> params[<span class="sc">-</span><span class="fu">length</span>(params)]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    theta <span class="ot">&lt;-</span> <span class="fu">exp</span>(params[<span class="fu">length</span>(params)])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="do">## compute linear predictors for location &amp; scale; inverse-link</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    prob <span class="ot">&lt;-</span> <span class="fu">plogis</span>(X <span class="sc">%*%</span> beta)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    size <span class="ot">&lt;-</span> orob1<span class="sc">$</span>n</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="do">## negative log-likelihood for full data set</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dbetabinom</span>(orob1<span class="sc">$</span>m, prob, size, theta, <span class="at">log=</span><span class="cn">TRUE</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## minimize NLL</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">4</span>), <span class="at">fn =</span> nll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$par
 [1] -1.881522  3.790657  3.534697  4.362351
@@ -2715,11 +2719,13 @@ NULL</code></pre>
 <li>the starting values are specified slightly differently (a single parameter for the <span class="math inline">\(\beta\)</span> vector that computes the location parameter, and one for the dispersion parameter)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mle2</span>(m <span class="sc">~</span> <span class="fu">dbetabinom</span>(<span class="at">prob =</span> <span class="fu">plogis</span>(logitprob), <span class="at">size =</span> n,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">theta =</span> <span class="fu">exp</span>(logtheta)),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">parameters =</span> <span class="fu">list</span>(logitprob <span class="sc">~</span> dilution),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">data =</span> orob1,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">start =</span> <span class="fu">list</span>(<span class="at">logitprob =</span> <span class="dv">0</span>, <span class="at">logtheta =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mle2</span>(m <span class="sc">~</span> <span class="fu">dbetabinom</span>(<span class="at">prob =</span> <span class="fu">plogis</span>(logitprob),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> n,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">theta =</span> <span class="fu">exp</span>(logtheta)),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="do">## specify linear submodel for logit(prob)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">parameters =</span> <span class="fu">list</span>(logitprob <span class="sc">~</span> dilution),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">data =</span> orob1,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">start =</span> <span class="fu">list</span>(<span class="at">logitprob =</span> <span class="dv">0</span>, <span class="at">logtheta =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
