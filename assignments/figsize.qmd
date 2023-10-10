@@ -1,0 +1,42 @@
+---
+title: "figure sizing"
+bibliography: "../stats720.bib"
+format: 
+  pdf:
+    mainfont: TeX Gyre Pagella
+  html:
+    embed-resources: true
+---
+
+```{r pkgs-data, message = FALSE}
+library(performance)
+```
+
+Figure sizing can be a little tricky in Quarto/knitr. 
+
+- The `fig-height` and `fig-width` options ([almost?] always given in inches) specify the size of the **R plot window** on which the plot will be rendered. This means, counterintuitively, that increasing `fig-height` and `fig-width` makes the sizes of text, points, lines, etc. *smaller* in the output plot, for a given output size.
+- In contrast, the `out-height` and `out-width` options specify the size of the plot in the final document. These are passed through to whatever's rendering the final plot `fig-height` and `fig-width`, and they have to have units. For PDF, they're getting passed through to LaTeX, so you have the options of (e.g.) "in" or "cm" for units.
+
+It's always good practice to set the options globally (in the YAML header/metadata) to something that makes sense for most of your plots, then adjust them for specific plots if required.
+
+
+See [quarto docs](https://quarto.org/docs/computations/execution-options.html), 
+[bookdown docs](https://bookdown.org/yihui/rmarkdown-cookbook/figure-size.html) ...
+
+This example makes the canvas 12 inches (height) × 8 inches (width) (larger than the default 5" × 7", which is typically intended for single-panel plots), so that the text and points are small (relative to the canvas), and makes the output dimensions small (3" × 2") to make the plot very small in the output.
+
+```{r fig1}
+#| fig-height: 12
+#| fig-width: 8
+#| out-height: 3in
+#| out-width: 2in
+m <- lm(mpg ~ wt + cyl + gear + disp, data = mtcars)
+check_model(m, panel = TRUE) ## default
+```
+
+The help for `check_model()` says
+
+> `panel`: Logical, if ‘TRUE’, plots are arranged as panels; else, single plots for each diagnostic are returned.
+
+However, it doesn't way the expect I would have expected (I'd have thought that it would return a list of plots; instead, it seems to return *data* that could be used to draw plots rather than the plots themselves ... *if* you get plots, you can print them one by one or use functions from the `gridExtra`, `cowplot`, or `patchwork` packages to combine them into particular configurations
+
