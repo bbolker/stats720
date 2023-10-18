@@ -156,6 +156,12 @@ using `glm()` for linear models (unnecessary)
 - worrying about overdispersion unnecessarily (binary/Gamma)
 - ignoring random effects
 
+## Overdispersion in Bernoulli models?
+
+> I think many analysts read that binary models cannot be overdispersed and just do not question it. This happened with the deviance dispersion being the appropriate statistic to measure count model extra-dispersion. Some analysts simply took this on faith, so to speak. But they were mistaken.
+
+[Joseph Hilbe (2013)](http://www.highstat.com/Books/BGS/GLMGLMM/pdfs/HILBE-Can_binary_logistic_models_be_overdispersed2Jul2013.pdf)
+
 ## References
 
 ::: {#refs}

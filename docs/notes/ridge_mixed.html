@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2023-10-16">
 
-<title>Generalized linear models</title>
+<title>Ridge regression and mixed models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3149,12 +3149,12 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="GLMs.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="ridge_mixed.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Generalized linear models</h1>
+<h1 class="title">Ridge regression and mixed models</h1>
 </div>
 
 
@@ -3193,176 +3193,82 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parameters)</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## library(ggeffects)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="basics" class="level2">
-<h2 class="anchored" data-anchor-id="basics">Basics</h2>
+<section id="ridge-in-a-nutshell" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-in-a-nutshell">Ridge in a nutshell</h2>
 <ul>
-<li>assume <span class="math inline">\(\mathbf y_i \sim \textrm{Dist}(g^{-1}(({\mathbf X}\boldsymbol \beta)_i))\)</span></li>
-<li><span class="math inline">\(g\)</span> = <strong>link function</strong></li>
-<li><span class="math inline">\(\eta\)</span> = <span class="math inline">\({\mathbf X}\boldsymbol \beta\)</span> = <strong>linear predictor</strong></li>
-<li><strong>link scale</strong>, <strong>data</strong> or <strong>response</strong> scale</li>
-<li>GLMs inverse-transform <span class="math inline">\(\eta\)</span>, they don’t transform <span class="math inline">\(y\)</span></li>
-<li>allows:
+<li><strong>penalized</strong> models: instead of minimizing SSQ = <span class="math inline">\(\sum ((\mathbf y-{\mathbf X}\boldsymbol \beta)_i)^2\)</span>, minimize SSQ + <span class="math inline">\(\lambda ||\boldsymbol \beta||_2\)</span> (ridge)</li>
+<li>or + <span class="math inline">\(||\boldsymbol \beta||_1\)</span> (lasso)</li>
+<li>optimize <em>bias-variance tradeoff</em></li>
+<li>equivalent to imposing iid Gaussian priors on each element of <span class="math inline">\(\boldsymbol \beta\)</span></li>
+<li>lasso (and elastic net, which is a convex combination of L2 and L1 penalties) are popular because they <strong>induce sparsity</strong>
 <ul>
-<li>separate control of heteroscedasticity and nonlinearity</li>
-<li>almost as convenient/efficient as LMs</li>
-<li>equivalent to MLE in many cases</li>
+<li><em>likelihood surfaces</em> are non-convex with cusps at zero</li>
+<li>optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding); can’t use <em>only</em> linear algebra</li>
 </ul></li>
-<li>in practice almost all GLMs are logistic (binary data) or Poisson</li>
-<li>lots of inference, diagnostics, etc. inherited from LM framework</li>
+<li>can generalize from penalized LM to penalized GLM</li>
 </ul>
 </section>
-<section id="exponential-family" class="level2">
-<h2 class="anchored" data-anchor-id="exponential-family">Exponential family</h2>
-<ul>
-<li><span class="math inline">\(f(x|\theta) = h(x) g(\theta) \exp(\eta(\theta) T(x))\)</span></li>
-<li>e.g. Poisson: <span class="math inline">\(f(x|\theta) = \theta^x \exp(-\theta)/x! = (1/x!) \exp(-\theta) \exp(x \log(\theta))\)</span></li>
-<li><span class="math inline">\(h(x)=1/x!\)</span>; <span class="math inline">\(g(\theta) = \exp(-\theta)\)</span>; <span class="math inline">\(\eta(\theta) = \log(\theta)\)</span>; <span class="math inline">\(T(x)\)</span></li>
-<li><span class="math inline">\(\eta\)</span> is the <strong>canonical link</strong> function for the family (nice mathematical properties)</li>
-<li>binomial, Poisson, Gamma (inverse Gaussian, von Mises distribution …)</li>
-</ul>
-</section>
-<section id="mean-variance-relations" class="level2">
-<h2 class="anchored" data-anchor-id="mean-variance-relations">Mean-variance relations</h2>
-<ul>
-<li>can show that all we need for computation is the link function and the <strong>variance function</strong> <span class="math inline">\(V = f(\mu)\)</span> (may also depend multiplicatively on a <strong>scale</strong> or <strong>dispersion parameter</strong>, e.g. <span class="math inline">\(V = \mu\)</span> for Poisson, <span class="math inline">\(V = \sigma^2\)</span></li>
-</ul>
-</section>
-<section id="link-functions" class="level2">
-<h2 class="anchored" data-anchor-id="link-functions">Link functions</h2>
-<ul>
-<li>canonical doesn’t always work best (e.g. Gamma/inverse link)</li>
-<li>probit vs logit; not much difference</li>
-<li>cloglog; <em>log-hazard</em> scale</li>
-<li>inverse link: linear changes in the <em>rate</em> of events</li>
-</ul>
-</section>
-<section id="log-hazards-and-log-hazard-offsets" class="level2">
-<h2 class="anchored" data-anchor-id="log-hazards-and-log-hazard-offsets">Log-hazards and log-hazard offsets</h2>
-<ul>
-<li>if hazard is <span class="math inline">\(h\)</span>, probability is <span class="math inline">\(1-\exp(-h)\)</span></li>
-<li><span class="math inline">\(C(\mu) = \log(-\log(1-\mu))\)</span></li>
-<li><span class="math inline">\(C^{-1}(\eta) = 1- \exp(-\exp(\eta))\)</span></li>
-<li><span class="math inline">\(C^{-1}(\eta + \log(\Delta t)) = 1- \exp(-\exp(\eta) \cdot \Delta t)\)</span></li>
-<li><span class="math inline">\(\to 1-(1-\mu_0)^{\Delta t}\)</span></li>
-</ul>
-</section>
-<section id="computation" class="level2">
-<h2 class="anchored" data-anchor-id="computation">Computation</h2>
-<ul>
-<li>iteratively reweighted least squares</li>
-<li>needs starting values, but almost always robust to them</li>
-</ul>
-</section>
-<section id="in-r" class="level2">
-<h2 class="anchored" data-anchor-id="in-r">in R</h2>
-<ul>
-<li>“family” functions contain all of the components needed for GLM fitting, prediction, etc.</li>
-<li>some of the components are weird (e.g. <code>$aic</code>)</li>
-<li>canonical link is used by default</li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(binomial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
-</div>
-</div>
-</section>
-<section id="offsets" class="level2">
-<h2 class="anchored" data-anchor-id="offsets">Offsets</h2>
-<ul>
-<li>allow for differential search effort, ratios, etc.</li>
-<li>typically add <span class="math inline">\(\log(e)\)</span></li>
-<li>e.g. <span class="math inline">\(\mathbf y\sim \textrm{Poisson}({\mathbf X}\boldsymbol \beta+ \log(A))\)</span> is equivalent to modeling the response <span class="math inline">\(\mathbf y/A\)</span>, but without messing up the mean-variance relationship</li>
-</ul>
-</section>
-<section id="offsetlink-tricks" class="level2">
-<h2 class="anchored" data-anchor-id="offsetlink-tricks">Offset/link tricks</h2>
-<ul>
-<li>fit an exponential curve with constant variance: <code>family = gaussian(link = &quot;log&quot;)</code></li>
-<li>Ricker function <span class="math inline">\(y = a x \exp(-bx)\)</span>: log-link, <code>y ~ x + offset(log(x)</code></li>
-<li>Michaelis-Menten <span class="math inline">\(y = a x/(b + x) \to 1/y = (b/a)\cdot (1/x) + 1/a\)</span>: inverse-link, <code>y ~ I(1/x)</code></li>
-</ul>
-</section>
-<section id="model-interpretation-visualization-testing" class="level1">
-<h1>Model interpretation, visualization, testing</h1>
-<section id="parameter-interpretation" class="level2">
-<h2 class="anchored" data-anchor-id="parameter-interpretation">Parameter interpretation</h2>
-<ul>
-<li>log scale: easy</li>
-<li>logit scale: <span class="math inline">\(\approx\)</span> log for low baseline, <span class="math inline">\(\approx \log(1-x)\)</span> for high baseline, slope <span class="math inline">\(\beta/4\)</span> for intermediate values</li>
-<li>cloglog: <strong>log-hazard</strong> scale</li>
-</ul>
-</section>
-<section id="inference" class="level2">
-<h2 class="anchored" data-anchor-id="inference">Inference</h2>
-<ul>
-<li>Wald tests (no finite-size corrections!)</li>
-<li>approximate Wald CIs (compute then back-transform)</li>
-<li>profile CIs</li>
-</ul>
-</section>
-<section id="overdispersion" class="level2">
-<h2 class="anchored" data-anchor-id="overdispersion">Overdispersion</h2>
-<ul>
-<li>too much variance</li>
-<li>SSQ of Pearson residuals <span class="math inline">\(\sim \chi^2(n-p)\)</span>
-<ul>
-<li>quasi-likelihood (also handles <strong>underdispersion</strong>)</li>
-<li>compounded models (negative binomial, beta-binomial)</li>
-<li>observation-level random effects</li>
-</ul></li>
-</ul>
-</section>
-<section id="extended-distributions" class="level2">
-<h2 class="anchored" data-anchor-id="extended-distributions">Extended distributions</h2>
-<ul>
-<li><code>VGAM</code>, <code>glmmTMB</code> packages</li>
-</ul>
-</section>
-<section id="complete-separation" class="level2">
-<h2 class="anchored" data-anchor-id="complete-separation">Complete separation</h2>
-<ul>
-<li>there is some linear combination of predictors that separates 0 from 1 responses (or 0 from non-zero responses in the case of count models)</li>
-<li>infinite MLE</li>
-<li>Hauck-Donner effect screws up Wald tests</li>
-<li>likelihood ratio tests still OK (sort of)</li>
-<li>Firth logistic regression (<code>brglm2</code> package), Bayesian priors (<code>arm::bayesglm</code>)</li>
-</ul>
-</section>
-<section id="zero-inflationhurdle-models" class="level2">
-<h2 class="anchored" data-anchor-id="zero-inflationhurdle-models">Zero-inflation/hurdle models</h2>
-<ul>
-<li>finite mixture models</li>
-</ul>
-</section>
-<section id="most-common-glm-problems" class="level2">
-<h2 class="anchored" data-anchor-id="most-common-glm-problems">Most common GLM problems</h2>
-<ul>
-<li>binomial/Poisson models with non-integer data</li>
-<li>failing to specify <code>family</code> (default Gaussian: <span class="math inline">\(\to\)</span> linear model); using <code>glm()</code> for linear models (unnecessary)</li>
-<li>predictions on effect scale</li>
-<li>using <span class="math inline">\((k,N)\)</span> rather than <span class="math inline">\((k,N-k)\)</span> with <code>family=binomial</code></li>
-<li>back-transforming SEs rather than CIs</li>
-<li>neglecting overdispersion</li>
-<li>Poisson for <em>underdispersed</em> responses</li>
-<li>equating negative binomial with binomial rather than Poisson</li>
-<li>worrying about overdispersion unnecessarily (binary/Gamma)</li>
-<li>ignoring random effects</li>
-</ul>
-</section>
-<section id="overdispersion-in-bernoulli-models" class="level2">
-<h2 class="anchored" data-anchor-id="overdispersion-in-bernoulli-models">Overdispersion in Bernoulli models?</h2>
+<section id="andrew-gelman-on-variable-selection" class="level2">
+<h2 class="anchored" data-anchor-id="andrew-gelman-on-variable-selection"><a href="https://statmodeling.stat.columbia.edu/2023/07/18/when-your-regression-model-has-interactions-do-you-need-to-include-all-the-corresponding-main-effects/#comment-2238997">Andrew Gelman on variable selection</a></h2>
 <blockquote class="blockquote">
-<p>I think many analysts read that binary models cannot be overdispersed and just do not question it. This happened with the deviance dispersion being the appropriate statistic to measure count model extra-dispersion. Some analysts simply took this on faith, so to speak. But they were mistaken.</p>
+<p>Variable selection (that is, setting some coefficients to be exactly zero) can be useful for various reasons, including: * It’s a simple form of regularization. * It can reduce costs in future data collection. Variable selection can be fine as a means to an end. Problems can arise if it’s taken too seriously, for example as an attempt to discover a purported parsimonious true model.</p>
 </blockquote>
-<p><a href="http://www.highstat.com/Books/BGS/GLMGLMM/pdfs/HILBE-Can_binary_logistic_models_be_overdispersed2Jul2013.pdf">Joseph Hilbe (2013)</a></p>
+</section>
+<section id="choosing-penalty-strength" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-penalty-strength">Choosing penalty strength</h2>
+<ul>
+<li>typically by <em>cross-validation</em></li>
+<li>leave-one-out (LOOCV) vs <span class="math inline">\(k\)</span>-fold</li>
+</ul>
+</section>
+<section id="practical-points" class="level2">
+<h2 class="anchored" data-anchor-id="practical-points">Practical points</h2>
+<ul>
+<li>Predictors <strong>must</strong> be standardized</li>
+<li>Intercept should usually be unpenalized</li>
+</ul>
+</section>
+<section id="ridge-vs-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-vs-lasso">Ridge vs lasso</h2>
+<ul>
+<li>In practice people just try both (or elastic net)</li>
+<li>Conjecture: whether ridge or lasso is a better <em>predictive</em> model in a particular case depends on the <em>effect size spectrum</em></li>
+</ul>
+</section>
+<section id="ridge-by-data-augmentation" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-by-data-augmentation">Ridge by data augmentation</h2>
+<ul>
+<li><p>set <span class="math display">\[
+\mathbf B= \left(
+  \begin{array}{c}
+   {\mathbf X}\\
+  \sqrt{\lambda} \mathbf I
+  \end{array}
+\right)
+\]</span></p></li>
+<li><p>and <span class="math inline">\(\mathbf y^* = (\mathbf y\: \mathbf 0)\)</span></p></li>
+<li><p>so that <span class="math inline">\(\mathbf B^\top \mathbf B= {\mathbf X}^\top {\mathbf X}+ \lambda I\)</span> and the residual sum of squares is unchanged</p></li>
+</ul>
+</section>
+<section id="from-ridge-to-mixed-models" class="level2">
+<h2 class="anchored" data-anchor-id="from-ridge-to-mixed-models">From ridge to mixed models</h2>
+<ul>
+<li>what if we say</li>
+</ul>
+<p><span class="math display">\[
+\begin{split}
+\mathbf y&amp; \sim \textrm{Normal}({\mathbf X}\beta, \sigma^2) \\
+\boldsymbol \beta&amp; \sim \textrm{MVN}(\mathbf 0, \sigma_g^2 \mathbf I)
+\end{split}
+\]</span></p>
+<p>?</p>
+<p>i.e. treat this as an <em>empirical Bayesian</em> problem (we estimate the <span class="math inline">\(\boldsymbol \beta\)</span> values, but do not put a prior on <span class="math inline">\(\sigma^2\)</span> or a hyperprior on <span class="math inline">\(\sigma_g^2\)</span> (= <span class="math inline">\(1/\lambda\)</span>)</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <div id="refs" role="list">
 
 </div>
-</section>
 </section>
 
 </main>

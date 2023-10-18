@@ -1,0 +1,106 @@
+---
+title: "Ridge regression and mixed models"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+<!-- typically renders in docs/ dir  -->
+
+```{r pkgs, message = FALSE}
+## it's nice to include packages at the top
+## (and NOT automatically install them)
+## try not to carry over packages you don't use
+library(ggplot2); theme_set(theme_bw())
+## diagnostics
+library(performance)
+library(DHARMa)
+## downstream model evaluation
+library(broom)
+library(dotwhisker)
+library(emmeans)
+library(effects)
+library(marginaleffects)
+library(parameters)
+## library(ggeffects)
+```
+
+## Ridge in a nutshell
+
+- **penalized** models: instead of minimizing SSQ = $\sum ((\y-\X\bbeta)_i)^2$, minimize SSQ + $\lambda ||\bbeta||_2$ (ridge)
+- or + $||\bbeta||_1$ (lasso)
+- optimize *bias-variance tradeoff*
+- equivalent to imposing iid Gaussian priors on each element of $\bbeta$
+- lasso (and elastic net, which is a convex combination of L2 and L1 penalties) are popular because they **induce sparsity**
+   - *likelihood surfaces* are non-convex with cusps at zero
+   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding); can't use *only* linear algebra
+- can generalize from penalized LM to penalized GLM
+
+##  [Andrew Gelman on variable selection](https://statmodeling.stat.columbia.edu/2023/07/18/when-your-regression-model-has-interactions-do-you-need-to-include-all-the-corresponding-main-effects/#comment-2238997)
+
+> Variable selection (that is, setting some coefficients to be exactly zero) can be useful for various reasons, including:
+> * It’s a simple form of regularization.
+> * It can reduce costs in future data collection.
+> Variable selection can be fine as a means to an end. Problems can arise if it’s taken too seriously, for example as an attempt to discover a purported parsimonious true model.
+
+## Choosing penalty strength
+
+* typically by *cross-validation*
+* leave-one-out (LOOCV) vs $k$-fold
+
+## Practical points
+
+* Predictors **must** be standardized
+* Intercept should usually be unpenalized
+
+## Ridge vs lasso
+
+- In practice people just try both (or elastic net)
+- Conjecture: whether ridge or lasso is a better *predictive* model in a particular case depends on the *effect size spectrum*
+
+## Ridge by data augmentation
+
+* set
+$$
+\B = \left(
+    \begin{array}{c}
+     \X \\
+    \sqrt{\lambda} \I
+    \end{array}
+\right)
+$$
+
+* and $\y^* = (\y \: \bzero)$
+* so that $\B^\top \B = \X^\top \X + \lambda I$ and the residual sum of squares is unchanged
+
+## From ridge to mixed models
+
+* what if we say
+
+$$
+\begin{split}
+\y & \sim \textrm{Normal}(\X \beta, \sigma^2) \\
+\bbeta & \sim \textrm{MVN}(\bzero, \sigma_g^2 \I)
+\end{split}
+$$
+
+?
+
+i.e. treat this as an *empirical Bayesian* problem (we estimate the
+$\bbeta$ values, but do not put a prior on $\sigma^2$ or a hyperprior on $\sigma_g^2$ (= $1/\lambda$)
+
+## References
+
+::: {#refs}
+:::
