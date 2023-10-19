@@ -18,7 +18,7 @@ $$
 
 <!-- typically renders in docs/ dir  -->
 
-```{r pkgs, message = FALSE}
+```{r pkgs, message = FALSE, echo = FALSE}
 ## it's nice to include packages at the top
 ## (and NOT automatically install them)
 ## try not to carry over packages you don't use
@@ -63,6 +63,12 @@ library(parameters)
 
 * Predictors **must** be standardized
 * Intercept should usually be unpenalized
+* Avoid **data leakage**
+   * don't include variables that are 'future' indicators of the outcome (e.g. see [here](https://towardsdatascience.com/data-leakage-in-machine-learning-how-it-can-be-detected-and-minimize-the-risk-8ef4e3a97562))
+   * full pipeline must be cross-validated (i.e. don't do data-dependent variable selection *before* cross-validating, or use the full data set to select a pipeline)
+   * cross-validation must account for structure in the data
+    * **either** ensure that residuals are *conditionally* independent
+	* **or** take account of grouping structures in the data (block bootstrap, spatial stratification, etc. [@robertsCrossvalidation2017, @wengerAssessing2012]
 
 ## Ridge vs lasso
 
@@ -84,6 +90,34 @@ $$
 * and $\y^* = (\y \: \bzero)$
 * so that $\B^\top \B = \X^\top \X + \lambda I$ and the residual sum of squares is unchanged
 
+## Inference
+
+* inference from penalized models is really hard
+* classical CIs for ridge are **identical** to OLS [@obenchainClassical1977]
+   > ridge techniques do not generally yield ``new'' normal theory statistical inferences: in particular, ridging does not necessarily produce ``shifted'' confidence regions.
+* **no free lunch** (i.e., no true narrowing of CIs/decreased uncertainty without additional assumptions)
+* post-selection inference is a big deal but requires very strong assumptions (asymptotic, 'gap')
+* prediction intervals are often neglected (conformal prediction, jackknife+ [@barberPredictive2021]): [MAPIE](https://mapie.readthedocs.io/en/latest/)
+
+## Practical
+
+* `glmnet` is very good
+* `ridge`, `lmridge`, ... (`library(sos); findFn("{ridge regression}")1)
+* need to give `y` and `X` directly (although see [glmnetUtils package](https://CRAN.R-project.org/package=glmnetUtils))
+
+## Tangent: how do I know if an R package is any good?
+
+* how old is it/how many releases has it had?
+* is it actively developed?
+* does the documentation give literature citations?
+* does it have reverse dependencies?
+* what is its ranking on CRAN? `packageRank::packageRank("lmridge")` (80th percentile)
+
+## James-Stein estimators
+
+* more formally, why is ridge better?
+* based on a single observation, $\y$, of a *multivariate* response with dimension $m \ge 3$, shrinking the value (usually toward zero) is a better estimate of the mean than the value itself
+
 ## From ridge to mixed models
 
 * what if we say
@@ -100,6 +134,7 @@ $$
 i.e. treat this as an *empirical Bayesian* problem (we estimate the
 $\bbeta$ values, but do not put a prior on $\sigma^2$ or a hyperprior on $\sigma_g^2$ (= $1/\lambda$)
 
+## 
 ## References
 
 ::: {#refs}

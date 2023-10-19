@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-10-16">
+<meta name="dcterms.date" content="2023-10-19">
 
 <title>Ridge regression and mixed models</title>
 <style>
@@ -19,40 +19,6 @@ ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
-}
-
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-{ counter-reset: source-line 0; }
-pre.numberSource code > span
-{ position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-{ content: counter(source-line);
-position: relative; left: -1em; text-align: right; vertical-align: baseline;
-border: none; display: inline-block;
--webkit-touch-callout: none; -webkit-user-select: none;
--khtml-user-select: none; -moz-user-select: none;
--ms-user-select: none; user-select: none;
-padding: 0 4px; width: 4em;
-}
-pre.numberSource { margin-left: 3em; padding-left: 4px; }
-div.sourceCode
-{ }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 
 div.csl-bib-body { }
@@ -3165,7 +3131,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">16 Oct 2023</p>
+      <p class="date">19 Oct 2023</p>
     </div>
   </div>
   
@@ -3176,23 +3142,6 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </header>
 
 <!-- typically renders in docs/ dir  -->
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## it&#39;s nice to include packages at the top</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## (and NOT automatically install them)</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">## try not to carry over packages you don&#39;t use</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2); <span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## diagnostics</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DHARMa)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## downstream model evaluation</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dotwhisker)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effects)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parameters)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## library(ggeffects)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <section id="ridge-in-a-nutshell" class="level2">
 <h2 class="anchored" data-anchor-id="ridge-in-a-nutshell">Ridge in a nutshell</h2>
 <ul>
@@ -3226,6 +3175,14 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <ul>
 <li>Predictors <strong>must</strong> be standardized</li>
 <li>Intercept should usually be unpenalized</li>
+<li>Avoid <strong>data leakage</strong>
+<ul>
+<li>don’t include variables that are ‘future’ indicators of the outcome (e.g. see <a href="https://towardsdatascience.com/data-leakage-in-machine-learning-how-it-can-be-detected-and-minimize-the-risk-8ef4e3a97562">here</a>)</li>
+<li>full pipeline must be cross-validated (i.e. don’t do data-dependent variable selection <em>before</em> cross-validating, or use the full data set to select a pipeline)</li>
+<li>cross-validation must account for structure in the data</li>
+<li><strong>either</strong> ensure that residuals are <em>conditionally</em> independent</li>
+<li><strong>or</strong> take account of grouping structures in the data (block bootstrap, spatial stratification, etc. <span class="citation" data-cites="robertsCrossvalidation2017">Wenger and Olden (<a href="#ref-wengerAssessing2012" role="doc-biblioref">2012</a>)</span></li>
+</ul></li>
 </ul>
 </section>
 <section id="ridge-vs-lasso" class="level2">
@@ -3250,6 +3207,41 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <li><p>so that <span class="math inline">\(\mathbf B^\top \mathbf B= {\mathbf X}^\top {\mathbf X}+ \lambda I\)</span> and the residual sum of squares is unchanged</p></li>
 </ul>
 </section>
+<section id="inference" class="level2">
+<h2 class="anchored" data-anchor-id="inference">Inference</h2>
+<ul>
+<li>inference from penalized models is really hard</li>
+<li>classical CIs for ridge are <strong>identical</strong> to OLS <span class="citation" data-cites="obenchainClassical1977">(<a href="#ref-obenchainClassical1977" role="doc-biblioref">Obenchain 1977</a>)</span> &gt; ridge techniques do not generally yield <code>new&#39;&#39; normal theory statistical inferences: in particular, ridging does not necessarily produce</code>shifted’’ confidence regions.</li>
+<li><strong>no free lunch</strong> (i.e., no true narrowing of CIs/decreased uncertainty without additional assumptions)</li>
+<li>post-selection inference is a big deal but requires very strong assumptions (asymptotic, ‘gap’)</li>
+<li>prediction intervals are often neglected (conformal prediction, jackknife+ <span class="citation" data-cites="barberPredictive2021">(<a href="#ref-barberPredictive2021" role="doc-biblioref">Barber et al. 2021</a>)</span>): <a href="https://mapie.readthedocs.io/en/latest/">MAPIE</a></li>
+</ul>
+</section>
+<section id="practical" class="level2">
+<h2 class="anchored" data-anchor-id="practical">Practical</h2>
+<ul>
+<li><code>glmnet</code> is very good</li>
+<li><code>ridge</code>, <code>lmridge</code>, … (`library(sos); findFn(“{ridge regression}”)1)</li>
+<li>need to give <code>y</code> and <code>X</code> directly (although see <a href="https://CRAN.R-project.org/package=glmnetUtils">glmnetUtils package</a>)</li>
+</ul>
+</section>
+<section id="tangent-how-do-i-know-if-an-r-package-is-any-good" class="level2">
+<h2 class="anchored" data-anchor-id="tangent-how-do-i-know-if-an-r-package-is-any-good">Tangent: how do I know if an R package is any good?</h2>
+<ul>
+<li>how old is it/how many releases has it had?</li>
+<li>is it actively developed?</li>
+<li>does the documentation give literature citations?</li>
+<li>does it have reverse dependencies?</li>
+<li>what is its ranking on CRAN? <code>packageRank::packageRank(&quot;lmridge&quot;)</code> (80th percentile)</li>
+</ul>
+</section>
+<section id="james-stein-estimators" class="level2">
+<h2 class="anchored" data-anchor-id="james-stein-estimators">James-Stein estimators</h2>
+<ul>
+<li>more formally, why is ridge better?</li>
+<li>based on a single observation, <span class="math inline">\(\mathbf y\)</span>, of a <em>multivariate</em> response with dimension <span class="math inline">\(m \ge 3\)</span>, shrinking the value (usually toward zero) is a better estimate of the mean than the value itself</li>
+</ul>
+</section>
 <section id="from-ridge-to-mixed-models" class="level2">
 <h2 class="anchored" data-anchor-id="from-ridge-to-mixed-models">From ridge to mixed models</h2>
 <ul>
@@ -3264,10 +3256,24 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <p>?</p>
 <p>i.e. treat this as an <em>empirical Bayesian</em> problem (we estimate the <span class="math inline">\(\boldsymbol \beta\)</span> values, but do not put a prior on <span class="math inline">\(\sigma^2\)</span> or a hyperprior on <span class="math inline">\(\sigma_g^2\)</span> (= <span class="math inline">\(1/\lambda\)</span>)</p>
 </section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-barberPredictive2021" class="csl-entry" role="listitem">
+Barber, Rina Foygel, Emmanuel J. Candès, Aaditya Ramdas, and Ryan J. Tibshirani. 2021. <span>“Predictive Inference with the Jackknife+.”</span> <em>The Annals of Statistics</em> 49 (1): 486–507. <a href="https://doi.org/10.1214/20-AOS1965">https://doi.org/10.1214/20-AOS1965</a>.
+</div>
+<div id="ref-obenchainClassical1977" class="csl-entry" role="listitem">
+Obenchain, R. L. 1977. <span>“Classical <span>F-Tests</span> and <span>Confidence Regions</span> for <span>Ridge Regression</span>.”</span> <em>Technometrics</em> 19 (4): 429–39. <a href="https://doi.org/10.1080/00401706.1977.10489582">https://doi.org/10.1080/00401706.1977.10489582</a>.
+</div>
+<div id="ref-robertsCrossvalidation2017" class="csl-entry" role="listitem">
+Roberts, David R., Volker Bahn, Simone Ciuti, Mark S. Boyce, Jane Elith, Gurutzeta Guillera-Arroita, Severin Hauenstein, et al. 2017. <span>“Cross-Validation Strategies for Data with Temporal, Spatial, Hierarchical, or Phylogenetic Structure.”</span> <em>Ecography</em> 40 (8): 913–29. <a href="https://doi.org/10.1111/ecog.02881">https://doi.org/10.1111/ecog.02881</a>.
+</div>
+<div id="ref-wengerAssessing2012" class="csl-entry" role="listitem">
+Wenger, Seth J., and Julian D. Olden. 2012. <span>“Assessing Transferability of Ecological Models: An Underappreciated Aspect of Statistical Validation.”</span> <em>Methods in Ecology and Evolution</em> 3 (2): 260–67. <a href="https://doi.org/10.1111/j.2041-210X.2011.00170.x">https://doi.org/10.1111/j.2041-210X.2011.00170.x</a>.
+</div>
 </div>
 </section>
 
