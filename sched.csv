@@ -5,7 +5,7 @@ week, start_date, topic, readings, assignments, notes
 4,2023-09-26,GLMs 1,,[hw1](assignments/hw1.html) due Fri,[GLMs](notes/GLMs.html) ([PDF](notes/GLMs.pdf))
 5,2023-10-03,GLMs 2,,,
 6,2023-10-10,midterm recess,,,
-7,2023-10-17,Penalization and regularization 1,,,
+7,2023-10-17,Penalization and regularization 1,,,[ridge_mixed](notes/ridge_mixed.html) ([PDF](notes/ridge_mixed.pdf))
 8,2023-10-24,Penalization and regularization 2,,,
 9,2023-10-31,Mixed models 1,,,
 10,2023-11-07,Mixed models 2,,,
