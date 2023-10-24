@@ -116,11 +116,47 @@ $$
 ## James-Stein estimators
 
 * more formally, why is ridge better?
-* based on a single observation, $\y$, of a *multivariate* response with dimension $m \ge 3$, shrinking the value (usually toward zero) is a better estimate of the mean than the value itself
+* based on a single observation, $\y$, of a *multivariate* response with dimension $m \ge 3$, shrinking the value (usually toward zero) is a better estimate of the mean than the value itself (!)
+
+$$
+\hat \mu(X_1, \ldots, X_n) = \left(1-\frac{(p-2) \sigma^2/n}{||\bar X_n||^2}\right) \bar X_n
+$$
+
+* (connected to recurrence of random walks in $d \le 2$, non-recurrence in $d\ge 3$ ...)
+* "paradox": the quantities in the vector don't have to have anything to do with each other (and, we can shrink to any point, not necessarily zero ...)
+
+From @antogniniUnderstanding2021:
+
+![](../pix/stein1.png)
+
+From @harrisVisualizing2013:
+
+![](../pix/stein2.png)
+
+- @vanhouwelingenShrinkage2001 gives a very nice explanation/transition from James-Stein to penalized regression etc.
+
 
 ## From ridge to mixed models
 
-* what if we say
+i.e. treat this as an *empirical Bayesian* problem (we estimate the
+$\bbeta$ values, but do not put a prior on $\sigma^2$ or a hyperprior on $\sigma_g^2$ (= $1/\lambda$)
+
+From @vanhouwelingenShrinkage2001 (ultimately from Efron and Morris 1972):
+
+If we use a prior with $\mu_i \sim N(\mu, \tau^2)$ (assuming residual variance is 1 wlog), then
+
+$$
+\begin{split}
+E(\mu_i|X_i) & = \mu + \frac{\tau^2}{\tau^2+1}(X_i - \mu) \\
+var(\mu_i|X_i) & = \frac{\tau^2}{\tau^2+1}
+\end{split}
+$$
+
+But we still have to estimate $\tau$ (or $\tau^2/(\tau^2+1)$ from the data).
+
+## MVN version
+
+We can be much more general:
 
 $$
 \begin{split}
@@ -129,13 +165,67 @@ $$
 \end{split}
 $$
 
-?
+## Back to 1D
 
-i.e. treat this as an *empirical Bayesian* problem (we estimate the
-$\bbeta$ values, but do not put a prior on $\sigma^2$ or a hyperprior on $\sigma_g^2$ (= $1/\lambda$)
+The simplest case (described in an R formula as `y ~ 1 + (1|g)`) is a model with a population-level intercept $\beta_0$ and group-level deviations from the population mean $b_i$.
 
-## 
+This case, and more complex cases, can be written as
+
+$$
+\begin{split}
+y_i & \sim \textrm{Normal}((\X \bbeta + \Z \bb)_i, \sigma^2_r) \\
+\bb & \sim \textrm{MVN}(\bzero, \Sigma(\btheta))
+\end{split}
+$$
+where $\btheta$ is a vector of parameters that defines the covariance matrix $\Sigma$.
+
+## How do we estimate this?
+
+* can use EM algorithm (e.g. see [here](https://stt.msu.edu/users/pszhong/Lecture_23_Spring_2017.pdf), or the [lmm package](https://github.com/jinghuazhao/R/tree/master/lmm))
+* Or by linear algebra. For LMMs, we do a more complicated version of *data augmentation*.
+* given a value for the random-effects variance, we can calculate the log-likelihood in one step (see
+* large, sparse matrix computation
+* has to be done *repeatedly*
+* most efficient if we analyze the matrix and permute to optimize structure [@batesFitting2015a]
+* then we need to do some kind of search over the space of variances
+* derivatives are available in particular special cases
+
+## The general case
+
+Given a model of the form
+
+$$
+\begin{split}
+y_i & \sim \textrm{Normal}((\X \bbeta + \Z \bb)_i, \sigma^2_r) \\
+\bb & \sim \textrm{MVN}(\bzero, \Sigma(\btheta))
+\end{split}
+$$
+
+* How do we specify and set up $Z$?
+* How do we specify and set up $\Sigma$?
+
+## constructing the random-effects model matrix
+
+* specify as `(t|g)`; `t` is the *term* and `g` is the *grouping factor*
+* for intercepts, just the indicator matrix
+* for more complex models (random slopes), take the *Khatri-Rao* product of the model matrix of the term with the indicator matrix of `g`
+* concatenate multiple random effects terms into a single `Z` matrix
+
+## constructing the covariance matrix
+
+* blockwise
+* what's the best way to parameterize a positive-(semi)definite matrix? [@pinheiroUnconstrained1996a]
+* Cholesky decomposition with 
+* scaled or unscaled?
+* Cholesky or log-Cholesky scale?
+* separating correlation and SD vectors: [glmmTMB](https://glmmtmb.github.io/glmmTMB/articles/covstruct.html#unstructured):
+
+$$
+\Sigma = D^{-1/2} L L^\top D^{-1/2}, \quad D = \textrm{diag}(L L^\top)
+$$
+
 ## References
 
 ::: {#refs}
 :::
+
