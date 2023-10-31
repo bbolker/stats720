@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-10-29">
+<meta name="dcterms.date" content="2023-10-30">
 
 <title>homework 3</title>
 <style>
@@ -3164,7 +3164,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">29 Oct 2023</p>
+      <p class="date">30 Oct 2023</p>
     </div>
   </div>
   
@@ -3201,16 +3201,13 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 </div>
 </div>
 <ol type="a">
-<li>Using both <code>lmer</code> (from <code>lmerTest</code>) and <code>lme</code> (from <code>nlme</code>), Fit a random-slope linear mixed model with <code>cog</code> as the response variable, <code>age</code> and <code>trt</code> as fixed effects, <code>id</code> as the grouping variable and the intercept and effect of <code>age</code> varying among individuals.</li>
-<li>Extract the fixed-effect coefficients and create a coefficient plot (e.g., using <code>dotwhisker::dwplot()</code> or <code>broom.mixed</code> plus <code>ggplot2</code>), making sure to scale the coefficients (or the predictor variables). Looking at the coefficient summaries, how much do the estimated values and SEs (and therefore Wald CIs) vary between packages? How much do the estimated denominator degrees of freedom (<code>df</code>) vary?</li>
-<li>Compare the estimated denominator df (<code>ddf</code>) with the Satterthwaite vs. Kenward-Roger approximations. In this particular example, how important are these differences?</li>
-<li>Take a random subset of 70% (rounded) of the observatiohs, refit the same models, and compare the magnitudes of the differences with those from the previous two bullet points. (Please show me the code but <em>not</em> all of the output - a verbal description of the differences is sufficient.)</li>
-<li>Going back to the model on the full data, how much do the estimated random effects differ? (It may be useful to use <code>tidy(..., &quot;ran_pars&quot;)</code></li>
+<li>Using both <code>lmer</code> (from <code>lmerTest</code>) and <code>lme</code> (from <code>nlme</code>), with the default REML estimation, fit a random-slope linear mixed model with <code>cog</code> as the response variable, <code>age</code> and <code>trt</code> as fixed effects, <code>id</code> as the grouping variable and the intercept and effect of <code>age</code> varying among individuals. For <code>lme</code>, use the argument <code>lmeControl(opt = &quot;optim&quot;)</code>. <code>lmer</code> will give you warnings; that’s expected, and we’ll resolve that problem later. Based on the log-likelihoods, which package is getting a better fit?</li>
+<li>Extract the fixed-effect coefficients and create a coefficient plot (e.g., using <code>dotwhisker::dwplot()</code> or <code>broom.mixed</code> plus <code>ggplot2</code>), making sure to scale the coefficients (or the predictor variables). Looking at the coefficient summaries, how much do the estimated values and SEs (and therefore Wald CIs) vary between packages? How much do the estimated denominator degrees of freedom (<code>ddf</code>) vary?</li>
+<li>Compare the estimated denominator df (<code>ddf</code>) for the <code>lmer</code> fit with the Satterthwaite vs. Kenward-Roger approximations. In this particular example, how important are these differences?</li>
+<li>For the <code>lmer</code> fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use <code>ranef</code> or <code>tidy(..., effects = &quot;ran_vals&quot;)</code></li>
 <li>Explain why it does not make sense to treat <code>trt</code> as a random variable</li>
 <li>Explain why it would be weird to leave the fixed effect of <code>age</code> out of the model while retaining the random effect of <code>age</code> across <code>id</code>.</li>
-<li>Using <em>either</em> package, refit the model with maximum likelihood instead of the default REML estimation and compare the differences in the random effect and fixed effect estimates between ML and REML fits.</li>
-<li>Using <code>lmerTest</code> (and REML estimation), fit reduced models with (1) independent intercept and age variation across subjects, (2) intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models. Use parametric bootstrap (with <code>pbkrtest::PBmodcomp</code> or implementing it yourself) to do likelihood ratio tests comparing the nested series of models (correlated slope/intercept, independent slope/intercept, intercept only). Compare the results. Why are standard LRT/AIC testing problematic in the second comparison (independent slope/intercept vs intercept only) but <strong>not</strong> the first (correlated vs independent slope/intercept)?</li>
-<li>using <code>lme</code>, fit a model with that treats <code>age</code> as a categorical rather than a numeric predictor. In order to do this, you’ll have to fix the residual SD to a small value; it will also help to use a different optimizer (i.e., specify <code>control = lmeControl(sigma = 1e-3, opt = &quot;optim&quot;)</code> when fitting the model). Explain why you need to fix the residual SD in this case. The results of <code>intervals(your_model)</code> are bad? Why, and how is this connected to your explanation?</li>
+<li>Using <code>lmerTest</code> (and REML estimation), fit reduced models with all of the same fixed effects but with (1) independent intercept and age variation across subjects, (2) intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models. Use parametric bootstrap (with <code>pbkrtest::PBmodcomp</code> or implementing it yourself) to do likelihood ratio tests comparing the nested series of models (correlated slope/intercept, independent slope/intercept, intercept only); that is, compare the full/correlated model to the independent model, and the independent model to the model with only intercept. Why are standard LRT/AIC testing problematic in the second comparison (independent slope/intercept vs intercept only) but <strong>not</strong> the first (correlated vs independent slope/intercept)?</li>
 </ol>
 <section id="references" class="level2 unnumbered">
 
