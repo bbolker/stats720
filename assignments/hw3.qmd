@@ -40,7 +40,7 @@ b. Extract the fixed-effect coefficients and create a coefficient plot (e.g., us
 c. Compare the estimated denominator df (`ddf`) for the `lmer` fit with the Satterthwaite vs. Kenward-Roger approximations. In this particular example, how important are these differences?
 d. For the `lmer` fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use `ranef` or `tidy(..., effects = "ran_vals")`
 e. Explain why it does not make sense to treat `trt` as a random variable
-f. Explain why it would be weird to leave the fixed effect of `age` out of the model while retaining the random effect of `age` across `id`.
+f. Explain why it would be weird to leave the fixed effect of `age` out of the model while retaining the random variation of `age` across `id` (i.e., fitting a model like `cog ~ 1 + trt + (1 + age | id)`).
 h. Using `lmerTest` (and REML estimation), fit reduced models with all of the same fixed effects but with (1) independent intercept and age variation across subjects, (2) intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models. Use parametric bootstrap (with `pbkrtest::PBmodcomp` or implementing it yourself) to do likelihood ratio tests comparing the nested series of models (correlated slope/intercept, independent slope/intercept, intercept only); that is, compare the full/correlated model to the independent model, and the independent model to the model with only intercept. Why are standard LRT/AIC testing problematic in the second comparison (independent slope/intercept vs intercept only) but **not** the first (correlated vs independent slope/intercept)?
 
 ## References

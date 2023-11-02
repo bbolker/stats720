@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-10-30">
 
 <title>homework 3</title>
 <style>
@@ -3164,7 +3163,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">30 Oct 2023</p>
+      <p class="date">2 Nov 2023</p>
     </div>
   </div>
   
@@ -3206,7 +3205,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <li>Compare the estimated denominator df (<code>ddf</code>) for the <code>lmer</code> fit with the Satterthwaite vs. Kenward-Roger approximations. In this particular example, how important are these differences?</li>
 <li>For the <code>lmer</code> fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use <code>ranef</code> or <code>tidy(..., effects = &quot;ran_vals&quot;)</code></li>
 <li>Explain why it does not make sense to treat <code>trt</code> as a random variable</li>
-<li>Explain why it would be weird to leave the fixed effect of <code>age</code> out of the model while retaining the random effect of <code>age</code> across <code>id</code>.</li>
+<li>Explain why it would be weird to leave the fixed effect of <code>age</code> out of the model while retaining the random variation of <code>age</code> across <code>id</code> (i.e., fitting a model like <code>cog ~ 1 + trt + (1 + age | id)</code>).</li>
 <li>Using <code>lmerTest</code> (and REML estimation), fit reduced models with all of the same fixed effects but with (1) independent intercept and age variation across subjects, (2) intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models. Use parametric bootstrap (with <code>pbkrtest::PBmodcomp</code> or implementing it yourself) to do likelihood ratio tests comparing the nested series of models (correlated slope/intercept, independent slope/intercept, intercept only); that is, compare the full/correlated model to the independent model, and the independent model to the model with only intercept. Why are standard LRT/AIC testing problematic in the second comparison (independent slope/intercept vs intercept only) but <strong>not</strong> the first (correlated vs independent slope/intercept)?</li>
 </ol>
 <section id="references" class="level2 unnumbered">
