@@ -1,0 +1,193 @@
+---
+title: "MCMC examples"
+bibliography: "../stats720.bib"
+---
+
+<!--
+remotes::install_github("stan-dev/cmdstanr#881")
+-->
+
+```{r pkgs, message = FALSE}
+library(MCMCglmm)
+library(brms)
+library(rstanarm)
+library(lme4)
+options(brms.backend = "cmdstanr")
+library(broom.mixed)
+library(purrr)
+library(dplyr)
+library(tidybayes)
+library(bayesplot)
+library(bayestestR)
+library(ggplot2); theme_set(theme_bw())
+library(shinystan)
+library(tidyverse)
+```
+
+* a little more on priors:
+    * parameter-expanded priors: $y_j | \mu, \xi_j \sim N(\mu + \alpha \sigma_j, \sigma^2_j)$, $\sigma_j \sim N(0, \sigma_\xi^2)$; $\alpha \sim N(\alpha_0, \sigma_\alpha)$, $\sigma_\alpha \sim \textrm{inverse-Gamma}(\nu)$
+	
+```{r param_expand, eval = FALSE}
+df(v/alpha.V, df1 = 1, df2 = nu, ncp = (alpha.mu^2)/alpha.V)
+2 * dt(sqrt(v)/sqrt(alpha.V), df = nu, ncp = alpha.mu/sqrt(alpha.V))
+```
+
+... always set `alpha.mu=0`, can set `V = 1` (or `diag()` in more complex cases) wlog; `sqrt(alpha.V)` (scale) and `nu` are the only relevant parameters
+
+## effective sample size
+
+* number of samples, corrected for autocorrelation
+* ESS may be > sample size! (e.g. *antithetic sampling*)
+* efficiency of a sampler is not (samples/time), but (effective samples/time)
+* effective sample size >1000 for both tail and bulk quantities [@vehtariRankNormalization2021a]
+
+## Bayesian workflow
+
+@gelmanBayesian2020
+
+![](pix/workflow.png)
+
+## simulation-based calibration
+
+@taltsValidating2020
+
+## default priors/prior predictive simulations:
+
+* `rstanarm` default priors: https://cran.r-project.org/web/packages/rstanarm/vignettes/priors.html
+
+Using the good old `sleepstudy` example:
+
+```{r priorpred,cache =TRUE}
+priorpred <- stan_lmer(Reaction ~ Days + (Days|Subject),
+                       prior_PD = TRUE, data = sleepstudy, chains = 1,
+                       refresh = 0)
+```
+
+```{r priorpred_print}
+prior_summary(priorpred)
+plot(priorpred, pars = c("(Intercept)", "Days"))
+plot(priorpred, regex_pars = "Sigma")
+```
+
+```{r stanfit, results = "hide", cache = TRUE}
+stanfit <- stan_lmer(Reaction ~ Days + (Days|Subject),
+                 data = sleepstudy, chains = 4)
+```
+
+```{r diagnose}
+print(bayestestR::diagnostic_posterior(stanfit),      digits = 4)
+```
+
+```{r shinystan, eval = FALSE}
+launch_shinystan(stanfit)
+```
+
+```{r diags}
+mcmc_trace(stanfit, regex_pars= "Sigma")
+mcmc_rank_overlay(stanfit, regex_pars= "Sigma")
+```
+
+* MCMC diagnostics
+   * trace plots, improved trace plots
+   * R-hat @vehtariRankNormalization2021a
+   * divergences (HMC only)
+
+See http://bbolker.github.io/bbmisc/bayes/examples.html
+
+## doing stuff with the results
+
+```{r tidy_stanfit}
+tidy(stanfit, effects=c("fixed", "ran_pars"), conf.int = TRUE)
+```
+
+¿¿ why don't we get confidence intervals ?? Do it by hand ...
+
+
+```{r stanfit_draws}
+(as_draws(stanfit)
+    |> tidyr::pivot_longer(everything())
+    |> group_by(name)
+    |> summarise(estimate = median(value),
+                 lwr = quantile(value, 0.025),
+                 upr = quantile(value, 0.975))
+    |> filter(!stringr::str_detect(name, "^b\\["))
+)
+```
+
+```{r brms_setup}
+form1 <- Reaction ~ Days + (Days|Subject)
+get_prior(form1, sleepstudy)
+b_prior <- c(set_prior("normal(200, 50)", "Intercept"),
+             set_prior("normal(0, 10)", "b"),
+             set_prior("normal(0, 1)", "sigma")
+             )
+```
+
+```{r brms_fit, cache=TRUE}
+b <- brm(form1, sleepstudy, 
+         prior = b_prior,
+         seed = 101,              ## reproducibility
+         sample_prior = 'only',   ## for prior predictive sim
+         chains = 1, iter = 500,  ## very short sample for convenience
+         silent = 2, refresh = 0  ## be vewy vewy quiet ...
+         )
+p_df <- sleepstudy |> add_predicted_draws(b)
+```
+
+'spaghetti plot' of prior preds
+
+```{r spaghetti1}
+gg0 <- ggplot(p_df,aes(Days, .prediction, group=interaction(Subject,.draw))) +
+        geom_line(alpha = 0.1)
+```
+
+```{r brmfit, cache=TRUE, results = "hide"}
+b_prior4 <- c(set_prior("normal(200, 5)", "Intercept"),
+              set_prior("normal(0, 2)", "b"),
+              set_prior("normal(0, 1)", "sd"),
+              set_prior("normal(0, 1)", "sigma")
+              )
+cc <-capture.output(
+    b_reg <- brm(form1, sleepstudy,
+             prior = b_prior4,
+             seed = 101,
+             init = 0,
+             control = list(adapt_delta = 0.95)
+             )
+)
+```
+
+```{r}
+print(bayestestR::diagnostic_posterior(b_reg),      digits = 4)
+```
+
+```{r}
+## debug(MCMCglmm:::priorformat)
+m <- MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
+              data = sleepstudy,
+              verbose=FALSE,
+              prior = list(G=list(G1=list(V=diag(2), nu = 0.1))))
+broom.mixed::tidy(m)
+```
+
+```{r}
+try(MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
+              data = sleepstudy,
+              verbose=FALSE,
+              prior = list(G=list(G1=list(V=diag(2), nu = 0.1,
+                                          alpha.mu = 0, alpha.V = diag(2))))))
+
+
+m2 <- MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
+              data = sleepstudy,
+              verbose=FALSE,
+              prior = list(G=list(G1=list(V=diag(2), nu = 0.1,
+                                          alpha.mu = rep(0,2),
+                                          alpha.V = diag(2)))))
+```
+
+```{r}
+lattice::xyplot(m2$VCV)
+```
+
+Run longer (and thin)? Strengthen prior?
