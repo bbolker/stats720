@@ -8,20 +8,18 @@ remotes::install_github("stan-dev/cmdstanr#881")
 -->
 
 ```{r pkgs, message = FALSE}
-library(MCMCglmm)
-library(brms)
-library(rstanarm)
-library(lme4)
+library(MCMCglmm)  ## older, Gibbs-sampling
+library(brms)      ## newest, lme4-like syntax, very flexible, compiled
+library(rstanarm)  ## lme4-like syntax, pre-compiled
+library(lme4)      ## to get data
 options(brms.backend = "cmdstanr")
-library(broom.mixed)
-library(purrr)
-library(dplyr)
-library(tidybayes)
+library(broom.mixed)  ## 'tidy'
+library(tidybayes)  ## convenience functions for getting MCMC output in 'tidy' format
 library(bayesplot)
-library(bayestestR)
+library(bayestestR)  ## diagnostics
 library(ggplot2); theme_set(theme_bw())
-library(shinystan)
-library(tidyverse)
+library(shinystan)  ## diagnostics for Stan in a Shiny window
+library(tidyverse)  ## general-purpose manipulations
 ```
 
 * a little more on priors:
@@ -60,6 +58,7 @@ Using the good old `sleepstudy` example:
 ```{r priorpred,cache =TRUE}
 priorpred <- stan_lmer(Reaction ~ Days + (Days|Subject),
                        prior_PD = TRUE, data = sleepstudy, chains = 1,
+                       seed = 101,
                        refresh = 0)
 ```
 
@@ -157,6 +156,10 @@ cc <-capture.output(
 )
 ```
 
+From the [Stan forums](https://discourse.mc-stan.org/t/metropolis-rejection-proposal-due-to-incorrect-numerical-values-for-derived-parameter/3654/3):
+
+> This is common and not a problem, the algorithm explores a large range of values in the warm-up phase and often triggers numerical problems that go away.
+
 ```{r}
 print(bayestestR::diagnostic_posterior(b_reg),      digits = 4)
 ```
@@ -191,3 +194,13 @@ lattice::xyplot(m2$VCV)
 ```
 
 Run longer (and thin)? Strengthen prior?
+
+## to do
+
+- sort out `cmdstanr` make stuff
+- test silencing of `brms` messages
+- improve `tidy` for `rstanarm`
+- better ways to get draws
+- prior pred sims for `MCMCglmm`? (examples of parameter-expansion)
+- SBC examples?
+- figure out compilation caching for `brms`?

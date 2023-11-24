@@ -119,20 +119,18 @@ div.csl-indent {
 remotes::install_github("stan-dev/cmdstanr#881")
 -->
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MCMCglmm)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MCMCglmm)  <span class="do">## older, Gibbs-sampling</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)      <span class="do">## newest, lme4-like syntax, very flexible, compiled</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)  <span class="do">## lme4-like syntax, pre-compiled</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)      <span class="do">## to get data</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">brms.backend =</span> <span class="st">"cmdstanr"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2); <span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinystan)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)  <span class="do">## 'tidy'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)  <span class="do">## convenience functions for getting MCMC output in 'tidy' format</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayesplot)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(bayestestR)  <span class="do">## diagnostics</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2); <span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinystan)  <span class="do">## diagnostics for Stan in a Shiny window</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="do">## general-purpose manipulations</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>a little more on priors:
@@ -169,10 +167,11 @@ remotes::install_github("stan-dev/cmdstanr#881")
 <li><code>rstanarm</code> default priors: https://cran.r-project.org/web/packages/rstanarm/vignettes/priors.html</li>
 </ul>
 <p>Using the good old <code>sleepstudy</code> example:</p>
-<div class="cell" data-hash="mcmc_cache/html/priorpred_044ba86b88ca59bff3f0435ad6fa7986">
+<div class="cell" data-hash="mcmc_cache/html/priorpred_6397e657cf7fe9caf391e2dda6a43d6e">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>priorpred <span class="ot">&lt;-</span> <span class="fu">stan_lmer</span>(Reaction <span class="sc">~</span> Days <span class="sc">+</span> (Days<span class="sc">|</span>Subject),</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">prior_PD =</span> <span class="cn">TRUE</span>, <span class="at">data =</span> sleepstudy, <span class="at">chains =</span> <span class="dv">1</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">refresh =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">seed =</span> <span class="dv">101</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">refresh =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prior_summary</span>(priorpred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1012,6 +1011,10 @@ See help('prior_summary.stanreg') for more details</code></pre>
 <pre><code>Chain 4 </code></pre>
 </div>
 </div>
+<p>From the <a href="https://discourse.mc-stan.org/t/metropolis-rejection-proposal-due-to-incorrect-numerical-values-for-derived-parameter/3654/3">Stan forums</a>:</p>
+<blockquote class="blockquote">
+<p>This is common and not a problem, the algorithm explores a large range of values in the warm-up phase and often triggers numerical problems that go away.</p>
+</blockquote>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb245"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb245-1"><a href="#cb245-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bayestestR<span class="sc">::</span><span class="fu">diagnostic_posterior</span>(b_reg),      <span class="at">digits =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1059,10 +1062,22 @@ See help('prior_summary.stanreg') for more details</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a>lattice<span class="sc">::</span><span class="fu">xyplot</span>(m2<span class="sc">$</span>VCV)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="mcmc_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="mcmc_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Run longer (and thin)? Strengthen prior?</p>
+</section>
+<section id="to-do" class="level2">
+<h2 class="anchored" data-anchor-id="to-do">to do</h2>
+<ul>
+<li>sort out <code>cmdstanr</code> make stuff</li>
+<li>test silencing of <code>brms</code> messages</li>
+<li>improve <code>tidy</code> for <code>rstanarm</code></li>
+<li>better ways to get draws</li>
+<li>prior pred sims for <code>MCMCglmm</code>? (examples of parameter-expansion)</li>
+<li>SBC examples?</li>
+<li>figure out compilation caching for <code>brms</code>?</li>
+</ul>
 
 </section>
 
