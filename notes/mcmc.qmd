@@ -130,7 +130,7 @@ b <- brm(form1, sleepstudy,
          chains = 1, iter = 500,  ## very short sample for convenience
          silent = 2, refresh = 0  ## be vewy vewy quiet ...
          )
-p_df <- sleepstudy |> add_predicted_draws(b)
+p_df <- sleepstudy |> tidybayes::add_predicted_draws(b)
 ```
 
 'spaghetti plot' of prior preds
@@ -147,24 +147,31 @@ b_prior4 <- c(set_prior("normal(200, 5)", "Intercept"),
               set_prior("normal(0, 1)", "sigma")
               )
 cc <-capture.output(
+    suppressMessages(
     b_reg <- brm(form1, sleepstudy,
              prior = b_prior4,
              seed = 101,
              init = 0,
              control = list(adapt_delta = 0.95)
-             )
+             ))
 )
 ```
+
+I've used `suppressMessages` to get rid of a lot of messages like
+
+> Chain 1 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue: Exception: normal_id_glm_lpdf: Scale vector is inf, but must be positive finite! (in '/tmp/RtmpSSmixI/model-6899b70c2b466.stan', line 74, column 4 to column 55) If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine, but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
+
+Suppressing all messages is generally a bad idea (it might suppress other messages that you do want to see), but there's no obvious way to suppress just these messages *when they occur in the warmup phase*, which seems to be a harmless case.
 
 From the [Stan forums](https://discourse.mc-stan.org/t/metropolis-rejection-proposal-due-to-incorrect-numerical-values-for-derived-parameter/3654/3):
 
 > This is common and not a problem, the algorithm explores a large range of values in the warm-up phase and often triggers numerical problems that go away.
 
-```{r}
+```{r diagnose_b_reg}
 print(bayestestR::diagnostic_posterior(b_reg),      digits = 4)
 ```
 
-```{r}
+```{r MCMCglmm_tidy}
 ## debug(MCMCglmm:::priorformat)
 m <- MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
               data = sleepstudy,
@@ -173,7 +180,7 @@ m <- MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
 broom.mixed::tidy(m)
 ```
 
-```{r}
+```{r try_MCMCglmm}
 try(MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
               data = sleepstudy,
               verbose=FALSE,
@@ -189,7 +196,7 @@ m2 <- MCMCglmm(Reaction ~ Days, random = ~us(1+Days):Subject,
                                           alpha.V = diag(2)))))
 ```
 
-```{r}
+```{r plot_mcmcglmm}
 lattice::xyplot(m2$VCV)
 ```
 
@@ -197,10 +204,10 @@ Run longer (and thin)? Strengthen prior?
 
 ## to do
 
-- sort out `cmdstanr` make stuff
 - test silencing of `brms` messages
 - improve `tidy` for `rstanarm`
 - better ways to get draws
 - prior pred sims for `MCMCglmm`? (examples of parameter-expansion)
 - SBC examples?
 - figure out compilation caching for `brms`?
+- contact Hadfield about `MCMCglmm` tweaks

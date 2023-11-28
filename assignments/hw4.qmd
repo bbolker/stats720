@@ -1,0 +1,41 @@
+---
+title: "homework 4"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+---
+
+**Due:** Friday December 8. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+
+**Please make sure your code is reproducible**:
+
+* no absolute path names (e.g. `"C:\My Files\homework"`)
+* include any `library()` statements at the top of your file (do not include `install.packages()` statements unless they are commented out)
+* make sure I have access to any data files you use in your examples
+
+See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
+
+1. Analyze the `nepali` data set from the `faraway` package to understand the determinants of weight gain over time in Nepalese children.
+
+* read the help page to see what the variables mean.
+* do **not** use height (`ht`) as a predictor (it is measured at the same time as weight, so it's not a variable you could use to predict)
+* convert the `sex` variable into a factor with levels "male" and "female"
+* plot the data in a sensible way, indicating (at least) age, weight, and distinguishing the data points measured for each child
+* fit an appropriate model (explain your choices)
+* check model diagnostics and evaluate them: explain what (if anything) is wrong, and adjust your model (if necessary) to try to fix those problems
+* explain the model results
+* plot the data in some sensible way (possibly using only a subset of the predictor variables) and overlay the predictions of the model, with confidence intervals (you can use e.g. `ggpredict` or `ggeffect` from the `ggeffects` package)
+* now that you've done your analysis, look at the original paper the data were taken from [@westEffects1997] and comment on the differences between your analyses and the one done in the paper
+
+2. Analyze the `Contraception` data set from the `mlmRev` package to analyze contraception use.
+
+* do all the same steps as in the previous question (skipping the ones specific to the `nepali` data set). In this case, the relevant paper from the literature is @ngEstimation2006.
+* in addition to the steps from the previous model, create a coefficient plot that compares the fixed-effect parameters from (a) a completely pooled analysis (i.e. using `glm`); (b) an analysis using penalized quasi-likelihood (with `MASS::glmmPQL`); (c) Laplace approximation; (d) adaptive Gauss-Hermite quadrature using 20 quadrature points.
+
+3. Redo either of the above analyses using two different R packages that handle Bayesian MCMC analyses of GLMMs.
+
+4. Do a simulation study to compare PQL, Laplace, and 20-point AGHQ.
+
+* Write a function `simfun(beta, theta, n, ngrp)` that constructs a data set with `n` observations where: `x` is a standard Normal deviate; `g` is a grouping variable (factor) with `ngrp` levels, with equal numbers of samples from each; `y` is a simulated Poisson deviate generated using fixed-effect parameters `beta` and random-effect parameters `theta`, with the formula `~ 1 + x + (1|g)`. See `lme4::simulate.merMod` or `glmmTMB::simulate_new` for functions that can generate such data.
+* Write a function `fitfun(data, nAGQ)` that fits a Poisson GLMM to the data, using the formula `y ~ 1 + x + (1|g)`, and returns the fixed-effect coefficients with their confidence intervals. If `nAGQ==-2`, fit with a `glm`; if `nAGQ==-1`, fit with `MASS::glmmPQL`; if `nAGQ>=1`, plug this value into the `nAGQ` argument of `glmer` to fit with Laplace (`nAGQ=1`) or AGHQ (`nAGQ>1`)
+* Run `fitfun(simfun(...))` function 100 times (use `replicate()` or a `for` loop) with `{beta=c(-2,0.5); theta = 1; n=500; ngrp=100}` and 100 times with the same parameters, but with `beta[1]` changed to 2. Compute the bias, variance, scaled RMSE (i.e., `sqrt(sum((estimated/true-1)^2))`), and coverage for `beta[2]` for each method, for each set of parameters.
