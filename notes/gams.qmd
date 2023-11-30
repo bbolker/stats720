@@ -138,19 +138,29 @@ for generalized (non-Gaussian) models
 apropos("smooth.construct") |> gsub(pattern = "smooth\\.construct\\.|\\.smooth\\.spec", replacement = "") |> grep(pattern = "smooth", invert = TRUE, value = TRUE)
 ```
 
-```{r}
+```{r gam1}
 g1 <- gam(mpg ~ s(hp), data = mtcars)
 summary(g1)
+```
+
+Plot:
+
+```{r gam_plot1, fig.width = 12, fig.height = 6}
 plot(g1)
+```
+
+Check:
+
+```{r gam_check}
 gam.check(g1)
 ```
 
-```{r}
+```{r draw_appraise}
 draw(g1)
 appraise(g1)
 ```
 
-```{r}
+```{r gam2}
 g2 <- gam(mpg ~ s(hp), data = mtcars, fit = FALSE)
 ```
 
