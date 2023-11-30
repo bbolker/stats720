@@ -1,0 +1,132 @@
+---
+title: "Generalized additive (mixed) models"
+bibliography: "../stats720.bib"
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+## Additive models
+
+* generally a way to specify more complex (smooth) terms based on *individual* covariates: $\mu = \beta_0 + f_1(x_1) + f_2(x_2) + \ldots$
+* lots of ways to generate $f_i(x_i)$: kernel estimators, locally weighted polynomials, ... see @hastieGeneralized1990,  @hastieElements2009 (*backfitting algorithm* etc.)
+* we will focus on 
+
+## Basis expansions
+
+* (theoretically) infinitely expandable
+* e.g. polynomials ('regular'/raw, orthogonal, Legendre, Hermite)
+* wavelet, Fourier
+- splines: **piecewise polynomial** with continuity/smoothness constraints
+
+## Spline degree
+
+```{r}
+xvec <- seq(0, 1, length.out = 101)
+sfun <- function(d = 3, type = "bs", ...) {
+    if (type == "bs") {
+        X <- splines::bs(xvec, df = 10, degree = d)
+    } else {
+        X <- splines::ns(xvec, df = 10)
+    }
+	par(bty = "l", las = 1) 
+	matplot(xvec, X, type = "l", lty = 1, ...)
+}
+sfun(d = 1, main = "degree-1")
+sfun(d = 2, main = "degree-2")
+sfun(d = 3, main = "degree-3")
+```
+
+## spline terminology
+
+* **knots**: breakpoints (boundary, interior)
+* order-M (ESL): continuous derivatives up to order $M-2$ (cubic, $M=4$)
+* typically $M=1$, 2, 4
+* number of knots = df (degrees of freedom) -1 -intercept
+
+## Spline choices
+
+* continuous derivatives up to $d-1$
+* truncated polynomial basis (simple)
+* B-splines: complex, but *minimal support*/maximum sparsity
+* *natural* splines: extra constraint, derivatives > 1 vanish at boundaries
+
+```{r b_vs_n, fig.width = 10}
+par(mfrow = c(1,2))
+sfun()
+sfun(type = "ns")
+```
+
+## choosing knot locations
+
+* generally not that important: evenly spaced, *or* evenly spaced based on quantiles
+
+## choosing basis dimension
+
+* in principle could expand dimension to match total number of points (*interpolation spline*)
+* ... but that would overfit
+* AIC, adjusted $R^2$, cross-validation ...
+
+## smoothing splines
+
+* as many knots as data points
+* plus squared-second-derivative ("wiggliness") penalty
+
+$$
+\textrm{RSS} + \lambda \int (f''(t))^2 \, dt
+$$
+
+* defined on an infinite-dimensional space
+* minimizer is a natural cubic spline with knots at $x_i$
+
+$$
+(\y - \N  \theta)^\top (\y - \N \theta) + \lambda \theta^\top \OOmega_N \theta
+$$
+with $\{\OOmega_N\}_{jk} = \int N_j''(t) N_k''(t) \, dt$
+$$
+
+* **generalized** ridge regression: penalize by $\lambda \OOmega_N$ rather than $\lambda I$
+* same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix, and the "square root" (Cholesky factor) of $\OOmega_N$
+
+See @woodGeneralized2017, @perperogloureview2019a
+
+## connection to mixed models
+
+* note that $\lambda \theta^\top \OOmega_N \theta$ is equivalent to $\b \Sigma^{-1} \b^\top$, which is the core of the MVN log-likelihood $\log {\cal L}(\b|\Sigma)$
+
+## generalized cross-validation score
+
+* very close to AIC
+* @larsenGAM2015, @golubGeneralized1979
+* minimize $\textrm{RSS}/(\textrm{Tr}(\I-\bS(\lambda)))^2$, where $S$ is 
+* "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_ii))^2$)
+* replace RSS with approximation of deviance,
+$$
+|| \sqrt{\W} (\z - \X \bbeta)||^2
+$$
+for generalized (non-Gaussian) models
+
+## computing the REML criterion
+
+* treat spline smoothing as a *mixed model* problem
+* spline (penalized) parameters are $\uu$
+* $y|u \sim N(\X\bbeta + \Z \u, \sigma^2 \I)$; $\u \sim N(0, (\sigma^2/\lambda) \W^{-1})$
+* where the $\W$ is the penalty matrix
+* corresponds to minimizing $||\y - \X\bbeta - \Z \u||^2 + \lambda \u^\top \W \u$
+* "fixed effects are viewed as random effects with improper uniform priors and are integrated out" (Wood 2011)
+* **Laplace approximation**: may be imprecise for binary or low-mean Poisson data ...
+
+## practical stuff
+
+* Simon Wood is insanely smart, and `mgcv` is insanely powerful and flexible
+* [gratia package](https://gavinsimpson.github.io/gratia/) (named after [Grace Wahba](https://en.wikipedia.org/wiki/Grace_Wahba)
+
+
+- basis functions [@hefleyBasis2017]
+
+- GCV vs REML vs ML vs AIC ...
+- [@woodStable2004]
+- duality between Z and Sigma specification (`phyloglmm`)
