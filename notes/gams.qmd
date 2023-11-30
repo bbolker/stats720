@@ -9,6 +9,12 @@ $$
 $$
 :::
 
+```{r pkgs, message = FALSE}
+library(mgcv)
+library(gratia)
+library(tidyverse)
+```
+
 ## Additive models
 
 * generally a way to specify more complex (smooth) terms based on *individual* covariates: $\mu = \beta_0 + f_1(x_1) + f_2(x_2) + \ldots$
@@ -83,9 +89,9 @@ $$
 * minimizer is a natural cubic spline with knots at $x_i$
 
 $$
-(\y - \N  \theta)^\top (\y - \N \theta) + \lambda \theta^\top \OOmega_N \theta
+(\y - \Z  \bb)^\top (\y - \Z \bb) + \lambda \bb^\top \OOmega \bb
 $$
-with $\{\OOmega_N\}_{jk} = \int N_j''(t) N_k''(t) \, dt$
+with $\{\OOmega\}_{jk} = \int \Z_j''(t) \Z_k''(t) \, dt$
 $$
 
 * **generalized** ridge regression: penalize by $\lambda \OOmega_N$ rather than $\lambda I$
@@ -95,7 +101,9 @@ See @woodGeneralized2017, @perperogloureview2019a
 
 ## connection to mixed models
 
-* note that $\lambda \theta^\top \OOmega_N \theta$ is equivalent to $\b \Sigma^{-1} \b^\top$, which is the core of the MVN log-likelihood $\log {\cal L}(\b|\Sigma)$
+* note that $\lambda \bb^\top \OOmega \bb$ is equivalent to $(1/\sigma^2) \bb \Sigma'^{-1} \bb^\top$; if $\Sigma'$ is a *scaled* covariance matrix (i.e. $\Sigma = \sigma^2 \Sigma$), then this is the core of the MVN log-likelihood $\log {\cal L}(\bb|\Sigma)$ (all we're missing is a factor of $\textrm{Det}(\Sigma)^{-1/2}$ and a normalization constant)
+* So we can fit this with any of the mixed model machinery, provided we can set up the correct covariance matrix
+* Or 
 
 ## generalized cross-validation score
 
@@ -109,24 +117,73 @@ $$
 $$
 for generalized (non-Gaussian) models
 
-## computing the REML criterion
+## ML criterion, REML criterion
 
 * treat spline smoothing as a *mixed model* problem
 * spline (penalized) parameters are $\uu$
-* $y|u \sim N(\X\bbeta + \Z \u, \sigma^2 \I)$; $\u \sim N(0, (\sigma^2/\lambda) \W^{-1})$
+* $y|u \sim N(\X\bbeta + \Z \uu, \sigma^2 \I)$; $\uu \sim N(0, (\sigma^2/\lambda) \W^{-1})$
 * where the $\W$ is the penalty matrix
-* corresponds to minimizing $||\y - \X\bbeta - \Z \u||^2 + \lambda \u^\top \W \u$
+* corresponds to minimizing $||\y - \X\bbeta - \Z \uu||^2 + \lambda \uu^\top \W \uu$
 * "fixed effects are viewed as random effects with improper uniform priors and are integrated out" (Wood 2011)
-* **Laplace approximation**: may be imprecise for binary or low-mean Poisson data ...
+* Laplace approximation
 
 ## practical stuff
 
 * Simon Wood is insanely smart, and `mgcv` is insanely powerful and flexible
 * [gratia package](https://gavinsimpson.github.io/gratia/) (named after [Grace Wahba](https://en.wikipedia.org/wiki/Grace_Wahba)
+* available 'smooths' (bases + penalty terms): look for strings of the form `smooth.construct.*.smooth.spec`
+* although you can *theoretically* have as many knots as data points, fewer is often good enough/computationally efficient
+
+```{r basis_choices, echo = FALSE}
+apropos("smooth.construct") |> gsub(pattern = "smooth\\.construct\\.|\\.smooth\\.spec", replacement = "") |> grep(pattern = "smooth", invert = TRUE, value = TRUE)
+```
+
+```{r}
+g1 <- gam(mpg ~ s(hp), data = mtcars)
+summary(g1)
+plot(g1)
+gam.check(g1)
+```
+
+```{r}
+draw(g1)
+appraise(g1)
+```
+
+```{r}
+g2 <- gam(mpg ~ s(hp), data = mtcars, fit = FALSE)
+```
+
+**concurvity**: [CV question](https://stats.stackexchange.com/questions/401401/what-is-the-acceptable-level-of-concurvity), @ramsayEffect2003
+
+```{r}
+g3 <- gam(mpg ~ s(hp) + s(wt), data = mtcars)
+draw(g3)
+concurvity(g3)
+```
+
+Many options: simple random effects (`bs = "re"`); *cyclic* splines (make $x(0) = x(T)$; `bs="cc"`) ; multidimensional splines (thin-plate, *tensor product* (`te()`); spherical (*Duchon*) splines (`bs = "sos"`); Markov random fields (`bs = "mrf"`); Gaussian processes (`bs = "gp"`); splines by category (`by=` argument); hierarchical splines [@pedersenHierarchical2019]; constrained splines (`scam` package, @pyaShape2015); *soap film* splines; etc etc etc etc ...
+
+![](pix/hgam.png)
 
 
-- basis functions [@hefleyBasis2017]
+## Duality between $\Z$ and correlation structure
 
-- GCV vs REML vs ML vs AIC ...
-- [@woodStable2004]
-- duality between Z and Sigma specification (`phyloglmm`)
+* @hefleyBasis2017
+* "first-order specification": $\y \sim N(\X \bbeta + \Z \bb, \sigma^2_\epsilon \I)$
+* "second-order specification: $\y \sim N(\X \bbeta, \sigma^2_\epsilon \I + \sigma^2_\bb \Sigma)$
+* if $\bb$ are iid Normal, integrating first-order specification shows that $\Sigma = \Z \Z^\top$
+* e.g. latent-variable specification of an AR1 correlation structure
+* e.g. `phyloglmm`
+
+## Penalty matrices as 
+
+- @woodStable2004
+
+## Computational tricks
+
+* work with *precision matrix* where possible $\Sigma^{-1}$
+* for a **multivariate normal** response, $\Sigma^{-1}_{ij} = \Sigma^{-1}_{ji} = 0 \leftrightarrow$ $x_i$ and $x_j$ are **conditionally independent**
+* e.g. precision matrix of AR1 is tridiagonal with diagonal $1+\rho^2$, first off-diagonal elements $-\rho$ (see [here](https://haakonbakkagit.github.io/btopic120.html))
+* work with *reduced-rank* forms where necessary
+

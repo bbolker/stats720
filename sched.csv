@@ -10,6 +10,6 @@ week, start_date, topic, readings, assignments, notes
 9,2023-10-31,Mixed models 1,,,
 10,2023-11-07,Mixed models 2,,,
 11,2023-11-14,Mixed models 3,,,[mcmc](notes/mcmc.html); [mcmc pdf](notes/mcmc.pdf)
-12,2023-11-21,Additive models 1,,,
+12,2023-11-21,Additive models 1,,,[GAMs](notes/gams.html); [GAMs pdf](notes/gams.pdf)
 13,2023-11-28,Additive models 2,,,
 14,2023-12-05,Wrap-up,,,
