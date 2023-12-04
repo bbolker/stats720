@@ -103,14 +103,13 @@ See @woodGeneralized2017, @perperogloureview2019a
 
 * note that $\lambda \bb^\top \OOmega \bb$ is equivalent to $(1/\sigma^2) \bb \Sigma'^{-1} \bb^\top$; if $\Sigma'$ is a *scaled* covariance matrix (i.e. $\Sigma = \sigma^2 \Sigma$), then this is the core of the MVN log-likelihood $\log {\cal L}(\bb|\Sigma)$ (all we're missing is a factor of $\textrm{Det}(\Sigma)^{-1/2}$ and a normalization constant)
 * So we can fit this with any of the mixed model machinery, provided we can set up the correct covariance matrix
-* Or 
 
 ## generalized cross-validation score
 
 * very close to AIC
 * @larsenGAM2015, @golubGeneralized1979
 * minimize $\textrm{RSS}/(\textrm{Tr}(\I-\bS(\lambda)))^2$, where $S$ is 
-* "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_ii))^2$)
+* "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_{ii}))^2$)
 * replace RSS with approximation of deviance,
 $$
 || \sqrt{\W} (\z - \X \bbeta)||^2

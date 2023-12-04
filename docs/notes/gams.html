@@ -3283,7 +3283,6 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <ul>
 <li>note that <span class="math inline">\(\lambda \mathbf b^\top \boldsymbol \Omega\mathbf b\)</span> is equivalent to <span class="math inline">\((1/\sigma^2) \mathbf b\Sigma&#39;^{-1} \mathbf b^\top\)</span>; if <span class="math inline">\(\Sigma&#39;\)</span> is a <em>scaled</em> covariance matrix (i.e. <span class="math inline">\(\Sigma = \sigma^2 \Sigma\)</span>), then this is the core of the MVN log-likelihood <span class="math inline">\(\log {\cal L}(\mathbf b|\Sigma)\)</span> (all we’re missing is a factor of <span class="math inline">\(\textrm{Det}(\Sigma)^{-1/2}\)</span> and a normalization constant)</li>
 <li>So we can fit this with any of the mixed model machinery, provided we can set up the correct covariance matrix</li>
-<li>Or</li>
 </ul>
 </section>
 <section id="generalized-cross-validation-score" class="level2">
@@ -3292,7 +3291,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <li>very close to AIC</li>
 <li><span class="citation" data-cites="larsenGAM2015">Larsen (<a href="#ref-larsenGAM2015" role="doc-biblioref">2015</a>)</span>, <span class="citation" data-cites="golubGeneralized1979">Golub, Heath, and Wahba (<a href="#ref-golubGeneralized1979" role="doc-biblioref">1979</a>)</span></li>
 <li>minimize <span class="math inline">\(\textrm{RSS}/(\textrm{Tr}(\mathbf I-\mathbf S(\lambda)))^2\)</span>, where <span class="math inline">\(S\)</span> is</li>
-<li>“a rotation-invariant version of PRESS” (<span class="math inline">\(\sum (e_i/(1-h_ii))^2\)</span>)</li>
+<li>“a rotation-invariant version of PRESS” (<span class="math inline">\(\sum (e_i/(1-h_{ii}))^2\)</span>)</li>
 <li>replace RSS with approximation of deviance, <span class="math display">\[
 || \sqrt{\mathbf W} (\mathbf z- {\mathbf X}\boldsymbol \beta)||^2
 \]</span> for generalized (non-Gaussian) models</li>
@@ -3377,7 +3376,7 @@ Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
 indicate that k is too low, especially if edf is close to k&#39;.
 
         k&#39;  edf k-index p-value
-s(hp) 9.00 2.62    0.87    0.18</code></pre>
+s(hp) 9.00 2.62    0.87     0.2</code></pre>
 </div>
 </div>
 <div class="cell">

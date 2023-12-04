@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-27">
 
 <title>homework 4</title>
 <style>
@@ -3020,7 +3019,7 @@ vertical-align: -.125em;
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">27 Nov 2023</p>
+      <p class="date">4 Dec 2023</p>
     </div>
   </div>
   
@@ -3066,7 +3065,7 @@ vertical-align: -.125em;
 <ul>
 <li>Write a function <code>simfun(beta, theta, n, ngrp)</code> that constructs a data set with <code>n</code> observations where: <code>x</code> is a standard Normal deviate; <code>g</code> is a grouping variable (factor) with <code>ngrp</code> levels, with equal numbers of samples from each; <code>y</code> is a simulated Poisson deviate generated using fixed-effect parameters <code>beta</code> and random-effect parameters <code>theta</code>, with the formula <code>~ 1 + x + (1|g)</code>. See <code>lme4::simulate.merMod</code> or <code>glmmTMB::simulate_new</code> for functions that can generate such data.</li>
 <li>Write a function <code>fitfun(data, nAGQ)</code> that fits a Poisson GLMM to the data, using the formula <code>y ~ 1 + x + (1|g)</code>, and returns the fixed-effect coefficients with their confidence intervals. If <code>nAGQ==-2</code>, fit with a <code>glm</code>; if <code>nAGQ==-1</code>, fit with <code>MASS::glmmPQL</code>; if <code>nAGQ&gt;=1</code>, plug this value into the <code>nAGQ</code> argument of <code>glmer</code> to fit with Laplace (<code>nAGQ=1</code>) or AGHQ (<code>nAGQ&gt;1</code>)</li>
-<li>Run <code>fitfun(simfun(...))</code> function 100 times (use <code>replicate()</code> or a <code>for</code> loop) with <code>{beta=c(-2,0.5); theta = 1; n=500; ngrp=100}</code> and 100 times with the same parameters, but with <code>beta[1]</code> changed to 2. Compute the bias, variance, scaled RMSE (i.e., <code>sqrt(sum((estimated/true-1)^2))</code>), and coverage for <code>beta[2]</code> for each method, for each set of parameters.</li>
+<li>Run <code>fitfun(simfun(...))</code> function 100 times (use <code>replicate()</code> or a <code>for</code> loop) with <code>{beta=c(-2,0.5); theta = 1; n=500; ngrp=100}</code> and 100 times with the same parameters, but with <code>beta[1]</code> changed to 2. Compute the bias, variance, scaled RMSE (i.e., <code>sqrt(mean((estimated/true-1)^2))</code>), and coverage for <code>beta[2]</code> for each method, for each set of parameters.</li>
 </ul>
 
 
