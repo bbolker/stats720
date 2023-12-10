@@ -1,0 +1,51 @@
+---
+title: "homework 5"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+---
+
+**Due:** Friday December 8. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+
+**Please make sure your code is reproducible**:
+
+* no absolute path names (e.g. `"C:\My Files\homework"`)
+* include any `library()` statements at the top of your file (do not include `install.packages()` statements unless they are commented out)
+* make sure I have access to any data files you use in your examples
+
+See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
+
+```{r}
+data("Contraception", package = "mlmRev")
+Contraception <- transform(Contraception,
+                           use_n = as.numeric(use) - 1,
+                           age_sc = drop(scale(age)))
+library(mgcv)
+library(lme4)
+library(gratia)
+library(broom)
+library(broom.mixed)
+library(dotwhisker)
+m1 <- glmer(use_n ~ age_sc + urban + (1|district),
+            family = binomial,
+            data = Contraception)
+m2 <- gam(use_n ~ age_sc + urban + s(district, bs = "re"),
+            family = binomial,
+          data = Contraception)
+dwplot(list(m1, m2))
+m3 <- gam(use ~ s(age_sc, bs = "tp") + urban + s(district, bs = "re"),
+          family = binomial,
+          data = Contraception)
+draw(m3)
+m4 <- gam(use ~ s(age, bs = "tp", by = urban) + urban + livch + s(district, bs = "re"),
+            family = binomial,
+          data = Contraception)
+draw(m4)
+system.time(m5 <- gam(use ~ s(age, district, bs = "fs") + urban + livch,
+                      control = gam.control(trace = TRUE, nthreads = 10),
+                      family = binomial,
+                      REML = TRUE,
+                      data = Contraception)
+            )
+draw(m5)
+```
