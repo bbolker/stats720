@@ -1,5 +1,5 @@
 #! /bin/bash
-for i in setup hw1 hw2 hw3 mle_ex figsize hw4; do
+for i in setup hw1 hw2 hw3 mle_ex figsize hw4 hw5; do
     for j in html; do ## html docx pdf slides.html
     	make docs/assignments/$i.$j
     done

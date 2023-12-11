@@ -5,7 +5,7 @@ date: today
 date-format: "D MMM YYYY"
 ---
 
-**Due:** Friday December 8. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+**Due:** Sunday December 17. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 **Please make sure your code is reproducible**:
 
@@ -15,37 +15,61 @@ date-format: "D MMM YYYY"
 
 See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
-```{r}
+This assignment will work with the `Contraception` data set you previously explored, but mostly using GAM(M)s (via `mgcv`) rather than GLM(M)s. Throughout, you should focus *only* on the effects of age (scaled/centred for (1) computational stability and (2) comparison of parameter estimates) and urban/rural. In the examples below, I've converting the response variable (`use`) from a factor (Y/N) to a numeric (0/1) variable, again for convenience of downstream processing.
+
+You can use the following summary functions to add a nice summary of the raw data to your plot: **note** you might need to change the name of the `x` and `y` variables to match yours in the `aes()` line below (I decided to create new variables `age_sc` and `use_n` to represent the transformed (centered/numericalized) versions of the `age` and `use` variables; you might have chosen to overwrite them instead).
+
+For plotting, note that `plot(ggeffects::ggemmeans(<model>, terms = c("age [all]", "urban")))` appears to work fairly well for `gam()` output (again with the name of the `age` variable adjusted appropriately).^[(1) the `ggeffects::` part isn't necessary if you've loaded the `ggeffects` package; (2) for reasons I don't yet understand, `ggpredict()` gives weird answers for these models] For some models below you may get an "undefined columns selected" error, but it seems harmless (??)
+
+Compute binomial mean and CIs: see [this Stack Overflow question](https://stackoverflow.com/questions/77544559/fast-binom-test-in-r-for-multiple-levels-of-confidence/77545378#77545378).
+
+```{r plotfuns}
+binom_sum <- function(x, alpha = 0.05) {
+    n <- length(x); x <- sum(x)
+    est <- x/n
+    lwr <- qbeta(alpha/2, x, n-x+1)
+    zvals <- !is.na(x) & x == 0
+    nvals <- !is.na(x) & x == n
+    lwr[zvals] <- 0
+    lwr[nvals] <- (alpha/2)^(1/n[nvals])
+    upr <- qbeta(1-alpha/2, x+1, n-x)
+    upr[zvals] <- 1-(alpha/2)^(1/n[zvals])
+    upr[nvals] <- 1
+    data.frame(y=est, ymin=lwr, ymax=upr)
+}
+```
+
+To add points and confidence intervals based on this function to a `ggplot`, add this object (e.g. `plot(ggemmeans(...)) + ssb`)
+
+```{r ssb}
 data("Contraception", package = "mlmRev")
 Contraception <- transform(Contraception,
                            use_n = as.numeric(use) - 1,
                            age_sc = drop(scale(age)))
+ssb <- ggplot2::stat_summary_bin(data = Contraception,
+                            fun.data = binom_sum,
+                            bins = 10,
+                            geom = "pointrange",
+                            ## displace urban/rural bars slightly
+                            position = ggplot2::position_dodge(width = 0.05),
+                            mapping = ggplot2::aes(x = age_sc, y = use_n, colour = urban),
+                            fill = NA)
+```
+
+These packages could be useful:
+```{r setup, message = FALSE}
 library(mgcv)
 library(lme4)
-library(gratia)
 library(broom)
 library(broom.mixed)
 library(dotwhisker)
-m1 <- glmer(use_n ~ age_sc + urban + (1|district),
-            family = binomial,
-            data = Contraception)
-m2 <- gam(use_n ~ age_sc + urban + s(district, bs = "re"),
-            family = binomial,
-          data = Contraception)
-dwplot(list(m1, m2))
-m3 <- gam(use ~ s(age_sc, bs = "tp") + urban + s(district, bs = "re"),
-          family = binomial,
-          data = Contraception)
-draw(m3)
-m4 <- gam(use ~ s(age, bs = "tp", by = urban) + urban + livch + s(district, bs = "re"),
-            family = binomial,
-          data = Contraception)
-draw(m4)
-system.time(m5 <- gam(use ~ s(age, district, bs = "fs") + urban + livch,
-                      control = gam.control(trace = TRUE, nthreads = 10),
-                      family = binomial,
-                      REML = TRUE,
-                      data = Contraception)
-            )
-draw(m5)
+library(ggeffects)
 ```
+
+1. Fit a model including the effects of age, urban/rural, and their interaction, with the intercept varying among districts, using both `glmer` and `mgcv::gam()` (hint/reminder: `s(..., bs="re")` fits an IID latent variable, i.e. the equivalent of a random intercept, in `gam()`).  Compare the estimates and standard errors for the fixed-effect, non-smooth, non-intercept coefficients (i.e. age, urban/rural, age × urban/rural).
+
+2. Now fit models (using `gam()` only) with (a) a fixed *quadratic* function of age [additive, i.e. `urban` is also in the model but does not interact with age/age-pattern is assumed to be independent of urban vs. rural] [specifying a quadratic term as `poly(age_sc, 2)` will probably work better than `age_sc + I(age_sc^2)`, although both *should* work]; (b) an effect of age modeled as a thin-plate spline (`bs = "tp"`; this is the default for `s()`). Plot the predictions for each model (again including the binned proportions/binomial CIs for the raw data) and compare them. (Both models should still include a random intercept with respect to `district`.) (For extra credit, figure out how to plot the predictions for both models on the same plot.)
+
+3. Fit models (with the same general parameters as in the previous question) with (a) a quadratic-age $\times$ urban/rural interaction; (b) separate thin-plate splines for urban and rural (use the `by=` argument to `s()`).
+
+4. Finally, fit (a) a `glmer()` model that includes a fixed quadratic-age by urban/rural interaction and a random effect that allows the quadratic effect of age to vary across districts (i.e., include a `(<quadratic age model>|district)` term) and (b) a `gam()` model that includes different population-level smooths for urban vs rural (using the `by=` specification from the previous model) plus different age-smooths for each district (using a *factor smooth* basis, i.e. `s(age_sc, district, bs = "fs")`).^[This model could take a while to fit. I used `control = gam.control(trace = TRUE, nthreads = 10)` to (1) print lots of output so I could see that something was happening; (2) parallelize the computation. You should restrict the number of threads to less than the number of cores on your computer (`parallel::detectCores()`). On a relatively fast computer with 10 threads, fitting this model took about a minute.] Generate predictions using `predict()` (**not** `ggpredict` etc.) with the following data frame as `newdata`:
