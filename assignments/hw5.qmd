@@ -73,3 +73,13 @@ library(ggeffects)
 3. Fit models (with the same general parameters as in the previous question) with (a) a quadratic-age $\times$ urban/rural interaction; (b) separate thin-plate splines for urban and rural (use the `by=` argument to `s()`).
 
 4. Finally, fit (a) a `glmer()` model that includes a fixed quadratic-age by urban/rural interaction and a random effect that allows the quadratic effect of age to vary across districts (i.e., include a `(<quadratic age model>|district)` term) and (b) a `gam()` model that includes different population-level smooths for urban vs rural (using the `by=` specification from the previous model) plus different age-smooths for each district (using a *factor smooth* basis, i.e. `s(age_sc, district, bs = "fs")`).^[This model could take a while to fit. I used `control = gam.control(trace = TRUE, nthreads = 10)` to (1) print lots of output so I could see that something was happening; (2) parallelize the computation. You should restrict the number of threads to less than the number of cores on your computer (`parallel::detectCores()`). On a relatively fast computer with 10 threads, fitting this model took about a minute.] Generate predictions using `predict()` (**not** `ggpredict` etc.) with the following data frame as `newdata`:
+
+```{r newdata}
+nd <- with(Contraception,
+           expand.grid(urban = levels(urban),
+                       age_sc = unique(age_sc),
+                       district = unique(district)))
+```
+
+Plot the results (using `aes(group = interaction(district, urban))`  in `geom_line()`) for both models, compare.
+
