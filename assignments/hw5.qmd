@@ -21,6 +21,8 @@ You can use the following summary functions to add a nice summary of the raw dat
 
 For plotting, note that `plot(ggeffects::ggemmeans(<model>, terms = c("age [all]", "urban")))` appears to work fairly well for `gam()` output (again with the name of the `age` variable adjusted appropriately).^[(1) the `ggeffects::` part isn't necessary if you've loaded the `ggeffects` package; (2) for reasons I don't yet understand, `ggpredict()` gives weird answers for these models] For some models below you may get an "undefined columns selected" error, but it seems harmless (??)
 
+Whenever I say "quadratic", I mean "quadratic and linear", i.e. don't violate the principle of marginality [@venablesExegeses1998]
+
 Compute binomial mean and CIs: see [this Stack Overflow question](https://stackoverflow.com/questions/77544559/fast-binom-test-in-r-for-multiple-levels-of-confidence/77545378#77545378).
 
 ```{r plotfuns}

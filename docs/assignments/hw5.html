@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-12-11">
+<meta name="dcterms.date" content="2023-12-12">
 
 <title>homework 5</title>
 <style>
@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging-indent div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}</style>
 
 
 <script>/*!
@@ -3145,7 +3164,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11 Dec 2023</p>
+      <p class="date">12 Dec 2023</p>
     </div>
   </div>
   
@@ -3166,6 +3185,7 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <p>This assignment will work with the <code>Contraception</code> data set you previously explored, but mostly using GAM(M)s (via <code>mgcv</code>) rather than GLM(M)s. Throughout, you should focus <em>only</em> on the effects of age (scaled/centred for (1) computational stability and (2) comparison of parameter estimates) and urban/rural. In the examples below, I’ve converting the response variable (<code>use</code>) from a factor (Y/N) to a numeric (0/1) variable, again for convenience of downstream processing.</p>
 <p>You can use the following summary functions to add a nice summary of the raw data to your plot: <strong>note</strong> you might need to change the name of the <code>x</code> and <code>y</code> variables to match yours in the <code>aes()</code> line below (I decided to create new variables <code>age_sc</code> and <code>use_n</code> to represent the transformed (centered/numericalized) versions of the <code>age</code> and <code>use</code> variables; you might have chosen to overwrite them instead).</p>
 <p>For plotting, note that <code>plot(ggeffects::ggemmeans(&lt;model&gt;, terms = c(&quot;age [all]&quot;, &quot;urban&quot;)))</code> appears to work fairly well for <code>gam()</code> output (again with the name of the <code>age</code> variable adjusted appropriately).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> For some models below you may get an “undefined columns selected” error, but it seems harmless (??)</p>
+<p>Whenever I say “quadratic”, I mean “quadratic and linear”, i.e. don’t violate the principle of marginality <span class="citation" data-cites="venablesExegeses1998">(<a href="#ref-venablesExegeses1998" role="doc-biblioref">Venables 1998</a>)</span></p>
 <p>Compute binomial mean and CIs: see <a href="https://stackoverflow.com/questions/77544559/fast-binom-test-in-r-for-multiple-levels-of-confidence/77545378#77545378">this Stack Overflow question</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>binom_sum <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">alpha =</span> <span class="fl">0.05</span>) {</span>
@@ -3221,7 +3241,12 @@ return!"\t\n\x0B\f\r                　\u2028\u2029
 <p>Plot the results, for both models, compare. (<strong>not</strong> using <code>ggpredict()</code> unless you can figure out how; I used <code>ggplot2</code> with <code>aes(group = interaction(district, urban))</code> in <code>geom_line()</code>; you could probably figure out how to reshape the data and use <code>matplot()</code> …).</p>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-venablesExegeses1998" class="csl-entry" role="listitem">
+Venables, W. N. 1998. <span>“Exegeses on <span>Linear</span> <span>Models</span>.”</span> In. 1998 <span>International</span> <span>S</span>-<span>PLUS</span> <span>User</span> <span>Conference</span>. Washington, DC. <a href="http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf">http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>(1) the <code>ggeffects::</code> part isn’t necessary if you’ve loaded the <code>ggeffects</code> package; (2) for reasons I don’t yet understand, <code>ggpredict()</code> gives weird answers for these models<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
