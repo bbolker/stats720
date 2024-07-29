@@ -93,3 +93,6 @@ PANDOC=pandoc-3.1.7-1-amd64.deb
 new-pandoc:
 	wget https://github.com/jgm/pandoc/releases/download/3.1.7/${PANDOC}
 	sudo dpkg -i ${PANDOC}
+
+install_lua:
+	quarto install extension pandoc-ext/multibib

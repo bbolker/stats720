@@ -23,7 +23,7 @@ Materials on this web page are **under construction** and **subject to change**
 
 ### Course meetings
 
-- 2:30-3:30 Tues, 2-4 Thurs, location [REDACTED] (see Mosaic or ask)
+- 2-3 Tues, 9:30-11:30 Thurs, location [REDACTED] (see Mosaic or ask)
 
 ### Misc info
 
@@ -43,8 +43,8 @@ Materials on this web page are **under construction** and **subject to change**
 ### Links
 
 - Lecture recordings (TBA)
-- [Piazza](https://piazza.com/mcmaster.ca/spring2023/stats720) (course forum/communications)
-- [Course outline](stats720_f2023_outline.docx)
+- [Piazza](https://piazza.com/mcmaster.ca/fall2024/stats720) (course forum/communications)
+- [Course outline](stats720_f2024_outline.docx)
 - [The back-end for this site](https://github.com/bbolker/stats720)
 - [Notes on academic integrity](./honesty.html)
 - [R style guide](./R_style.html)

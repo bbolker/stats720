@@ -1,7 +1,7 @@
 --[[
 multibib – create multiple bibliographies
 
-Copyright © 2018-2022 Albert Krewinkel
+Copyright © 2018-2024 Albert Krewinkel
 
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
@@ -17,8 +17,9 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ]]
 PANDOC_VERSION:must_be_at_least '2.11'
 
-local List = require 'pandoc.List'
-local utils = require 'pandoc.utils'
+local pandoc = require 'pandoc'
+local List   = require 'pandoc.List'
+local utils  = require 'pandoc.utils'
 local stringify = utils.stringify
 local run_json_filter = utils.run_json_filter
 
@@ -42,11 +43,18 @@ local refs_div = pandoc.Div({}, pandoc.Attr('refs'))
 local refs_div_with_properties
 
 --- Run citeproc on a pandoc document
-local citeproc
-if utils.citeproc then
-  -- Built-in Lua function
-  citeproc = utils.citeproc
-else
+--
+-- Falls back to the external `pandoc-citeproc` filter if the built-in
+-- citeproc processor is not available. Tries to silence all citeproc
+-- warnings, which isn't possible in some versions.
+local citeproc = utils.citeproc
+if pcall(require, 'pandoc.log') and citeproc then
+  -- silence all warnings if possible
+  local log = require 'pandoc.log'
+  citeproc = function (...)
+    return select(2, log.silence(utils.citeproc, ...))
+  end
+elseif not citeproc then
   -- Use pandoc as a citeproc processor
   citeproc = function (doc)
     local opts = {'--from=json', '--to=json', '--citeproc', '--quiet'}
@@ -55,7 +63,7 @@ else
 end
 
 --- Resolve citations in the document by combining all bibliographies
--- before running pandoc-citeproc on the full document.
+-- before running citeproc on the full document.
 local function resolve_doc_citations (doc)
   -- combine all bibliographies
   local meta = doc.meta
@@ -127,6 +135,13 @@ local function create_topic_bibliography (div)
   -- Set the classes and attributes as citeproc did it on refs_div
   div.classes = remove_duplicates(refs_div_with_properties.classes)
   div.attributes = refs_div_with_properties.attributes
+  if FORMAT == 'odt' or FORMAT == 'docx' then
+    -- Pandoc assignes the "Bibliography" to reference sections in Word, so
+    -- let's do it here, too, unless it's already set.
+    div.attributes['custom-style'] = div.attributes['custom-style']
+      or 'Bibliography'
+  end
+
   return div
 end
 
