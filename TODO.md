@@ -7,7 +7,8 @@
    * https://www.medalspercapita.com/#weighted-per-capita:2024
    * https://www.theguardian.com/sport/article/2024/aug/10/paris-olympics-2024-how-does-medal-tally-work-order
    * Choi, Yun Hyeong, Qingyuan Wei, Luyao Zhang, and Seong-Jin Choi. 2022. “The Impact of Cultural Distance on Performance at the Summer Olympic Games.” Sage Open 12 (1): 21582440221085265. https://doi.org/10.1177/21582440221085265.
-
+   * https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results
+   
 ## Set-up tasks
 
 * land acknowledgement
