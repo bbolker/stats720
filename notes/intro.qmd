@@ -21,9 +21,9 @@ McMaster University (and this class) is on the traditional territories of the Mi
 ## Logistics
 
 * (almost) everything at the [course web page](https://bbolker.github.io/stats720)
-* communication/forums ([Piazza](https://piazza.com/mcmaster.ca/fall2023/stats720)); e-mail if necessary
+* communication/forums ([Piazza](https://piazza.com/mcmaster.ca/fall2024/stats720)); e-mail if necessary
 * assignment marks (Avenue)
-* Zoom/recordings (by request)
+* Zoom/recordings (can be set up by request)
 
 ## Integrity
 
@@ -61,6 +61,7 @@ From the course outline:
    * conditional distributions (GLM "families")
    * penalization/shrinkage
 * includes a vast range of useful models
+* **not** clustering, neural nets, tree-based models
 
 ## Technical skills & tools
 
@@ -95,9 +96,9 @@ Not focal, but unavoidable and useful
 
 ## strong feelings about p-values
 
-* if you use frequentist methods, please use them correctly
+* please use frequentist methods correctly
 * $H_0$ is almost never true
-* never accept the null hypothesis (use *equivalence tests* if you really care)
+* **never** accept the null hypothesis (use *equivalence tests* if you really care)
 * a low $p$ value doesn't mean the effect is large or important
 * may help to frame results in terms of **clarity** [@dushoffcan2018]
 
