@@ -161,7 +161,7 @@ knitr::include_graphics("pix/forking_paths.jpg")
 ## Solutions?
 
 * pre-registration (formal or informal); report deviations from planned analysis
-* choose model complexity (see Harrell RMS ch. 3), do diagnostics etc., **without reference to response variable** or metrics of significance
+* choose model complexity (see Harrell RMS ch. 4), do diagnostics etc., **without reference to response variable** or metrics of significance
 
 ## Choosing model complexity
 
