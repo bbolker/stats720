@@ -157,6 +157,8 @@ knitr::include_graphics("pix/forking_paths.jpg")
 ```
 * "researcher degrees of freedom", "HARKing", etc.
 * @simmons_false-positive_2011; @gelman_statistical_2014
+* "forking paths" < snooping, HARKing < p-hacking
+* compare **data leakage** in predictive modeling (@hastieElements2009 \S7.10.2, @kapoorLeakageReproducibilityCrisis2023, @bussolaAI2020, @quinnStool2021)
 
 ## Solutions?
 
@@ -165,13 +167,13 @@ knitr::include_graphics("pix/forking_paths.jpg")
 
 ## Choosing model complexity
 
-* see Harrell ch. 3
+* see Harrell ch. 4
 * rules of thumb for inferential models with adequate power
-    * e.g. $p < n/10$ or $n/20$
+    * e.g. $p < n/15$
 	* effective $n$ depends on data type (binary < small counts < continuous)
 	* how does clustering/correlation in data change effective $n$?
 * simplest if done **a priori**
-    * data-driven choice of model complexity (e.g. by cross-validation), *while maintaining valid inference*, is delicate
+    * data-driven choice of model complexity (e.g. by cross-validation), *while maintaining valid inference*, is **extremely** delicate ("post-selection inference")
 
 ## Comparing models with reality
 
@@ -205,6 +207,7 @@ Harvey Motulsky on [CrossValidated](https://stats.stackexchange.com/a/2501/2126)
 
 * biased/non-representative sampling [@mengStatistical2018]
 * lack of randomization 
+* not-at-random missingness 
 * problems with causal inference: unobserved confounders, etc.
 * non-independence
   * pseudo-replication [@hurlbertPseudoreplication1984]

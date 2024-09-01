@@ -6,7 +6,7 @@
 
 R is a domain-specific language for statistics and data science
 
-   - download links etc. are available at [CRAN](https://cran.r-project.org/) (Comprehensive R Archive Network) (if you already have R installed, make sure you have upgraded to the **latest version**)
+   - download links etc. at [CRAN](https://cran.r-project.org/) (Comprehensive R Archive Network) (if you already have R installed, make sure you have upgraded to the **latest version**)
    - in the course of the term you will probably need compilation tools for building R code that includes compiled (C/Fortran) code
    
       - [MacOS tools](https://mac.r-project.org/tools/)

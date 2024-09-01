@@ -1,16 +1,18 @@
 ---
 title: "Annotated bibliography"
-csl: chicago-annotated-bibliography.csl
 date: today
 date-format: "D MMM YYYY"
+csl: apa-annotated-bibliography.csl
 bibliography:
   main: main_books.bib
+  secondary: secondary_books.bib
 filters:
-  - multibib    
+  - multibib
 validate-yaml: false
 nocite: |
-  @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020
+  @harrellRegression2015, @gelmanData2006, @farawayExtending2016, @hodgesRichly2013, @mcelreathStatistical2020, @woodGeneralized2017, @gelmanRegression2020, @shaliziAdvanced2022, @zuurBeginner2013, @jamesintroduction2013, @hastielements2009
 ---
+
 
 <!-- https://github.com/pandoc-ext/multibib -->
 
@@ -29,11 +31,12 @@ I haven't found one book that covers everything in this course exactly the way I
 ::: {#refs-main}
 :::
 
-## Peripheral references/to add (?)
+## Secondary references
 
-* Books by Alain Zuur *et al.* are basic books oriented toward ecology; handle spatial/temporal structure with INLA, 'exotic' conditional distributions (zero-inflation etc.)
-* Statistical learning: Witten *et al.* *Introduction to Statistical Learning*, Hastie *et al.* *Elements of Statistical Learning*
+::: {#refs-secondary}
+:::
+
 * Gelman *et al.* *Bayesian Data Analysis* 3d ed. (complete and technical)
-* Shalizi "Advanced Data Analysis"
 * Wood *Core Statistics*
+* Hastie et al. *Elements of Statistical Learning*
 

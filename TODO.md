@@ -2,6 +2,10 @@
 
 ## new
 
+* questionnaire
+* work on HW1 ?
+* Gelman&Hill/Yakulic & Uriarte picture?
+* interaction? (Ask them to define the modeling loop?)
 * Olympic medals database: by GDP, population size, ... ? Multivariate model of medal types? Through time? Ask students to scrape?
    * https://gist.github.com/rmcelreath/8cc6d3414f469690287b4982fcf895ae
    * https://www.medalspercapita.com/#weighted-per-capita:2024
@@ -18,6 +22,8 @@
 * Zoom meeting?
 * clean up Makefiles?
 * homework/test scheduling
+
+
 
 ## Week 1/intro
 

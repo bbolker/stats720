@@ -30,13 +30,12 @@ Materials on this web page are **under construction** and **subject to change**
 - Textbooks:
    - none, but references will be listed: see [here](./books.html) for a list of useful books
 - [Full course bibliography](stats720_bib.html)
-- Expected preparation: 
+- Expected preparation: basic probability and stats, hypothesis testing, linear and generalized linear regression
 - Notes on [plagiarism/collaboration/attribution](./honesty.html)
 - [Software notes](software.md)
 
-### Where to find stuff
 
-(to be completed)
+### Where to find stuff
 
 - [SpringerLink](https://libraryssl.lib.mcmaster.ca/libaccess/login.php?url=https%3a%2f%2flink.springer.com)
 
@@ -46,7 +45,6 @@ Materials on this web page are **under construction** and **subject to change**
 - [Piazza](https://piazza.com/mcmaster.ca/fall2024/stats720) (course forum/communications)
 - [Course outline](stats720_f2024_outline.docx)
 - [The back-end for this site](https://github.com/bbolker/stats720)
-- [Notes on academic integrity](./honesty.html)
 - [R style guide](./R_style.html)
 
 ## Communication

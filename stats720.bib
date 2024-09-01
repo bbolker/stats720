@@ -1692,3 +1692,54 @@
 	file = {Full Text PDF:/home/bolker/Documents/zotero_new/storage/HY75ERFU/Pya and Wood - 2015 - Shape constrained additive models.pdf:application/pdf},
 
 }
+@article{quinnStool2021,
+  title = {Stool Studies Don't Pass the Sniff Test: A Systematic Review of Human Gut Microbiome Research Suggests Widespread Misuse of Machine Learning},
+  shorttitle = {Stool {{Studies Don}}'t {{Pass}} the {{Sniff Test}}},
+  author = {Quinn, Thomas P.},
+  year = {2021},
+  month = jul,
+  journal = {arXiv:2107.03611 [q-bio]},
+  eprint = {2107.03611},
+  primaryclass = {q-bio},
+  urldate = {2021-11-14},
+  abstract = {In the machine learning culture, an independent test set is required for proper model verification. Failures in model verification, including test set omission and test set leakage, make it impossible to know whether or not a trained model is fit for purpose. In this article, we present a systematic review and quantitative analysis of human gut microbiome classification studies, conducted to measure the frequency and impact of test set omission and test set leakage on area under the receiver operating curve (AUC) reporting. Among 102 articles included for analysis, we find that only 12\% of studies report a bona fide test set AUC, meaning that the published AUCs for 88\% of studies cannot be trusted at face value. Our findings cast serious doubt on the general validity of research claiming that the gut microbiome has high diagnostic or prognostic potential in human disease.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Quantitative Biology - Genomics},
+  file = {/home/bolker/Documents/zotero_new/storage/KZXQTVEH/Quinn - 2021 - Stool Studies Don't Pass the Sniff Test A Systema.pdf}
+}
+
+@misc{bussolaAI2020,
+  title = {{AI} Slipping on Tiles: Data Leakage in Digital Pathology},
+  shorttitle = {{{AI}} Slipping on Tiles},
+  author = {Bussola, Nicole and Marcolini, Alessia and Maggio, Valerio and Jurman, Giuseppe and Furlanello, Cesare},
+  year = {2020},
+  month = nov,
+  number = {arXiv:1909.06539},
+  eprint = {1909.06539},
+  primaryclass = {eess, q-bio},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.1909.06539},
+  urldate = {2023-02-24},
+  abstract = {Reproducibility of AI models on biomedical data still stays as a major concern for their acceptance into the clinical practice. Initiatives for reproducibility in the development of predictive biomarkers as the MAQC Consortium already underlined the importance of appropriate Data Analysis Plans (DAPs) to control for different types of bias, including data leakage from the training to the test set. In the context of digital pathology, the leakage typically lurks in weakly designed experiments not accounting for the subjects in their data partitioning schemes. This issue is then exacerbated when fractions or subregions of slides (i.e. "tiles") are considered. Despite this aspect is largely recognized by the community, we argue that it is often overlooked. In this study, we assess the impact of data leakage on the performance of machine learning models trained and validated on multiple histology data collection. We prove that, even with a properly designed DAP (10x5 repeated cross-validation), predictive scores can be inflated up to 41\% when tiles from the same subject are used both in training and validation sets by deep learning models. We replicate the experiments for \$4\$ classification tasks on 3 histopathological datasets, for a total of 374 subjects, 556 slides and more than 27,000 tiles. Also, we discuss the effects of data leakage on transfer learning strategies with models pre-trained on general-purpose datasets or off-task digital pathology collections. Finally, we propose a solution that automates the creation of leakage-free deep learning pipelines for digital pathology based on histolab, a novel Python package for histology data preprocessing. We validate the solution on two public datasets (TCGA and GTEx).},
+  archiveprefix = {arXiv},
+  keywords = {Electrical Engineering and Systems Science - Image and Video Processing,Quantitative Biology - Quantitative Methods},
+  file = {/home/bolker/Documents/zotero_new/storage/4SX8J7WC/Bussola et al. - 2020 - AI slipping on tiles data leakage in digital path.pdf;/home/bolker/Documents/zotero_new/storage/XH6QD7DJ/1909.html}
+}
+
+@article{kapoorLeakageReproducibilityCrisis2023,
+  title = {Leakage and the Reproducibility Crisis in Machine-Learning-Based Science},
+  author = {Kapoor, Sayash and Narayanan, Arvind},
+  year = {2023},
+  month = sep,
+  journal = {Patterns},
+  volume = {4},
+  number = {9},
+  pages = {100804},
+  issn = {2666-3899},
+  doi = {10.1016/j.patter.2023.100804},
+  urldate = {2024-09-01},
+  abstract = {Machine-learning (ML) methods have gained prominence in the quantitative sciences. However, there are~many known methodological pitfalls, including data leakage, in ML-based science. We systematically investigate reproducibility issues in ML-based science. Through a survey of literature in fields that have~adopted ML methods, we find 17 fields where leakage has been found, collectively affecting 294 papers~and, in some cases, leading to wildly overoptimistic conclusions. Based on our survey, we introduce a detailed taxonomy of eight types of leakage, ranging from textbook errors to open research problems. We propose that researchers test for each type of leakage by filling out model info sheets, which we~introduce. Finally, we conduct a reproducibility study of civil war prediction, where complex ML models are believed to vastly outperform traditional statistical models such as logistic regression (LR). When the~errors are corrected, complex ML models do not perform substantively better than decades-old LR models.},
+  keywords = {leakage,machine learning,reproducibility},
+  file = {/home/bolker/Documents/zotero_new/storage/R8FX2UA3/Kapoor and Narayanan - 2023 - Leakage and the reproducibility crisis in machine-.pdf;/home/bolker/Documents/zotero_new/storage/JXYN8PCB/S2666389923001599.html}
+}
