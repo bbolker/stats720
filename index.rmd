@@ -49,7 +49,7 @@ Materials on this web page are **under construction** and **subject to change**
 
 ## Communication
 
-- instructor: [Ben Bolker](http://math.mcmaster.ca/~bolker/)
+- instructor: [Ben Bolker](https://math.mcmaster.ca/~bolker/)
     - General questions (anything you don't consider private) are best asked in the appropriate channel on Teams
     - Otherwise e-mail to `bolker@mcmaster.ca` with "STATS 720" in the subject line; include your MacID in your message (if applicable) if not e-mailing from your McMaster e-mail account
 	- office hours TBA
