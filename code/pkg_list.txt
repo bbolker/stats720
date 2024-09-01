@@ -6,6 +6,7 @@ car
 DHARMa
 dotwhisker
 effects
+emmeans
 faux
 glmmTMB
 glmnet
@@ -16,5 +17,7 @@ MCMCglmm
 parameters
 performance
 rstanarm
+RTMB
 see
 tidyverse
+
