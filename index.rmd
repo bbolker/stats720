@@ -32,7 +32,7 @@ Materials on this web page are **under construction** and **subject to change**
 - [Full course bibliography](stats720_bib.html)
 - Expected preparation: basic probability and stats, hypothesis testing, linear and generalized linear regression
 - Notes on [plagiarism/collaboration/attribution](./honesty.html)
-- [Software notes](software.md)
+- [Software notes](software.html)
 
 
 ### Where to find stuff
@@ -49,7 +49,7 @@ Materials on this web page are **under construction** and **subject to change**
 
 ## Communication
 
-- instructor: [Ben Bolker](http://www.math.mcmaster.ca/~bolker/)
+- instructor: [Ben Bolker](http://math.mcmaster.ca/~bolker/)
     - General questions (anything you don't consider private) are best asked in the appropriate channel on Teams
     - Otherwise e-mail to `bolker@mcmaster.ca` with "STATS 720" in the subject line; include your MacID in your message (if applicable) if not e-mailing from your McMaster e-mail account
 	- office hours TBA
