@@ -7,9 +7,11 @@ DHARMa
 dotwhisker
 effects
 emmeans
+faraway
 faux
 glmmTMB
 glmnet
+gratia
 insight
 lme4
 marginaleffects

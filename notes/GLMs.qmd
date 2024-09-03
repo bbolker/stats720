@@ -36,6 +36,10 @@ library(parameters)
 ## library(ggeffects)
 ```
 
+## References
+
+@farawayExtending2016, @mccullaghGeneralized1989 (classic), @woodGeneralized2017 [very rapid review]
+
 ## Basics
 
 * assume $\y_i \sim \textrm{Dist}(g^{-1}((\X \bbeta)_i))$
