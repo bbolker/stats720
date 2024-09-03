@@ -2,6 +2,7 @@
 
 ## new
 
+* DQ definition
 * questionnaire
 * work on HW1 ?
 * Gelman&Hill/Yakulic & Uriarte picture?
