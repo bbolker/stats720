@@ -21,5 +21,6 @@ performance
 rstanarm
 RTMB
 see
+tidybayes
 tidyverse
 

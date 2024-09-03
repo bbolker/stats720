@@ -1,6 +1,10 @@
+
 COURSE=stats720
+## cmdstanr bug ? https://github.com/stan-dev/cmdstanr/issues/883
+MAKEFLAGS += --no-print-directory
 
 all: docs/assignments/README.html docs/index.html docs/${COURSE}_bib.html docs/software.html docs/honesty.html docs/R_style.html docs/books.html docs/assignments/data.html
+
 ## allnotes docs/assignments/midterm-topics.html
 
 ## see also: mk_all
