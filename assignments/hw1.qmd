@@ -2,7 +2,7 @@
 title: "homework 1"
 ---
 
-**Due:** Weds Sep 27, 11:59 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+**Due:** Thurs Sep 19, 11:59 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 **Please make sure your code is reproducible**:
 
@@ -20,7 +20,7 @@ Pick a data set that seems appropriate for linear regression (e.g., there is one
 
 Some places to look for interesting data: `?datasets` in base R; the `faraway` or `mlbench` package (although the latter has only a few continuous-response, regression-type data sets; more are about classification). (Faraway recommends the data sets `swiss` [response: `Fertility`]; `rock` [response: `perm`]; `mtcars` [response: `mpg`]; `attitude` [response: `rating`]; `prostate` [response: `lpsa`]; and `teengamb` [response: `gamble`]).
 
-a. State which possible predictor variables you're going to include; justify your choice (refer to Harrell chapter 3 for rules of thumb about appropriate numbers of predictors).
+a. State which possible predictor variables you're going to include; justify your choice (refer to Harrell chapter 4 for rules of thumb about appropriate numbers of predictors).
 b. State the units of the response variable and of each predictor variable you plan to include; for each variable, state what you would consider as a reasonable threshold for a small change in that variable.
 c. Fit the model.
 d. Diagnose the model (you must use graphical diagnostics and interpret the output; you may run null hypothesis tests as well if you want, but be careful how you interpret them). You may use base R (`plot.lm()`), `performance::check_model()`, `DHARMa`, or some other framework.
