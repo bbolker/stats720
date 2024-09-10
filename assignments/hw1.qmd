@@ -2,7 +2,6 @@
 title: "homework 1"
 ---
 
-
 **Due:** Fri Sep 20, 5:00 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 * no absolute path names (e.g. `"C:\My Files\homework"`)
@@ -13,13 +12,15 @@ See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
 If your code isn't reproducible I will return it immediately and ask you to fix it.
 
-1. Analyze the Olympic data set found [here](https://github.com/bbolker/stats720/blob/main/data/olymp1.csv) (raw download from [here](https://raw.githubusercontent.com/bbolker/stats720/main/data/olymp1.csv)).  The variables are:
+## question 1: Olympic medals
 
-- `Team`: (approximately) country 
-- `Year`
-- `Medal` (bronze/gold/silver)
+Analyze the Olympic data set found [here](https://github.com/bbolker/stats720/blob/main/data/olymp1.csv) (raw download from [here](https://raw.githubusercontent.com/bbolker/stats720/main/data/olymp1.csv)).  The variables are:
+
+- `team`: (approximately) country 
+- `year`
+- `medal` (bronze/gold/silver)
 - `n`: medal count
-- `GDP`: GDP in const 2015 US$ (billions)
+- `gdp`: GDP in const 2015 US$ (billions)
 - `pop`: population size (millions)
 
 <!-- Pick a data set **for which you think you understand the predictors and response variables well enough to interpret the results in real-world terms**; for example, you might pick data predicting crime rates or housing prices or incomes, for which most people living in modern society have some intuition (e.g., "0.1 fewer murders per year per million people, per million dollars invested in crime prevention" could be judged to be a small effect).
@@ -35,32 +36,45 @@ a. State which possible predictor variables you're going to include; justify you
    
 ```{r eval = FALSE}
 library(tidyverse)
-mydat |> filter(Medal == "Gold")  ## gold medals only
-mydat |> group_by(Team, Year) |> summarise(across(n, sum)) ## medal count
+## gold medals only
+mydat |> filter(medal == "Gold")
+## OR: medal count
+mydat |> group_by(team, year) |> summarise(across(n, sum))
+## OR: weighted medal count
 mydat |> 
-    mutate(across(Medal, ~ factor(., levels = c("Bronze", "Silver", "Gold")))) |>
-    group_by(Team, Year) |>
-    arrange(Medal) |>
+    mutate(across(medal, ~ factor(., levels = c("Bronze", "Silver", "Gold")))) |>
+    group_by(team, year) |>
+    arrange(medal) |>  ## make sure bronze/silver/gold in that order
     summarise(n_wt = sum(c(1,2,4)*n)/4, .groups = "drop")
 ```
 
-b. State the units of the response variable and of each predictor variable you plan to include; for each variable, state what you would consider as a reasonable threshold for a small change in that variable.
+You could consider log-transforming continuous predictor variables: in that case you will be modeling the effects of *proportional* changes in the predictor on the response. (You could also consider log-transforming the response variable, although because it is discrete with values equal to zero you'd have to do something like `log(n+1)` or `log(n+0.5)`.
+
+You could also consider including splines. If you run `library(splines)` first, you can use e.g. `ns(gdp, df=5)` for a natural spline with 5 degrees of freedom.
+
+And/or interactions.
+
+In any case, describe and justify your decisions.
+
+b. State the units of the response variable and of each predictor variable you plan to include; for each variable, state what you would consider as a reasonable threshold for a small change in that variable, *or* for a small slope (regression coefficient) [e.g. is $100 a small change in GDP? $100 million?].
 c. Fit the model.
 d. Diagnose the model (you must use graphical diagnostics and interpret the output; you may run null hypothesis tests as well if you want, but be careful how you interpret them). You may use base R (`plot.lm()`), `performance::check_model()`, `DHARMa`, or some other framework.
 e. If the model has any problems, make adjustments.
 f. Show a coefficient plot of the results (you can use, e.g. `dwplot::dotwhisker`). Scale and center the predictors if appropriate (state whether you are or are not scaling and centering, and justify your choice).  
 g. Show an effects plot (predicted values or effects, using e.g. `effects::allEffects()` or `plot(emmeans(.))`); describe the results.
 
-2. Suppose we have an experiment with four levels: control (C) and three increasing levels of the treatment (I, II, III).  We are interested in:
+## Question 2: contrasts
+
+Suppose we have an experiment with four levels: control (C) and three increasing levels of the treatment (I, II, III).  We are interested in:
 
 * the difference between the control and the *average* of the treatment levels
-* *successive differences* (I vs II, II vs III) in the treatments.
+* *successive differences* (I vs II, II vs III) among the non-control treatments.
 
 Construct a set of contrasts to quantify these effects. Test your results by making up a minimal data frame with just one observation per treatment. Fit the linear model and show that the coefficients match what you intended.
 
-3. Simulation exercises to model misspecification.
+## Question 3: simulations to evaluate the effects of model misspecification
 
-You will write a function to simulate data that don't quite match the assumptions of a linear model (linearity, homoscedascity, conditional Normality). A basic model for simulating data for a linear regression could like this:
+Write a function to simulate data that don't match the assumptions of a linear model (in this case conditional Normality). A basic model for simulating data for a linear regression could look like this:
 
 ```{r}
 sim_fun <- function(n = 100, slope = 1, sd = 1, intercept = 0) {
@@ -74,6 +88,6 @@ sim_fun <- function(n = 100, slope = 1, sd = 1, intercept = 0) {
 * For a linear model `m` with one covariate, you can extract the p-value via `coef(summary(m))[2, "Pr(>|t|)"]`; if you run a simulation many times, you can use the mean of `p<alpha` to evaluate the power.
 * The **coverage** is the probability that the confidence interval includes the true value.  For the same model `m`, you can find out whether the confidence interval for the slope (for a specified `alpha` level) includes the true value via `between <- function(a, b) (b[1] < a & a < b[2]); between(true_slope, confint(m)[2,], level = 1-alpha)`. If you run a simulation many times, you can use the mean of these values to evaluate the coverage.
 
-Set up simulations that violate normality by sampling values from a t distribution rather than a Normal distribution (the `rt()` function doesn't take a mean and standard deviation value, so you need `m+s*rt(n, df)` to generate t-distributed values with a specified mean `m` and standard deviation `s`). By running many simulations, determine the effect of varying values of `df` and $N$ (use `df = seq(2, 50, by = 6)` and `n = c(10, 20, 100)`) on the bias, RMSE, power, and coverage of linear regression. Report your results in tabular or graphical format.
+Set up simulations that violate normality by sampling values from a $t$ rather than a Normal distribution (the `rt()` function doesn't take a mean and standard deviation value, so you need to scale and shift it yourself, e.g. `m+s*rt(n, df)` to generate t-distributed values with a specified mean `m` and standard deviation `s`). By running many simulations, determine the effect of varying values of `df` and $N$ (use `df = seq(2, 50, by = 6)` and `n = c(10, 20, 100)`) on the bias, RMSE, power, and coverage of linear regression. Report your results in tabular or graphical format.
 
 **optional**: evaluate the power of the Shapiro-Wilk test (`shapiro.test()`) for non-Normality to detect the deviations that you set up. What is the relationship between under/overcoverage and power of the S-W test? (Most statistical tests in R return `htest` objects, you can access the p-value of a statistical test by extracting the `$p.value` component.) 

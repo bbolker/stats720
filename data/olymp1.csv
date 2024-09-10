@@ -1,4 +1,4 @@
-"Team","Year","Medal","n","GDP","pop"
+"team","year","medal","n","gdp","pop"
 "Afghanistan",2000,"Bronze",0,6.20654759033959,19.542982
 "Afghanistan",2000,"Gold",0,6.20654759033959,19.542982
 "Afghanistan",2000,"Silver",0,6.20654759033959,19.542982
@@ -104,21 +104,21 @@
 "Azerbaijan",2016,"Bronze",10,51.4308721222426,9.757812
 "Azerbaijan",2016,"Gold",1,51.4308721222426,9.757812
 "Azerbaijan",2016,"Silver",7,51.4308721222426,9.757812
-"Bahamas",2000,"Bronze",5,NA,NA
-"Bahamas",2000,"Gold",6,NA,NA
-"Bahamas",2000,"Silver",0,NA,NA
-"Bahamas",2004,"Bronze",1,NA,NA
-"Bahamas",2004,"Gold",1,NA,NA
-"Bahamas",2004,"Silver",0,NA,NA
-"Bahamas",2008,"Bronze",1,NA,NA
-"Bahamas",2008,"Gold",0,NA,NA
-"Bahamas",2008,"Silver",6,NA,NA
-"Bahamas",2012,"Bronze",0,NA,NA
-"Bahamas",2012,"Gold",4,NA,NA
-"Bahamas",2012,"Silver",0,NA,NA
-"Bahamas",2016,"Bronze",5,NA,NA
-"Bahamas",2016,"Gold",1,NA,NA
-"Bahamas",2016,"Silver",0,NA,NA
+"Bahamas",2000,"Bronze",5,10.5063350298288,0.325014
+"Bahamas",2000,"Gold",6,10.5063350298288,0.325014
+"Bahamas",2000,"Silver",0,10.5063350298288,0.325014
+"Bahamas",2004,"Bronze",1,11.0302887283407,0.343089
+"Bahamas",2004,"Gold",1,11.0302887283407,0.343089
+"Bahamas",2004,"Silver",0,11.0302887283407,0.343089
+"Bahamas",2008,"Bronze",1,11.5853703034063,0.362795
+"Bahamas",2008,"Gold",0,11.5853703034063,0.362795
+"Bahamas",2008,"Silver",6,11.5853703034063,0.362795
+"Bahamas",2012,"Bronze",0,11.6815767094504,0.382061
+"Bahamas",2012,"Gold",4,11.6815767094504,0.382061
+"Bahamas",2012,"Silver",0,11.6815767094504,0.382061
+"Bahamas",2016,"Bronze",5,11.5596269694738,0.395976
+"Bahamas",2016,"Gold",1,11.5596269694738,0.395976
+"Bahamas",2016,"Silver",0,11.5596269694738,0.395976
 "Bahrain",2000,"Bronze",0,15.4284863499579,0.711442
 "Bahrain",2000,"Gold",0,15.4284863499579,0.711442
 "Bahrain",2000,"Silver",0,15.4284863499579,0.711442
@@ -434,21 +434,21 @@
 "Cyprus",2016,"Bronze",0,21.2180208336544,1.197881
 "Cyprus",2016,"Gold",0,21.2180208336544,1.197881
 "Cyprus",2016,"Silver",0,21.2180208336544,1.197881
-"Czech Republic",2000,"Bronze",4,NA,NA
-"Czech Republic",2000,"Gold",2,NA,NA
-"Czech Republic",2000,"Silver",3,NA,NA
-"Czech Republic",2004,"Bronze",6,NA,NA
-"Czech Republic",2004,"Gold",1,NA,NA
-"Czech Republic",2004,"Silver",6,NA,NA
-"Czech Republic",2008,"Bronze",0,NA,NA
-"Czech Republic",2008,"Gold",3,NA,NA
-"Czech Republic",2008,"Silver",4,NA,NA
-"Czech Republic",2012,"Bronze",6,NA,NA
-"Czech Republic",2012,"Gold",4,NA,NA
-"Czech Republic",2012,"Silver",4,NA,NA
-"Czech Republic",2016,"Bronze",12,NA,NA
-"Czech Republic",2016,"Gold",1,NA,NA
-"Czech Republic",2016,"Silver",2,NA,NA
+"Czech Republic",2000,"Bronze",4,126.265440317089,10.255063
+"Czech Republic",2000,"Gold",2,126.265440317089,10.255063
+"Czech Republic",2000,"Silver",3,126.265440317089,10.255063
+"Czech Republic",2004,"Bronze",6,143.476070938564,10.197101
+"Czech Republic",2004,"Gold",1,143.476070938564,10.197101
+"Czech Republic",2004,"Silver",6,143.476070938564,10.197101
+"Czech Republic",2008,"Bronze",0,177.025133390924,10.384603
+"Czech Republic",2008,"Gold",3,177.025133390924,10.384603
+"Czech Republic",2008,"Silver",4,177.025133390924,10.384603
+"Czech Republic",2012,"Bronze",6,174.552528075614,10.510785
+"Czech Republic",2012,"Gold",4,174.552528075614,10.510785
+"Czech Republic",2012,"Silver",4,174.552528075614,10.510785
+"Czech Republic",2016,"Bronze",12,192.803983942274,10.566332
+"Czech Republic",2016,"Gold",1,192.803983942274,10.566332
+"Czech Republic",2016,"Silver",2,192.803983942274,10.566332
 "Denmark",2000,"Bronze",4,262.932986641725,5.339616
 "Denmark",2000,"Gold",18,262.932986641725,5.339616
 "Denmark",2000,"Silver",3,262.932986641725,5.339616
@@ -524,21 +524,21 @@
 "Ecuador",2016,"Bronze",0,96.5408007183398,16.439585
 "Ecuador",2016,"Gold",0,96.5408007183398,16.439585
 "Ecuador",2016,"Silver",0,96.5408007183398,16.439585
-"Egypt",2000,"Bronze",0,NA,NA
-"Egypt",2000,"Gold",0,NA,NA
-"Egypt",2000,"Silver",0,NA,NA
-"Egypt",2004,"Bronze",3,NA,NA
-"Egypt",2004,"Gold",1,NA,NA
-"Egypt",2004,"Silver",1,NA,NA
-"Egypt",2008,"Bronze",1,NA,NA
-"Egypt",2008,"Gold",0,NA,NA
-"Egypt",2008,"Silver",0,NA,NA
-"Egypt",2012,"Bronze",0,NA,NA
-"Egypt",2012,"Gold",0,NA,NA
-"Egypt",2012,"Silver",2,NA,NA
-"Egypt",2016,"Bronze",3,NA,NA
-"Egypt",2016,"Gold",0,NA,NA
-"Egypt",2016,"Silver",0,NA,NA
+"Egypt",2000,"Bronze",0,179.683172290126,71.371371
+"Egypt",2000,"Gold",0,179.683172290126,71.371371
+"Egypt",2000,"Silver",0,179.683172290126,71.371371
+"Egypt",2004,"Bronze",3,204.608590453732,77.522427
+"Egypt",2004,"Gold",1,204.608590453732,77.522427
+"Egypt",2004,"Silver",1,204.608590453732,77.522427
+"Egypt",2008,"Bronze",1,262.077623378478,83.844783
+"Egypt",2008,"Gold",0,262.077623378478,83.844783
+"Egypt",2008,"Silver",0,262.077623378478,83.844783
+"Egypt",2012,"Bronze",0,300.070833530761,91.240376
+"Egypt",2012,"Gold",0,300.070833530761,91.240376
+"Egypt",2012,"Silver",2,300.070833530761,91.240376
+"Egypt",2016,"Bronze",3,343.682967577042,99.78403
+"Egypt",2016,"Gold",0,343.682967577042,99.78403
+"Egypt",2016,"Silver",0,343.682967577042,99.78403
 "Elvis Va",2000,"Bronze",0,NA,NA
 "Elvis Va",2000,"Gold",0,NA,NA
 "Elvis Va",2000,"Silver",0,NA,NA
@@ -839,21 +839,21 @@
 "Indonesia",2016,"Bronze",0,904.181621780388,261.850182
 "Indonesia",2016,"Gold",2,904.181621780388,261.850182
 "Indonesia",2016,"Silver",2,904.181621780388,261.850182
-"Iran",2000,"Bronze",1,NA,NA
-"Iran",2000,"Gold",3,NA,NA
-"Iran",2000,"Silver",0,NA,NA
-"Iran",2004,"Bronze",2,NA,NA
-"Iran",2004,"Gold",2,NA,NA
-"Iran",2004,"Silver",2,NA,NA
-"Iran",2008,"Bronze",1,NA,NA
-"Iran",2008,"Gold",1,NA,NA
-"Iran",2008,"Silver",0,NA,NA
-"Iran",2012,"Bronze",3,NA,NA
-"Iran",2012,"Gold",4,NA,NA
-"Iran",2012,"Silver",5,NA,NA
-"Iran",2016,"Bronze",4,NA,NA
-"Iran",2016,"Gold",3,NA,NA
-"Iran",2016,"Silver",1,NA,NA
+"Iran",2000,"Bronze",1,257.439277645816,65.544383
+"Iran",2000,"Gold",3,257.439277645816,65.544383
+"Iran",2000,"Silver",0,257.439277645816,65.544383
+"Iran",2004,"Bronze",2,322.928299537115,69.061674
+"Iran",2004,"Gold",2,322.928299537115,69.061674
+"Iran",2004,"Silver",2,322.928299537115,69.061674
+"Iran",2008,"Bronze",1,379.375381822357,73.318394
+"Iran",2008,"Gold",1,379.375381822357,73.318394
+"Iran",2008,"Silver",0,379.375381822357,73.318394
+"Iran",2012,"Bronze",3,400.547308191213,77.324451
+"Iran",2012,"Gold",4,400.547308191213,77.324451
+"Iran",2012,"Silver",5,400.547308191213,77.324451
+"Iran",2016,"Bronze",4,444.197240271594,83.306231
+"Iran",2016,"Gold",3,444.197240271594,83.306231
+"Iran",2016,"Silver",1,444.197240271594,83.306231
 "Ireland",2000,"Bronze",0,159.529230641846,3.805174
 "Ireland",2000,"Gold",0,159.529230641846,3.805174
 "Ireland",2000,"Silver",1,159.529230641846,3.805174
@@ -1259,21 +1259,21 @@
 "Nigeria",2016,"Bronze",18,485.05508745582,188.666931
 "Nigeria",2016,"Gold",0,485.05508745582,188.666931
 "Nigeria",2016,"Silver",0,485.05508745582,188.666931
-"North Korea",2000,"Bronze",3,NA,NA
-"North Korea",2000,"Gold",0,NA,NA
-"North Korea",2000,"Silver",1,NA,NA
-"North Korea",2004,"Bronze",1,NA,NA
-"North Korea",2004,"Gold",0,NA,NA
-"North Korea",2004,"Silver",4,NA,NA
-"North Korea",2008,"Bronze",3,NA,NA
-"North Korea",2008,"Gold",2,NA,NA
-"North Korea",2008,"Silver",1,NA,NA
-"North Korea",2012,"Bronze",2,NA,NA
-"North Korea",2012,"Gold",4,NA,NA
-"North Korea",2012,"Silver",0,NA,NA
-"North Korea",2016,"Bronze",2,NA,NA
-"North Korea",2016,"Gold",2,NA,NA
-"North Korea",2016,"Silver",3,NA,NA
+"North Korea",2000,"Bronze",3,NA,23.367059
+"North Korea",2000,"Gold",0,NA,23.367059
+"North Korea",2000,"Silver",1,NA,23.367059
+"North Korea",2004,"Bronze",1,NA,23.94893
+"North Korea",2004,"Gold",0,NA,23.94893
+"North Korea",2004,"Silver",4,NA,23.94893
+"North Korea",2008,"Bronze",3,NA,24.469047
+"North Korea",2008,"Gold",2,NA,24.469047
+"North Korea",2008,"Silver",1,NA,24.469047
+"North Korea",2012,"Bronze",2,NA,24.88777
+"North Korea",2012,"Gold",4,NA,24.88777
+"North Korea",2012,"Silver",0,NA,24.88777
+"North Korea",2016,"Bronze",2,NA,25.389611
+"North Korea",2016,"Gold",2,NA,25.389611
+"North Korea",2016,"Silver",3,NA,25.389611
 "Norway",2000,"Bronze",19,304.696827529193,4.490967
 "Norway",2000,"Gold",20,304.696827529193,4.490967
 "Norway",2000,"Silver",4,304.696827529193,4.490967
@@ -1469,36 +1469,36 @@
 "Saudi Arabia",2016,"Bronze",0,682.100649038503,33.41627
 "Saudi Arabia",2016,"Gold",0,682.100649038503,33.41627
 "Saudi Arabia",2016,"Silver",0,682.100649038503,33.41627
-"Serbia",2000,"Bronze",0,24.0016395337162,7.516346
-"Serbia",2000,"Gold",0,24.0016395337162,7.516346
-"Serbia",2000,"Silver",0,24.0016395337162,7.516346
-"Serbia",2004,"Bronze",0,31.0586383736818,7.463157
-"Serbia",2004,"Gold",0,31.0586383736818,7.463157
-"Serbia",2004,"Silver",0,31.0586383736818,7.463157
-"Serbia",2008,"Bronze",14,38.7427138280746,7.350222
-"Serbia",2008,"Gold",0,38.7427138280746,7.350222
-"Serbia",2008,"Silver",1,38.7427138280746,7.350222
-"Serbia",2012,"Bronze",14,38.4688354187072,7.199077
-"Serbia",2012,"Gold",1,38.4688354187072,7.199077
-"Serbia",2012,"Silver",1,38.4688354187072,7.199077
-"Serbia",2016,"Bronze",13,40.979898020819,7.058322
-"Serbia",2016,"Gold",14,40.979898020819,7.058322
-"Serbia",2016,"Silver",27,40.979898020819,7.058322
-"Serbia and Montenegro",2000,"Bronze",13,NA,NA
-"Serbia and Montenegro",2000,"Gold",11,NA,NA
-"Serbia and Montenegro",2000,"Silver",1,NA,NA
-"Serbia and Montenegro",2004,"Bronze",0,NA,NA
-"Serbia and Montenegro",2004,"Gold",0,NA,NA
-"Serbia and Montenegro",2004,"Silver",13,NA,NA
-"Serbia and Montenegro",2008,"Bronze",0,NA,NA
-"Serbia and Montenegro",2008,"Gold",0,NA,NA
-"Serbia and Montenegro",2008,"Silver",0,NA,NA
-"Serbia and Montenegro",2012,"Bronze",0,NA,NA
-"Serbia and Montenegro",2012,"Gold",0,NA,NA
-"Serbia and Montenegro",2012,"Silver",0,NA,NA
-"Serbia and Montenegro",2016,"Bronze",0,NA,NA
-"Serbia and Montenegro",2016,"Gold",0,NA,NA
-"Serbia and Montenegro",2016,"Silver",0,NA,NA
+"Serbia",2000,"Bronze",0,NA,NA
+"Serbia",2000,"Gold",0,NA,NA
+"Serbia",2000,"Silver",0,NA,NA
+"Serbia",2004,"Bronze",0,NA,NA
+"Serbia",2004,"Gold",0,NA,NA
+"Serbia",2004,"Silver",0,NA,NA
+"Serbia",2008,"Bronze",14,NA,NA
+"Serbia",2008,"Gold",0,NA,NA
+"Serbia",2008,"Silver",1,NA,NA
+"Serbia",2012,"Bronze",14,NA,NA
+"Serbia",2012,"Gold",1,NA,NA
+"Serbia",2012,"Silver",1,NA,NA
+"Serbia",2016,"Bronze",13,NA,NA
+"Serbia",2016,"Gold",14,NA,NA
+"Serbia",2016,"Silver",27,NA,NA
+"Serbia and Montenegro",2000,"Bronze",13,24.0016395337162,7.516346
+"Serbia and Montenegro",2000,"Gold",11,24.0016395337162,7.516346
+"Serbia and Montenegro",2000,"Silver",1,24.0016395337162,7.516346
+"Serbia and Montenegro",2004,"Bronze",0,31.0586383736818,7.463157
+"Serbia and Montenegro",2004,"Gold",0,31.0586383736818,7.463157
+"Serbia and Montenegro",2004,"Silver",13,31.0586383736818,7.463157
+"Serbia and Montenegro",2008,"Bronze",0,38.7427138280746,7.350222
+"Serbia and Montenegro",2008,"Gold",0,38.7427138280746,7.350222
+"Serbia and Montenegro",2008,"Silver",0,38.7427138280746,7.350222
+"Serbia and Montenegro",2012,"Bronze",0,38.4688354187072,7.199077
+"Serbia and Montenegro",2012,"Gold",0,38.4688354187072,7.199077
+"Serbia and Montenegro",2012,"Silver",0,38.4688354187072,7.199077
+"Serbia and Montenegro",2016,"Bronze",0,40.979898020819,7.058322
+"Serbia and Montenegro",2016,"Gold",0,40.979898020819,7.058322
+"Serbia and Montenegro",2016,"Silver",0,40.979898020819,7.058322
 "Singapore",2000,"Bronze",0,140.533304238721,4.027887
 "Singapore",2000,"Gold",0,140.533304238721,4.027887
 "Singapore",2000,"Silver",0,140.533304238721,4.027887
@@ -1514,21 +1514,21 @@
 "Singapore",2016,"Bronze",0,319.051515647446,5.607283
 "Singapore",2016,"Gold",1,319.051515647446,5.607283
 "Singapore",2016,"Silver",0,319.051515647446,5.607283
-"Slovakia",2000,"Bronze",1,NA,NA
-"Slovakia",2000,"Gold",2,NA,NA
-"Slovakia",2000,"Silver",3,NA,NA
-"Slovakia",2004,"Bronze",5,NA,NA
-"Slovakia",2004,"Gold",3,NA,NA
-"Slovakia",2004,"Silver",2,NA,NA
-"Slovakia",2008,"Bronze",1,NA,NA
-"Slovakia",2008,"Gold",4,NA,NA
-"Slovakia",2008,"Silver",5,NA,NA
-"Slovakia",2012,"Bronze",4,NA,NA
-"Slovakia",2012,"Gold",0,NA,NA
-"Slovakia",2012,"Silver",1,NA,NA
-"Slovakia",2016,"Bronze",0,NA,NA
-"Slovakia",2016,"Gold",3,NA,NA
-"Slovakia",2016,"Silver",5,NA,NA
+"Slovakia",2000,"Bronze",1,48.0382778378844,5.38872
+"Slovakia",2000,"Gold",2,48.0382778378844,5.38872
+"Slovakia",2000,"Silver",3,48.0382778378844,5.38872
+"Slovakia",2004,"Bronze",5,57.5756550837484,5.37228
+"Slovakia",2004,"Gold",3,57.5756550837484,5.37228
+"Slovakia",2004,"Silver",2,57.5756550837484,5.37228
+"Slovakia",2008,"Bronze",1,77.9327490700484,5.379233
+"Slovakia",2008,"Gold",4,77.9327490700484,5.379233
+"Slovakia",2008,"Silver",5,77.9327490700484,5.379233
+"Slovakia",2012,"Bronze",4,81.7952308349206,5.407579
+"Slovakia",2012,"Gold",0,81.7952308349206,5.407579
+"Slovakia",2012,"Silver",1,81.7952308349206,5.407579
+"Slovakia",2016,"Bronze",0,90.6290726139167,5.430798
+"Slovakia",2016,"Gold",3,90.6290726139167,5.430798
+"Slovakia",2016,"Silver",5,90.6290726139167,5.430798
 "Slovenia",2000,"Bronze",0,32.3014484970859,1.988925
 "Slovenia",2000,"Gold",3,32.3014484970859,1.988925
 "Slovenia",2000,"Silver",0,32.3014484970859,1.988925
@@ -1949,11 +1949,6 @@
 "Bangladesh",2008,NA,NA,129.51319470979,145.421318
 "Bangladesh",2012,NA,NA,162.884300249526,152.090649
 "Bangladesh",2016,NA,NA,209.028319381091,159.784568
-"Bahamas, The",2000,NA,NA,10.5063350298288,0.325014
-"Bahamas, The",2004,NA,NA,11.0302887283407,0.343089
-"Bahamas, The",2008,NA,NA,11.5853703034063,0.362795
-"Bahamas, The",2012,NA,NA,11.6815767094504,0.382061
-"Bahamas, The",2016,NA,NA,11.5596269694738,0.395976
 "Bosnia and Herzegovina",2000,NA,NA,10.6764175851095,4.17935
 "Bosnia and Herzegovina",2004,NA,NA,12.6835789445033,4.14286
 "Bosnia and Herzegovina",2008,NA,NA,15.505477767974,3.943392
@@ -2024,11 +2019,6 @@
 "Cayman Islands",2008,NA,NA,4.76294161247161,0.051123
 "Cayman Islands",2012,NA,NA,4.40372226868141,0.05686
 "Cayman Islands",2016,NA,NA,4.86071063208443,0.062255
-"Czechia",2000,NA,NA,126.265440317089,10.255063
-"Czechia",2004,NA,NA,143.476070938564,10.197101
-"Czechia",2008,NA,NA,177.025133390924,10.384603
-"Czechia",2012,NA,NA,174.552528075614,10.510785
-"Czechia",2016,NA,NA,192.803983942274,10.566332
 "Djibouti",2000,NA,NA,NA,0.742033
 "Djibouti",2004,NA,NA,NA,0.818373
 "Djibouti",2008,NA,NA,NA,0.882886
@@ -2039,11 +2029,6 @@
 "Dominica",2008,NA,NA,0.545760826319816,0.068782
 "Dominica",2012,NA,NA,0.536054228927297,0.068888
 "Dominica",2016,NA,NA,0.55568110524744,0.070075
-"Egypt, Arab Rep.",2000,NA,NA,179.683172290126,71.371371
-"Egypt, Arab Rep.",2004,NA,NA,204.608590453732,77.522427
-"Egypt, Arab Rep.",2008,NA,NA,262.077623378478,83.844783
-"Egypt, Arab Rep.",2012,NA,NA,300.070833530761,91.240376
-"Egypt, Arab Rep.",2016,NA,NA,343.682967577042,99.78403
 "Faroe Islands",2000,NA,NA,NA,0.04566
 "Faroe Islands",2004,NA,NA,NA,0.047989
 "Faroe Islands",2008,NA,NA,2.16293907326618,0.048411
@@ -2119,11 +2104,6 @@
 "Isle of Man",2008,NA,NA,5.6206830699188,0.081997
 "Isle of Man",2012,NA,NA,6.49457908792272,0.084338
 "Isle of Man",2016,NA,NA,7.57735776377277,0.08345
-"Iran, Islamic Rep.",2000,NA,NA,257.439277645816,65.544383
-"Iran, Islamic Rep.",2004,NA,NA,322.928299537115,69.061674
-"Iran, Islamic Rep.",2008,NA,NA,379.375381822357,73.318394
-"Iran, Islamic Rep.",2012,NA,NA,400.547308191213,77.324451
-"Iran, Islamic Rep.",2016,NA,NA,444.197240271594,83.306231
 "Iraq",2000,NA,NA,101.918843143261,24.628858
 "Iraq",2004,NA,NA,92.5022633964251,27.858948
 "Iraq",2008,NA,NA,109.562085020285,29.218381
@@ -2304,11 +2284,6 @@
 "Papua New Guinea",2008,NA,NA,13.8921558360293,7.137988
 "Papua New Guinea",2012,NA,NA,17.2899800887062,8.026545
 "Papua New Guinea",2016,NA,NA,22.915960976066,8.899169
-"Korea, Dem. People's Rep.",2000,NA,NA,NA,23.367059
-"Korea, Dem. People's Rep.",2004,NA,NA,NA,23.94893
-"Korea, Dem. People's Rep.",2008,NA,NA,NA,24.469047
-"Korea, Dem. People's Rep.",2012,NA,NA,NA,24.88777
-"Korea, Dem. People's Rep.",2016,NA,NA,NA,25.389611
 "West Bank and Gaza",2000,NA,NA,7.1183735,2.922153
 "West Bank and Gaza",2004,NA,NA,7.8534,3.236626
 "West Bank and Gaza",2008,NA,NA,9.648,3.591977
@@ -2369,11 +2344,6 @@
 "Suriname",2008,NA,NA,4.36732619830964,0.533938
 "Suriname",2012,NA,NA,5.14298829824504,0.558111
 "Suriname",2016,NA,NA,4.8744542561508,0.581453
-"Slovak Republic",2000,NA,NA,48.0382778378844,5.38872
-"Slovak Republic",2004,NA,NA,57.5756550837484,5.37228
-"Slovak Republic",2008,NA,NA,77.9327490700484,5.379233
-"Slovak Republic",2012,NA,NA,81.7952308349206,5.407579
-"Slovak Republic",2016,NA,NA,90.6290726139167,5.430798
 "Eswatini",2000,NA,NA,2.48498434855671,1.030496
 "Eswatini",2004,NA,NA,2.8215710161845,1.065764
 "Eswatini",2008,NA,NA,3.33785220051293,1.08987

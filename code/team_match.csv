@@ -1,10 +1,14 @@
-Country; Team
-Russian Federation; Russia
-Viet Nam; Vietnam                   
-Egypt, Arab Rep; Egypt
-Iran, Islamic Rep; Iran
-Turkiye; Turkey
-United Kingdom; Great Britain
-Korea, Rep.; South Korea
-Venezuela, RB; Venezuela
-Korea, Dem People's Rep.; North Korea
+country, team
+Russian Federation, Russia
+Viet Nam, Vietnam                   
+"Egypt, Arab Rep.", Egypt
+"Iran, Islamic Rep.", Iran
+Turkiye, Turkey
+United Kingdom, Great Britain
+"Korea, Rep.", South Korea
+"Venezuela, RB", Venezuela
+"Korea, Dem. People's Rep.",North Korea
+Czechia, Czech Republic
+Slovak Republic, Slovakia
+"Bahamas, The", Bahamas
+

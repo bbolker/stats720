@@ -1,11 +1,11 @@
 week, start_date, topic, readings, assignments, notes
 1,2024-09-03,intro/philosophy,@harrellRegression2015 [chapter 4](https://link-springer-com.libaccess.lib.mcmaster.ca/chapter/10.1007/978-3-319-19425-7_4) [pp. 63-80; 87-92; 94-99], [software setup](assignments/setup.html); complete [assessment quiz](https://forms.gle/Hyo7zsnPFYBF7n687); DQ on Harrell,[intro](notes/intro.html) ([PDF](notes/intro.pdf))
-2,2024-09-10,linear models 1,,,[linear models](notes/lin_models.html) ([PDF](notes/lin_models.pdf))
+2,2024-09-10,linear models 1,,[HW1](assignments/hw1.html),[linear models](notes/lin_models.html) ([PDF](notes/lin_models.pdf))
 3,2024-09-17,linear models 2,,,
-4,2024-09-24,GLMs 1,,
+4,2024-09-24,GLMs 1,,,
 5,2024-10-01,GLMs 2,,,
 6,2024-10-08,Penalization and regularization 1,,,
- ,2024-10-11,**midterm test**
+ ,2024-10-11,**midterm test**,,,
  ,2024-10-15,midterm recess,,,
 7,2024-10-22,Penalization and regularization 2,,,
 9,2024-10-29,Mixed models 1,,,
@@ -14,5 +14,5 @@ week, start_date, topic, readings, assignments, notes
 12,2024-11-19,Additive models 1,,,
 13,2024-11-21,Additive models 2,,,
 14,2024-11-26,Wrap-up,,,
-15,2024-12-02,Wrap-up
-,2024-12-16,Last assignment due
+15,2024-12-02,Wrap-up,,,
+,2024-12-16,Last assignment due,,,
