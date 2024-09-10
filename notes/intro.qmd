@@ -164,6 +164,7 @@ knitr::include_graphics("pix/forking_paths.jpg")
 
 * pre-registration (formal or informal); report deviations from planned analysis
 * choose model complexity (see Harrell RMS ch. 4), do diagnostics etc., **without reference to response variable** or metrics of significance
+* *initial* data analysis (response-free): @heinzeRegressionRegretsInitial2024
 
 ## Choosing model complexity
 

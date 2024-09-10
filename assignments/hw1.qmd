@@ -2,9 +2,8 @@
 title: "homework 1"
 ---
 
-**Due:** Fri Sep 20, 5:00 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
-**Please make sure your code is reproducible**
+**Due:** Fri Sep 20, 5:00 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 * no absolute path names (e.g. `"C:\My Files\homework"`)
 * include any `library()` statements at the top of your file (do not include `install.packages()` statements unless they are commented out)
@@ -22,6 +21,7 @@ If your code isn't reproducible I will return it immediately and ask you to fix 
 Pick a data set that seems appropriate for linear regression (e.g., there is one continuous variable in the data set that can be sensibly chosen as the dependent/response variable).
 
 Some places to look for interesting data: `?datasets` in base R; the `faraway` or `mlbench` package (although the latter has only a few continuous-response, regression-type data sets; more are about classification). (Faraway recommends the data sets `swiss` [response: `Fertility`]; `rock` [response: `perm`]; `mtcars` [response: `mpg`]; `attitude` [response: `rating`]; `prostate` [response: `lpsa`]; and `teengamb` [response: `gamble`]).
+
 
 -->
 

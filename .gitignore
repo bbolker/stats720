@@ -6,8 +6,10 @@ private/
 *.toc
 *.bak
 **/*_files
+**/*_cache
 \#*
 \.~*
 \.#*
 .Rhistory
 *.Rout
+old/

@@ -1,6 +1,5 @@
 ---
 title: "Overview of models"
-bibliography: "../stats720.bib"
 date: today
 date-format: "D MMM YYYY"
 format:
@@ -9,6 +8,8 @@ format:
     include-in-header:
      - text: \usepackage{marginnote}
 ---
+
+<!-- No bib right now, as no refs: bibliography: "../stats720.bib" -->
 
 ::: {.content-hidden}
 $$
@@ -99,8 +100,10 @@ The same, but add a link function and an exponential-family distribution.
 
 The same, but allow the parameters describing the spline (or whatever) basis to be penalized/shrunk toward zero.
 
+<!--
 ## References
 
 
 ::: {#refs}
 :::
+-->

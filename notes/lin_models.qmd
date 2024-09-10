@@ -10,6 +10,11 @@ format:
      - text: \usepackage{marginnote}
 ---
 
+![cc](pix/cc-attrib-nc.png)
+Licensed under the 
+[Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0/).
+Please share \& remix noncommercially, mentioning its origin.
+
 ::: {.content-hidden}
 $$
 {{< include mathsymbols.tex >}}
@@ -36,6 +41,12 @@ library(effects)
 library(marginaleffects)
 library(parameters)
 ## library(ggeffects)
+```
+
+## Why linear models? [@lindelovCommonStatisticalTests2019]
+
+```{r lin-everything, echo = FALSE}
+knitr::include_graphics("pix/linear_tests_cheat_sheet.png")
 ```
 
 ## Basics
@@ -266,6 +277,14 @@ label=paste0("beta[",1:6,"]"),parse=TRUE)+
 * 'type (X) sums of squares'
 * scaling and centering [@schielzethSimple2010] alleviates many problems; sum-to-zero contrasts (weighted or unweighted?)
 
+## Making life easier with `emmeans`
+
+* important to understand contrasts
+* **but** easier to compute *expected marginal means*, contrasts via `emmeans` package
+* contrasts expressed in terms of *group means*
+* e.g.
+* good documentation, vignettes
+
 # Model interpretation, visualization, testing
 
 ## Diagnostics
@@ -282,11 +301,11 @@ label=paste0("beta[",1:6,"]"),parse=TRUE)+
    * (`plotResiduals(simout, form = pred_var)`)
 * `broom::augment()` + plot-your-own (`ggplot2`)
 
-```{r check}
+```{r check, fig.height=10, fig.width = 7}
 performance::check_model(lmTL2)
 ```
 
-```{r DHARMa}
+```{r DHARMa, fig.height=5, fig.width = 7}
 ss <- simulateResiduals(lmTL2)
 plot(ss)
 plot(ss, form = lizards$time)
@@ -332,7 +351,7 @@ When we transform we have to add the logs of the *Jacobian* of the transform to 
 
 Check:
 
-```{r}
+```{r jacobian}
 logJ <- -(nrow(rock)*log(4)  + 3/4*sum(log(rock$perm)))
 lm2 <- logLik(m2) + logJ
 lm1 <- logLik(m1)

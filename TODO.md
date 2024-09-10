@@ -2,6 +2,7 @@
 
 ## new
 
+* DQ definition
 * questionnaire
 * work on HW1 ?
 * Gelman&Hill/Yakulic & Uriarte picture?
@@ -18,12 +19,9 @@
 * land acknowledgement
 * Quiz/terminology intro (for completion credit)? e.g. coverage, likelihood profile, model misspecification, pseudoreplication, p-hacking/snooping/HARKing, post-selection inference, ... ?
 * keep working on lin models (consult Faraway)
-* Piazza ?
 * Zoom meeting?
 * clean up Makefiles?
 * homework/test scheduling
-
-
 
 ## Week 1/intro
 
