@@ -13,8 +13,14 @@ See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
 If your code isn't reproducible I will return it immediately and ask you to fix it.
 
-1. 
+1. Analyze the Olympic data set found [here](https://github.com/bbolker/stats720/blob/main/data/olymp1.csv) (raw download from [here](https://raw.githubusercontent.com/bbolker/stats720/main/data/olymp1.csv)).  The variables are:
 
+- `Team`: (approximately) country 
+- `Year`
+- `Medal` (bronze/gold/silver)
+- `n`: medal count
+- `GDP`: GDP in const 2015 US$ (billions)
+- `pop`: population size (millions)
 
 <!-- Pick a data set **for which you think you understand the predictors and response variables well enough to interpret the results in real-world terms**; for example, you might pick data predicting crime rates or housing prices or incomes, for which most people living in modern society have some intuition (e.g., "0.1 fewer murders per year per million people, per million dollars invested in crime prevention" could be judged to be a small effect).
 
@@ -22,10 +28,22 @@ Pick a data set that seems appropriate for linear regression (e.g., there is one
 
 Some places to look for interesting data: `?datasets` in base R; the `faraway` or `mlbench` package (although the latter has only a few continuous-response, regression-type data sets; more are about classification). (Faraway recommends the data sets `swiss` [response: `Fertility`]; `rock` [response: `perm`]; `mtcars` [response: `mpg`]; `attitude` [response: `rating`]; `prostate` [response: `lpsa`]; and `teengamb` [response: `gamble`]).
 
-
 -->
 
-a. State which possible predictor variables you're going to include; justify your choice (refer to Harrell chapter 4 for rules of thumb about appropriate numbers of predictors).
+a. State which possible predictor variables you're going to include; justify your choice (refer to Harrell chapter 4 for rules of thumb about appropriate numbers of predictors). 
+   * decide whether you're going to predict gold medals only, total medal count, or some weighted average of medals (e.g. `4*G+5*S+2*B`). You can derive these different responses as follows:
+   
+```{r eval = FALSE}
+library(tidyverse)
+mydat |> filter(Medal == "Gold")  ## gold medals only
+mydat |> group_by(Team, Year) |> summarise(across(n, sum)) ## medal count
+mydat |> 
+    mutate(across(Medal, ~ factor(., levels = c("Bronze", "Silver", "Gold")))) |>
+    group_by(Team, Year) |>
+    arrange(Medal) |>
+    summarise(n_wt = sum(c(1,2,4)*n)/4, .groups = "drop")
+```
+
 b. State the units of the response variable and of each predictor variable you plan to include; for each variable, state what you would consider as a reasonable threshold for a small change in that variable.
 c. Fit the model.
 d. Diagnose the model (you must use graphical diagnostics and interpret the output; you may run null hypothesis tests as well if you want, but be careful how you interpret them). You may use base R (`plot.lm()`), `performance::check_model()`, `DHARMa`, or some other framework.
