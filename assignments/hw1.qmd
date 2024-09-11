@@ -1,5 +1,8 @@
 ---
 title: "homework 1"
+format:
+  html:
+    embed-resources: true
 ---
 
 **Due:** Fri Sep 20, 5:00 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
