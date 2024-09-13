@@ -7,7 +7,9 @@ format:
   pdf:
     mainfont: TeX Gyre Pagella
     include-in-header:
-     - text: \usepackage{marginnote}
+      - text: \usepackage{marginnote}
+  html:
+    embed-resources: true
 ---
 
 ![cc](pix/cc-attrib-nc.png)
@@ -77,6 +79,19 @@ is the BLUE (or MVUE).
 * Joint hypotheses on coefficients are $F$-distributed
 * Wald and likelihood ratio test comparisons are equivalent  
 (but need to be careful about marginality)
+
+## Wald vs LRT
+
+* either approach can be used for tests of *single* parameters, *joint* tests of parameters, or confidence intervals
+* Wald makes an additional assumption/approximation (quadratic log-likelihood surface)
+    * this assumption is exact for linear models
+* Wald may assume either known $\sigma^2$ ($Z$, $\chi^2$ tests) or estimated $\hat \sigma^2$ ($t$, $F$ tests)
+
+##
+
+![](pix/nested_tests.png)
+
+From [OARC stats](https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-are-the-likelihood-ratio-wald-and-lagrange-multiplier-score-tests-different-andor-similar/), based on Fox 1977 *Applied regression analysis*
 
 ## Model matrices
 
@@ -347,7 +362,15 @@ m2 <- update(m1, perm^(1/4) ~ .)
 performance::check_model(m2, check = c("linearity", "homogeneity", "outliers", "qq"))
 ```
 
-When we transform we have to add the logs of the *Jacobian* of the transform to the log-likelihood, or subtract $\sum\log(J_i)$ from the negative log-likelihood. e.g. if we log-transform, $\sum\log(J(y_i))=\sum\log\left(\partial(\log(y_i))/\partial y\right) = \sum \log(1/y_i) = -\sum\log y_i$. In this case $\sum\log(J(y_i))=\sum \log((1/4) P^(-3/4)) = -N \log 4 -3/4 \sum\log(P)$:
+When we transform we have to add the logs of the *Jacobian* of the transform to the log-likelihood, or subtract $\sum\log(J_i)$ from the negative log-likelihood [@cranmerTransformation]. For example, if we log-transform, 
+$$
+\begin{split}
+\sum\log(J(y_i)) & =\sum\log\left(\partial(\log(y_i))/\partial y\right) \\
+  & = \sum \log(1/y_i) \\
+  & = -\sum\log y_i.
+\end{split}  
+$$ 
+In this case $\sum\log(J(y_i))=\sum \log\left((1/4) P^{-3/4}\right) = -N \log 4 -3/4 \sum\log(P)$:
 
 Check:
 
