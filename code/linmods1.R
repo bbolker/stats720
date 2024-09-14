@@ -1,0 +1,15 @@
+head(mtcars)
+mtcars <- transform(mtcars, cyl = factor(cyl), vs = factor(vs))
+summary(mtcars)
+str(mtcars)
+m1 <- lm(mpg ~ cyl + wt, data = mtcars)
+summary(m1)
+par(mfrow=c(2,2))
+plot(m1)
+
+library(performance)
+check_model(m1)
+
+library(DHARMa)
+ss <- simulateResiduals(m1)
+plot(ss)
