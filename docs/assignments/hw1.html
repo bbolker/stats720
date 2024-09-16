@@ -3294,7 +3294,7 @@ Some places to look for interesting data: `?datasets` in base R; the `faraway` o
 <li>Fit the model.</li>
 <li>Diagnose the model (you must use graphical diagnostics and interpret the output; you may run null hypothesis tests as well if you want, but be careful how you interpret them). You may use base R (<code>plot.lm()</code>), <code>performance::check_model()</code>, <code>DHARMa</code>, or some other framework.</li>
 <li>If the model has any problems, make adjustments.</li>
-<li>Show a coefficient plot of the results (you can use, e.g. <code>dwplot::dotwhisker</code>). Scale and center the predictors if appropriate (state whether you are or are not scaling and centering, and justify your choice).<br>
+<li>Show a coefficient plot of the results (you can use, e.g. <code>dotwhisker::dwplot</code>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Scale and center the predictors if appropriate (state whether you are or are not scaling and centering, and justify your choice).<br>
 </li>
 <li>Show an effects plot (predicted values or effects, using e.g. <code>effects::allEffects()</code> or <code>plot(emmeans(.))</code>); describe the results.</li>
 </ol>
@@ -3327,7 +3327,13 @@ Some places to look for interesting data: `?datasets` in base R; the `faraway` o
 <p><strong>optional</strong>: evaluate the power of the Shapiro-Wilk test (<code>shapiro.test()</code>) for non-Normality to detect the deviations that you set up. What is the relationship between under/overcoverage and power of the S-W test? (Most statistical tests in R return <code>htest</code> objects, you can access the p-value of a statistical test by extracting the <code>$p.value</code> component.)</p>
 </section>
 
-</main>
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>You may need to use <code>remotes::install_version(&quot;dotwhisker&quot;, version = &quot;0.8.2&quot;)</code> (after installing the <code>remotes</code> package) to install the package<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

@@ -63,8 +63,10 @@ b. State the units of the response variable and of each predictor variable you p
 c. Fit the model.
 d. Diagnose the model (you must use graphical diagnostics and interpret the output; you may run null hypothesis tests as well if you want, but be careful how you interpret them). You may use base R (`plot.lm()`), `performance::check_model()`, `DHARMa`, or some other framework.
 e. If the model has any problems, make adjustments.
-f. Show a coefficient plot of the results (you can use, e.g. `dwplot::dotwhisker`). Scale and center the predictors if appropriate (state whether you are or are not scaling and centering, and justify your choice).  
+f. Show a coefficient plot of the results (you can use, e.g. `dotwhisker::dwplot`)[^1]. Scale and center the predictors if appropriate (state whether you are or are not scaling and centering, and justify your choice).  
 g. Show an effects plot (predicted values or effects, using e.g. `effects::allEffects()` or `plot(emmeans(.))`); describe the results.
+
+[^1]: You may need to use `remotes::install_version("dotwhisker", version = "0.8.2")` (after installing the `remotes` package) to install the package
 
 ## Question 2: contrasts
 
