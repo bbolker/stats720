@@ -2,6 +2,8 @@
 
 ## new
 
+* https://datavizf24.classes.andrewheiss.com/resource/ai-bs.html#what-about-code
+
 * DQ definition
 * questionnaire
 * work on HW1 ?
