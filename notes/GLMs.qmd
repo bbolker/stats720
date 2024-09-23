@@ -45,7 +45,7 @@ library(parameters)
 * assume $\y_i \sim \textrm{Dist}(g^{-1}((\X \bbeta)_i))$
 * $g$ = **link function**
 * $\eta$ = $\X \bbeta$ = **linear predictor**
-* **link scale**, **data** or **response** scale
+* **link scale** or **linear predictor** scale vs. **data** or **response** scale
 * GLMs inverse-transform $\eta$, they don't transform $y$
 * allows:
    * separate control of heteroscedasticity and nonlinearity
@@ -59,8 +59,17 @@ library(parameters)
 * $f(x|\theta) = h(x) g(\theta) \exp(\eta(\theta) T(x))$
 * e.g. Poisson:  $f(x|\theta) = \theta^x \exp(-\theta)/x! = (1/x!) \exp(-\theta) \exp(x \log(\theta))$
 * $h(x)=1/x!$; $g(\theta) = \exp(-\theta)$; $\eta(\theta) = \log(\theta)$; $T(x)$ 
-* $\eta$ is the **canonical link** function for the family (nice mathematical properties)
+* $\eta$ is the **canonical link** function for the family (nice mathematical properties, e.g. observed information = expected information [*Fisher scoring*])
 * binomial, Poisson, Gamma (inverse Gaussian, von Mises distribution ...)
+
+## Computation
+
+* iteratively reweighted least squares
+   * if we know $\mu_i$, we know $V_i$ (up to a proportion)
+   * we can do weighted least squares on the link scale
+   * use new $\beta$ estimates to recalculate $\mu_i$ and $V$
+* needs starting values, but almost always robust to them
+* alternatives/more complex versions: `glmmTMB`, `VGAM` packages
 
 ## Mean-variance relations
 
@@ -81,11 +90,6 @@ library(parameters)
 * $C^{-1}(\eta + \log(\Delta t)) = 1- \exp(-\exp(\eta) \cdot \Delta t)$
 * $\to 1-(1-\mu_0)^{\Delta t}$
 
-## Computation
-
-* iteratively reweighted least squares
-* needs starting values, but almost always robust to them
-
 ## in R
 
 * "family" functions contain all of the components needed for GLM fitting, prediction, etc.
@@ -93,7 +97,7 @@ library(parameters)
 * canonical link is used by default
 
 ```{r family}
-names(binomial)
+names(binomial())
 ```
 
 ## Offsets

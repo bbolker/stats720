@@ -2,6 +2,7 @@
 
 ## new
 
+Yee and Wild (1996), JRSSB 58: 481-493
 * https://datavizf24.classes.andrewheiss.com/resource/ai-bs.html#what-about-code
 
 * DQ definition
