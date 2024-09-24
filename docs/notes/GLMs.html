@@ -3304,7 +3304,7 @@ window.Quarto = {
 <li>almost as convenient/efficient as LMs</li>
 <li>equivalent to MLE in many cases</li>
 </ul></li>
-<li>in practice almost all GLMs are logistic (binary data) or Poisson</li>
+<li>the vast majority of GLMs are logistic (binary data) or Poisson</li>
 <li>lots of inference, diagnostics, etc. inherited from LM framework</li>
 </ul>
 </section>
@@ -3342,7 +3342,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="link-functions">Link functions</h2>
 <ul>
 <li>canonical doesn’t always work best (e.g. Gamma/inverse link)</li>
-<li>probit vs logit; not much difference</li>
+<li>probit vs logit; nearly the same shape, interpretational difference</li>
 <li>cloglog; <em>log-hazard</em> scale</li>
 <li>inverse link: linear changes in the <em>rate</em> of events</li>
 </ul>
@@ -3407,16 +3407,23 @@ window.Quarto = {
 <li>profile CIs</li>
 </ul>
 </section>
-<section id="overdispersion" class="level2">
-<h2 class="anchored" data-anchor-id="overdispersion">Overdispersion</h2>
+<section id="overdispersion-diagnosis" class="level2">
+<h2 class="anchored" data-anchor-id="overdispersion-diagnosis">Overdispersion (diagnosis)</h2>
 <ul>
 <li>too much variance</li>
 <li>SSQ of Pearson residuals <span class="math inline">\(\sim \chi^2(n-p)\)</span>
 <ul>
+<li>but note <span class="citation" data-cites="venablesModern2002a">Venables and Ripley (<a href="#ref-venablesModern2002a" role="doc-biblioref">2002</a>)</span> p. 209 caution that this is <strong>approximate</strong></li>
+<li>simulation-based tests (e.g. <code>DHARMa</code>)</li>
+</ul></li>
+</ul>
+</section>
+<section id="overdispersion-solutions" class="level2">
+<h2 class="anchored" data-anchor-id="overdispersion-solutions">Overdispersion (solutions)</h2>
+<ul>
 <li>quasi-likelihood (also handles <strong>underdispersion</strong>)</li>
 <li>compounded models (negative binomial, beta-binomial)</li>
-<li>observation-level random effects</li>
-</ul></li>
+<li>observation-level random effects (== lognormal-Poisson)</li>
 </ul>
 </section>
 <section id="extended-distributions" class="level2">
@@ -3489,6 +3496,9 @@ Myers, Raymond H., Douglas C. Montgomery, G. Geoffrey Vining, and Timothy J. Rob
 </div>
 <div id="ref-Robinson2010" class="csl-entry" role="listitem">
 Robinson, Andrew. n.d. <span>“Why Do We Make a Big Fuss about Using <span>Fisher</span> Scoring When We Fit a <span>GLM</span>?”</span> Cross Validated. <a href="https://stats.stackexchange.com/q/205">https://stats.stackexchange.com/q/205</a>.
+</div>
+<div id="ref-venablesModern2002a" class="csl-entry" role="listitem">
+Venables, W., and Brian D. Ripley. 2002. <em>Modern Applied Statistics with <span>S</span></em>. 4th ed. New York: Springer.
 </div>
 <div id="ref-woodGeneralized2017" class="csl-entry" role="listitem">
 Wood, Simon N. 2017. <em>Generalized <span>Additive Models</span>: <span>An Introduction</span> with <span>R</span></em>. <span>CRC Texts</span> in <span>Statistical Science</span>. <span>Chapman &amp; Hall</span>.

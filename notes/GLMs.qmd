@@ -127,11 +127,15 @@ names(binomial())
 * approximate Wald CIs (compute then back-transform)
 * profile CIs
 
-## Overdispersion
+## Overdispersion (diagnosis)
 
 * too much variance
 * SSQ of Pearson residuals  $\sim \chi^2(n-p)$
-* **solutions**:
+   * but note @venablesModern2002a p. 209 caution that this is **approximate**
+   * simulation-based tests (e.g. `DHARMa`)
+   
+## Overdispersion (solutions)
+
    * quasi-likelihood (also handles **underdispersion**)
    * compounded models (negative binomial, beta-binomial)
    * observation-level random effects (== lognormal-Poisson)
