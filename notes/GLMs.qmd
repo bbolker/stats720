@@ -51,7 +51,7 @@ library(parameters)
    * separate control of heteroscedasticity and nonlinearity
    * almost as convenient/efficient as LMs
    * equivalent to MLE in many cases
-* in practice almost all GLMs are logistic (binary data) or Poisson
+* the vast majority of GLMs are logistic (binary data) or Poisson
 * lots of inference, diagnostics, etc. inherited from LM framework
 
 ## Exponential family
@@ -70,6 +70,7 @@ library(parameters)
    * use new $\beta$ estimates to recalculate $\mu_i$ and $V$
 * needs starting values, but almost always robust to them
 * alternatives/more complex versions: `glmmTMB`, `VGAM` packages
+* lots more detail on the computational issues [@mccullaghGeneralized1989; @marschner_glm2_2011; @myers_appendix_2010; @dobson_introduction_2008; @mountHowRobustLogistic2012; @gelmanWhassupGlm2011; @Robinson2010]
 
 ## Mean-variance relations
 
@@ -78,7 +79,7 @@ library(parameters)
 ## Link functions
 
 * canonical doesn't always work best (e.g. Gamma/inverse link)
-* probit vs logit; not much difference
+* probit vs logit; nearly the same shape, interpretational difference
 * cloglog; *log-hazard* scale
 * inverse link: linear changes in the *rate* of events
 
@@ -130,9 +131,10 @@ names(binomial())
 
 * too much variance
 * SSQ of Pearson residuals  $\sim \chi^2(n-p)$
+* **solutions**:
    * quasi-likelihood (also handles **underdispersion**)
    * compounded models (negative binomial, beta-binomial)
-   * observation-level random effects
+   * observation-level random effects (== lognormal-Poisson)
 
 ## Extended distributions
 
