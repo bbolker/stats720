@@ -1,8 +1,9 @@
 ---
 title: "homework 2"
+bibliography: ../stats720.bib
 ---
 
-**Due:** Friday 13 October 11:59 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+**Due:** Friday 11 October 11:59 PM. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your GitHub repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 **Please make sure your code is reproducible**:
 
@@ -14,18 +15,15 @@ See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
 If your code isn't reproducible I will return it immediately and ask you to fix it.
 
-1. Analyze the `kyphosis` data (from the `rpart` package). 
+1. Analyze the `Contraception` data from the `mlmRev` package 
+   * once you've installed the `mlmRev` package you can use `data("Contraception", package = "mlmRev")` to import the data without loading the package. *Please ignore the multilevel aspect of the data (i.e. the `urban` variable)
+   * `use` is coded as a factors with levels "N", "Y". While *in general* it is best to keep factor labels, it is generally more convenient in the case of binary response variables to convert this to a 0/1 variable (`use_num = as.numeric(use)-1` [ask yourself why this works ...])
 
-a. Based on the [description](./data.html#kyphosis), decide on your analysis strategy first (what predictors to include, what family/link function to use). 
+a. Based on the description of the data (see `?mlmRev::Contraception` and/or @larsonFamilyPlanningBangladesh1992, decide on your analysis strategy first (what predictors to include, what family/link function to use). Remember to think about Harrell's rules for effective sample sizes/numbers of parameters in the case of a binary response.
 b. Plot the data in some sensible way.
 c. Fit the model.
-d. Compare the diagnostic plots from base R, from `performance::check_model()`, and from `DHARMa`. Discuss any differences that seem interesting or important. 
-e. Interpret your results and draw coefficient plots.
-
-```{r kyph1, message = FALSE}
-data("kyphosis", package = "rpart")
-kyphosis <- transform(kyphosis, Kyphosis = as.numeric(factor(Kyphosis)) - 1)
-```
+d. Compare the diagnostic plots from base R, from `performance::check_model()`, and from `DHARMa`. Only include one (whichever you think is best) in your report; explain your choice. Discuss any differences that seem interesting or important. Adjust your model if necessary.
+e. Interpret your results with coefficient plots or effect plots. Present results using plots from at least **two** of the following packages: `dotwhisker`, `ggeffects`, `emmeans`, `effects`, `marginaleffects`, `sjPlot`. Explain your choice.
 
 2. Gopher tortoise example
 
@@ -33,7 +31,7 @@ The data are described [here](./data.html#gopher-tortoises)
 
 Get the data:
 
-```{r}
+```{r gopherdata}
 g_url <- "https://raw.githubusercontent.com/bbolker/mm_workshops/master/data/gopherdat2.csv"
 g_data <- read.csv(g_url)
 ```
@@ -42,17 +40,25 @@ a. Plot the data.
 b. Using `glm`, fit a GLM with `shells` as a response including at least `year` and `prev`, and including an offset to account for sampling area. Pick an appropriate model; don't forget to consider the possibility of overdispersion.
 c. fit the same model with the formula interface of `bbmle` (see e.g. the [mle2 vignette](https://cran.r-project.org/web/packages/bbmle/vignettes/mle2.pdf), or this [Stack Overflow question](https://stackoverflow.com/questions/68686004/how-to-do-negative-binomial-regression-with-the-rms-package-in-r/68703392#68703392) for how to use the `parameters` argument to specify a linear sub-model
 d. write your own negative log-likelihood function and use `bbmle` or `optim` to fit the GLM
-e. Compare the parameters from the different approaches (they should be nearly identical). Compare Wald and profile CIs.
+e. Compare the parameters from the different approaches (they should be nearly identical). 
+f. Find Wald and profile CIs and compare them.
 
 3. Endometrial data.
 
-Analyze the `endometrial` data from the `brglm2` package (originally analyzed in @heinzeSolution2002).
+Analyze the `endometrial` data from the `brglm2` package (originally analyzed in @heinzeSolution2002). `HG` is the response variable. Decide on a modeling strategy, then plot the response variable as a function of the predictor variables. Don't include the plots in your report, but do describe what you note from the plots.
 
-```{r}
-library(brglm2)
-data(endometrial)
-```
 
-Use regular `glm()`, `arm::bayesglm()` and `glm(..., method = "brglmFit")` to fit the same model. Compare the estimates, confidence intervals, and p-values, as well as the results of a likelihood ratio test of each parameter from the `glm` results. Why do the different methods give different results?
+Use 
 
+* regular `glm()`, 
+* `arm::bayesglm()` [with appropriate regularizing priors] and 
+* **either** `glm(..., method = "brglmFit")` or `logistf()` from the `logistf` package to fit the same model. 
+
+For all three fits, compare (1) estimates (2) Wald and likelihood profile confidence intervals, (3) Wald and likelihood ratio-test p-values for all three (non-intercept) coefficients. In general `confint()` applied to a GLM-like fit will return profile CIs; you can use `stats:::confint.default()` to get Wald CIs. (If you are unable to get some of these answers, don't worry about it - just note this in your answer.) Why do the results differ? (See `?arm::bayesglm` to find the default priors used by `bayesglm`.)
+
+4. Zero-inflation by simulation
+
+Using `data("bioChemists", package="zeroinfl")` and `MASS::glm.nb()`, fit a negative binomial model for the number of articles produced by biochemistry graduate students in the last three years of their PhD. Use the `simulate()` method to simulate 1000 new responses based on the fitted model.  Compute the total numbers of zero observations for each simulation (if you ask for 1000 simulations at once, `colSums(sim_vals==0)` will give you this vector). Draw a histogram of the distribution of simulated numbers of zeros; overlay a point or vertical line indicating the number of zeros in the observed data. Compute a $p$-value; compare it to the results of `DHARMa::testZeroInflation()`.
+
+## references
 
