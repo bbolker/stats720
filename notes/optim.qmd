@@ -1,0 +1,63 @@
+---
+title: "Basics of optimization/likelihood minimization"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+<!-- typically renders in docs/ dir  -->
+
+```{r pkgs, message = FALSE}
+```
+
+## References
+
+@bolkerEcological2008, @bolkerStrategiesFittingNonlinear2013
+
+## Minimization in statistics
+
+* fitting models to data
+* 'best fit'
+* *objective function* or *loss function*; differs by application/problem type
+* least squares, minimum absolute deviation, cross-entropy ...
+* many of these are special cases of **negative log-likelihood**
+
+## Maximum likelihood
+
+* nice properties (efficient, consistent, asymptotically unbiased)
+* unifying principle
+* usually minimize negative log-likelihood instead
+
+## Minimization
+
+* closed form solution of *score equations* (direct or via linear algebra)
+* iteratively reweighted least squares
+* gradient descent
+* more complex iterative solutions
+   * Nelder-Mead
+   * quasi-Newton methods (BFGS, L-BFGS)
+* automatic differentiation
+
+## Minimization in R
+
+* `optim()` (`nlminb`)
+* 
+
+
+
+
+## References
+
+::: {#refs}
+:::
