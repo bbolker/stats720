@@ -58,8 +58,9 @@ library(parameters)
 
 * $f(x|\theta) = h(x) g(\theta) \exp(\eta(\theta) T(x))$
 * e.g. Poisson:  $f(x|\theta) = \theta^x \exp(-\theta)/x! = (1/x!) \exp(-\theta) \exp(x \log(\theta))$
-* $h(x)=1/x!$; $g(\theta) = \exp(-\theta)$; $\eta(\theta) = \log(\theta)$; $T(x)$ 
-* $\eta$ is the **canonical link** function for the family (nice mathematical properties, e.g. observed information = expected information [*Fisher scoring*])
+* $h(x)=1/x!$; $g(\theta) = \exp(-\theta)$; $\eta(\theta) = \log(\theta)$; $T(x) = x$ 
+* models with $T(x)=x$ are in the **exponential dispersion** (sub) family [@jorgensenExponentialDispersionModels1987],
+* $\eta(\theta)$ is the **canonical link** function for the family (nice mathematical properties, e.g. observed information = expected information [*Fisher( scoring*])
 * binomial, Poisson, Gamma (inverse Gaussian, von Mises distribution ...)
 
 ## Computation
@@ -71,10 +72,70 @@ library(parameters)
 * needs starting values, but almost always robust to them
 * alternatives/more complex versions: `glmmTMB`, `VGAM` packages
 * lots more detail on the computational issues [@mccullaghGeneralized1989; @marschner_glm2_2011; @myers_appendix_2010; @dobson_introduction_2008; @mountHowRobustLogistic2012; @gelmanWhassupGlm2011; @Robinson2010]
+* basics (from @farawayExtending2016 p. 155)
+
+## IRLS
+
+Can show (Faraway p. 154) from definition of exponential (dispersion) family that the score equations are equivalent to
+
+$$
+\sum_i \frac{(y_i-\mu_i)}{V(\mu_i)} \frac{\partial \mu_i}{\partial \beta_j} = 0
+$$
+
+which is equivalent to minimizing
+
+$$
+\sum_i \frac{(y_i-\mu_i)^2}{V(\mu_i)}
+$$
+
+\begin{itemize}
+\item compute \textbf{adjusted dependent variate}:
+
+$$
+Z_{(i)} = \hat \eta_{(i)} + (Y-\hat \mu_{(i)}) \left( \frac{d\eta}{d\mu} \right)_{(i)}
+$$
+(note: $\frac{d\eta}{d\mu} = \frac{d\eta}{d g(\eta)} = 1/g'(\eta)$: 
+translate from raw to linear predictor scale)
+\item compute \textbf{weights}
+$$
+W_{(i)}^{-1} = \left( \frac{d\eta}{d\mu}\right)_{(i)}^2 V(\hat \mu_{(i)})
+$$
+(translate variance from raw to linear predictor scale).
+This is the inverse variance of $Z_{(i)}$.
+\item regress $z_{(i)}$ on the covariates with weights $W_{(i)}$ to
+get new $\bbeta$ estimates ($\to$ new $\eeta$, $\bmu$, $V(\mu)$ \ldots)
+\end{itemize}
+Tricky bits: starting values, non-convergence, etc.. (We will
+worry about these later!)
+
+```{r myglmfit}
+myglmfit <- function(y, X, family, tol=1e-8, maxit=50) {
+    mu <- y  ## set initial values
+    ## set up 'oldbeta' and 'beta' so they're not identical
+    oldbeta <- rep(0, ncol(X))
+    beta    <- rep(1, ncol(X))
+    it <- 1  ## number of iterations
+    while (it < maxit && max(abs((1-beta/oldbeta)))>tol) {
+        oldbeta <- beta 
+        eta <- family$linkfun(mu)    ## calc. linear predictor
+        mm <- family$mu.eta(eta)     ## calc. d(mu)/d(eta)
+        adjdev <- eta + (y-mu)/mm    ## adjusted response
+        W <- c(1/(mm^2*family$variance(mu)))  ## weights
+        beta <- lm.wfit(X, adjdev, W)$coefficients  ## weighted least-squares
+        mu <- family$linkinv(X %*% beta)          ## compute new mu
+        it <- it+1                                ## update
+    }
+    beta
+}
+X <- model.matrix(~wool*tension, data=warpbreaks)
+y <- warpbreaks$breaks
+myglmfit(y,X,poisson())
+coef(glm(breaks~wool*tension, data=warpbreaks, family=poisson))
+```
 
 ## Mean-variance relations
 
-* can show that all we need for computation is the link function and the **variance function** $V = f(\mu)$ (may also depend multiplicatively on a **scale** or **dispersion parameter**, e.g. $V = \mu$ for Poisson, $V = \sigma^2$
+* can show that we need only the link function and the **variance function** $V = f(\mu)$ for computation (may also depend multiplicatively on a **scale** or **dispersion parameter**, e.g. $V = \mu$ for Poisson, $V = \sigma^2$
 
 ## Link functions
 
@@ -136,9 +197,9 @@ names(binomial())
    
 ## Overdispersion (solutions)
 
-   * quasi-likelihood (also handles **underdispersion**)
-   * compounded models (negative binomial, beta-binomial)
-   * observation-level random effects (== lognormal-Poisson)
+* quasi-likelihood (also handles **underdispersion**)
+* compounded models (negative binomial, beta-binomial)
+* observation-level random effects (== lognormal-Poisson)
 
 ## Extended distributions
 

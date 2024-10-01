@@ -38,6 +38,7 @@ $$
 * nice properties (efficient, consistent, asymptotically unbiased)
 * unifying principle
 * usually minimize negative log-likelihood instead
+*  "when it can do the job, it's rarely the best tool for the job but it's rarely much worse than the best" (S. Ellner)
 
 ## Minimization
 
@@ -52,10 +53,51 @@ $$
 ## Minimization in R
 
 * `optim()` (`nlminb`)
-* 
+* Nelder-Mead
+* various quasi-Newton methods [@pressNumerical2007]
 
+```{r}
+X <- model.matrix(~wool*tension, data=warpbreaks)
+y <- warpbreaks$breaks
+nll <- function(beta) {
+    mu <- exp(X %*% beta)
+    -sum(dpois(y, mu, log=TRUE))
+}
+par0 <- rep(0, ncol(X))
+opt1 <- optim(par0, nll, control = list(maxit = 1000))
+par2 <- coef(glm(breaks~wool*tension, data=warpbreaks, family=poisson))
+all.equal(opt1$par, unname(par2), tolerance = 1e-3)
+```
 
+## with `mle2`
 
+* wrapper for `optim`, variant of `stats4::mle()`
+* `data` argument
+* better accessor methods (`coef()`, `vcov()`, `broom::tidy()`, `profile()`, `confint()`, `predict()`, ...)
+
+```{r}
+library(bbmle)
+names(par0) <- parnames(nll) <- paste0("beta", 1:ncol(X))
+confint(mle2(nll, par0))
+```
+
+## formula notation
+
+```{r}
+mle2(breaks~dpois(exp(eta)),
+     parameters = list(eta ~ wool*tension),
+     start = list(eta = 0),
+     data = warpbreaks)
+```
+
+## `mle2` notes
+
+* uses `BFGS` (with finite difference gradients!) by default; may want Nelder-Mead
+* probably want to provide a link function for dispersion parameters, e.g. fit negative binomial with `size = exp(logsize)`
+
+## Template Model Builder and autodiff
+
+* TBW ...
 
 ## References
 

@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-09-23">
 
 <title>Generalized linear models</title>
 <style>
@@ -3256,7 +3255,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">23 Sep 2024</p>
+      <p class="date">1 Oct 2024</p>
     </div>
   </div>
   
@@ -3313,8 +3312,9 @@ window.Quarto = {
 <ul>
 <li><span class="math inline">\(f(x|\theta) = h(x) g(\theta) \exp(\eta(\theta) T(x))\)</span></li>
 <li>e.g. Poisson: <span class="math inline">\(f(x|\theta) = \theta^x \exp(-\theta)/x! = (1/x!) \exp(-\theta) \exp(x \log(\theta))\)</span></li>
-<li><span class="math inline">\(h(x)=1/x!\)</span>; <span class="math inline">\(g(\theta) = \exp(-\theta)\)</span>; <span class="math inline">\(\eta(\theta) = \log(\theta)\)</span>; <span class="math inline">\(T(x)\)</span></li>
-<li><span class="math inline">\(\eta\)</span> is the <strong>canonical link</strong> function for the family (nice mathematical properties, e.g. observed information = expected information [<em>Fisher scoring</em>])</li>
+<li><span class="math inline">\(h(x)=1/x!\)</span>; <span class="math inline">\(g(\theta) = \exp(-\theta)\)</span>; <span class="math inline">\(\eta(\theta) = \log(\theta)\)</span>; <span class="math inline">\(T(x) = x\)</span></li>
+<li>models with <span class="math inline">\(T(x)=x\)</span> are in the <strong>exponential dispersion</strong> (sub) family <span class="citation" data-cites="jorgensenExponentialDispersionModels1987">(<a href="#ref-jorgensenExponentialDispersionModels1987" role="doc-biblioref">Jørgensen 1987</a>)</span>,</li>
+<li><span class="math inline">\(\eta(\theta)\)</span> is the <strong>canonical link</strong> function for the family (nice mathematical properties, e.g. observed information = expected information [<em>Fisher( scoring</em>])</li>
 <li>binomial, Poisson, Gamma (inverse Gaussian, von Mises distribution …)</li>
 </ul>
 </section>
@@ -3329,13 +3329,62 @@ window.Quarto = {
 </ul></li>
 <li>needs starting values, but almost always robust to them</li>
 <li>alternatives/more complex versions: <code>glmmTMB</code>, <code>VGAM</code> packages</li>
-<li>lots more detail on the computational issues <span class="citation" data-cites="mccullaghGeneralized1989 marschner_glm2_2011 myers_appendix_2010 dobson_introduction_2008 mountHowRobustLogistic2012 gelmanWhassupGlm2011 Robinson2010">(<a href="#ref-mccullaghGeneralized1989" role="doc-biblioref">McCullagh and Nelder 1989</a>; <a href="#ref-marschner_glm2_2011" role="doc-biblioref">Marschner 2011</a>; <a href="#ref-myers_appendix_2010" role="doc-biblioref">Myers et al. 2010</a>; <a href="#ref-dobson_introduction_2008" role="doc-biblioref">Dobson and Barnett 2008</a>; <a href="#ref-mountHowRobustLogistic2012" role="doc-biblioref">Mount 2012</a>; <a href="#ref-gelmanWhassupGlm2011" role="doc-biblioref">Gelman 2011</a>; <a href="#ref-Robinson2010" role="doc-biblioref">Robinson, n.d.</a>)</span></li>
+<li>lots more detail on the computational issues <span class="citation" data-cites="mccullaghGeneralized1989 marschner_glm2_2011 myers_appendix_2010 dobson_introduction_2008 mountHowRobustLogistic2012 gelmanWhassupGlm2011 Robinson2010">(<a href="#ref-mccullaghGeneralized1989" role="doc-biblioref">McCullagh and Nelder 1989</a>; <a href="#ref-marschner_glm2_2011" role="doc-biblioref">Marschner 2011</a>; <a href="#ref-myers_appendix_2010" role="doc-biblioref">Myers et al. 2010</a>; <a href="#ref-dobson_introduction_2008" role="doc-biblioref">Dobson and Barnett 2008</a>; <a href="#ref-mountHowRobustLogistic2012" role="doc-biblioref">Mount 2012</a>; <a href="#ref-gelmanWhassupGlm2011" role="doc-biblioref">Gelman 2011</a>; <a href="#ref-Robinson2010" role="doc-biblioref">Robinson 2010</a>)</span></li>
+<li>basics (from <span class="citation" data-cites="farawayExtending2016">Faraway (<a href="#ref-farawayExtending2016" role="doc-biblioref">2016</a>)</span> p. 155)</li>
 </ul>
+</section>
+<section id="irls" class="level2">
+<h2 class="anchored" data-anchor-id="irls">IRLS</h2>
+<p>Can show (Faraway p. 154) from definition of exponential (dispersion) family that the score equations are equivalent to</p>
+<p><span class="math display">\[
+\sum_i \frac{(y_i-\mu_i)}{V(\mu_i)} \frac{\partial \mu_i}{\partial \beta_j} = 0
+\]</span></p>
+<p>which is equivalent to minimizing</p>
+<p><span class="math display">\[
+\sum_i \frac{(y_i-\mu_i)^2}{V(\mu_i)}
+\]</span></p>
+<p>Tricky bits: starting values, non-convergence, etc.. (We will worry about these later!)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>myglmfit <span class="ot">&lt;-</span> <span class="cf">function</span>(y, X, family, <span class="at">tol=</span><span class="fl">1e-8</span>, <span class="at">maxit=</span><span class="dv">50</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> y  <span class="do">## set initial values</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="do">## set up &#39;oldbeta&#39; and &#39;beta&#39; so they&#39;re not identical</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    oldbeta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">ncol</span>(X))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    beta    <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(X))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    it <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="do">## number of iterations</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (it <span class="sc">&lt;</span> maxit <span class="sc">&amp;&amp;</span> <span class="fu">max</span>(<span class="fu">abs</span>((<span class="dv">1</span><span class="sc">-</span>beta<span class="sc">/</span>oldbeta)))<span class="sc">&gt;</span>tol) {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        oldbeta <span class="ot">&lt;-</span> beta </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        eta <span class="ot">&lt;-</span> family<span class="sc">$</span><span class="fu">linkfun</span>(mu)    <span class="do">## calc. linear predictor</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        mm <span class="ot">&lt;-</span> family<span class="sc">$</span><span class="fu">mu.eta</span>(eta)     <span class="do">## calc. d(mu)/d(eta)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        adjdev <span class="ot">&lt;-</span> eta <span class="sc">+</span> (y<span class="sc">-</span>mu)<span class="sc">/</span>mm    <span class="do">## adjusted response</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        W <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span>(mm<span class="sc">^</span><span class="dv">2</span><span class="sc">*</span>family<span class="sc">$</span><span class="fu">variance</span>(mu)))  <span class="do">## weights</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        beta <span class="ot">&lt;-</span> <span class="fu">lm.wfit</span>(X, adjdev, W)<span class="sc">$</span>coefficients  <span class="do">## weighted least-squares</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        mu <span class="ot">&lt;-</span> family<span class="sc">$</span><span class="fu">linkinv</span>(X <span class="sc">%*%</span> beta)          <span class="do">## compute new mu</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        it <span class="ot">&lt;-</span> it<span class="sc">+</span><span class="dv">1</span>                                <span class="do">## update</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    beta</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span>wool<span class="sc">*</span>tension, <span class="at">data=</span>warpbreaks)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> warpbreaks<span class="sc">$</span>breaks</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">myglmfit</span>(y,X,<span class="fu">poisson</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept)          woolB       tensionM       tensionH woolB:tensionM 
+     3.7967368     -0.4566272     -0.6186830     -0.5957987      0.6381768 
+woolB:tensionH 
+     0.1883632 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">glm</span>(breaks<span class="sc">~</span>wool<span class="sc">*</span>tension, <span class="at">data=</span>warpbreaks, <span class="at">family=</span>poisson))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept)          woolB       tensionM       tensionH woolB:tensionM 
+     3.7967368     -0.4566272     -0.6186830     -0.5957987      0.6381768 
+woolB:tensionH 
+     0.1883632 </code></pre>
+</div>
+</div>
 </section>
 <section id="mean-variance-relations" class="level2">
 <h2 class="anchored" data-anchor-id="mean-variance-relations">Mean-variance relations</h2>
 <ul>
-<li>can show that all we need for computation is the link function and the <strong>variance function</strong> <span class="math inline">\(V = f(\mu)\)</span> (may also depend multiplicatively on a <strong>scale</strong> or <strong>dispersion parameter</strong>, e.g. <span class="math inline">\(V = \mu\)</span> for Poisson, <span class="math inline">\(V = \sigma^2\)</span></li>
+<li>can show that we need only the link function and the <strong>variance function</strong> <span class="math inline">\(V = f(\mu)\)</span> for computation (may also depend multiplicatively on a <strong>scale</strong> or <strong>dispersion parameter</strong>, e.g. <span class="math inline">\(V = \mu\)</span> for Poisson, <span class="math inline">\(V = \sigma^2\)</span></li>
 </ul>
 </section>
 <section id="link-functions" class="level2">
@@ -3365,7 +3414,7 @@ window.Quarto = {
 <li>canonical link is used by default</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">binomial</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">binomial</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] &quot;family&quot;     &quot;link&quot;       &quot;linkfun&quot;    &quot;linkinv&quot;    &quot;variance&quot;  
  [6] &quot;dev.resids&quot; &quot;aic&quot;        &quot;mu.eta&quot;     &quot;initialize&quot; &quot;validmu&quot;   
@@ -3482,6 +3531,9 @@ Faraway, Julian J. 2016. <em>Extending the <span>Linear Model</span> with <span>
 <div id="ref-gelmanWhassupGlm2011" class="csl-entry" role="listitem">
 Gelman, Andrew. 2011. <span>“Whassup with Glm()?”</span> <em>Statistical Modeling, Causal Inference, and Social Science</em>. <a href="https://statmodeling.stat.columbia.edu/2011/05/04/whassup\_with\_gl/">https://statmodeling.stat.columbia.edu/2011/05/04/whassup\_with\_gl/</a>.
 </div>
+<div id="ref-jorgensenExponentialDispersionModels1987" class="csl-entry" role="listitem">
+Jørgensen, Bent. 1987. <span>“Exponential <span>Dispersion Models</span>.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 49 (2): 127–45. <a href="https://doi.org/10.1111/j.2517-6161.1987.tb01685.x">https://doi.org/10.1111/j.2517-6161.1987.tb01685.x</a>.
+</div>
 <div id="ref-marschner_glm2_2011" class="csl-entry" role="listitem">
 Marschner, Ian C. 2011. <span>“Glm2: Fitting Generalized Linear Models with Convergence Problems.”</span> <em>The R Journal</em> 3 (2): 12–15. <a href="http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Marschner.pdf">http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Marschner.pdf</a>.
 </div>
@@ -3495,7 +3547,7 @@ Mount, John. 2012. <span>“How Robust Is Logistic Regression?”</span> <em>Win
 Myers, Raymond H., Douglas C. Montgomery, G. Geoffrey Vining, and Timothy J. Robinson. 2010. <span>“Appendix <span>A.6</span>: Computational Details for <span>GLMs</span> for a Noncanonical Link.”</span> In <em>Generalized Linear Models</em>, 481–83. John Wiley &amp; Sons, Inc. <a href="http://onlinelibrary.wiley.com/doi/10.1002/9780470556986.app6/summary">http://onlinelibrary.wiley.com/doi/10.1002/9780470556986.app6/summary</a>.
 </div>
 <div id="ref-Robinson2010" class="csl-entry" role="listitem">
-Robinson, Andrew. n.d. <span>“Why Do We Make a Big Fuss about Using <span>Fisher</span> Scoring When We Fit a <span>GLM</span>?”</span> Cross Validated. <a href="https://stats.stackexchange.com/q/205">https://stats.stackexchange.com/q/205</a>.
+Robinson, Andrew. 2010. <span>“Why Do We Make a Big Fuss about Using <span>Fisher</span> Scoring When We Fit a <span>GLM</span>?”</span> Cross Validated. <a href="https://stats.stackexchange.com/q/205">https://stats.stackexchange.com/q/205</a>.
 </div>
 <div id="ref-venablesModern2002a" class="csl-entry" role="listitem">
 Venables, W., and Brian D. Ripley. 2002. <em>Modern Applied Statistics with <span>S</span></em>. 4th ed. New York: Springer.
