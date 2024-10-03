@@ -58,7 +58,7 @@ For all three fits, compare (1) estimates (2) Wald and likelihood profile confid
 
 4. Zero-inflation by simulation
 
-Using `data("bioChemists", package="zeroinfl")` and `MASS::glm.nb()`, fit a negative binomial model for the number of articles produced by biochemistry graduate students in the last three years of their PhD. Use the `simulate()` method to simulate 1000 new responses based on the fitted model.  Compute the total numbers of zero observations for each simulation (if you ask for 1000 simulations at once, `colSums(sim_vals==0)` will give you this vector). Draw a histogram of the distribution of simulated numbers of zeros; overlay a point or vertical line indicating the number of zeros in the observed data. Compute a $p$-value; compare it to the results of `DHARMa::testZeroInflation()`.
+Using `data("bioChemists", package="pscl")` (you'll need to install the `pscl` package first) and `MASS::glm.nb()`, fit a negative binomial model for the number of articles produced by biochemistry graduate students in the last three years of their PhD. Use the `simulate()` method to simulate 1000 new responses based on the fitted model.  Compute the total numbers of zero observations for each simulation (if you ask for 1000 simulations at once, `colSums(sim_vals==0)` will give you this vector). Draw a histogram of the distribution of simulated numbers of zeros; overlay a point or vertical line indicating the number of zeros in the observed data. Compute a $p$-value; compare it to the results of `DHARMa::testZeroInflation()`.
 
 ## references
 
