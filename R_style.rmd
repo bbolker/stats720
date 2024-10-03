@@ -87,4 +87,6 @@ thing <- thing %>%
            bletch=x^4)
 ```
 
+See also: https://kdestasio.github.io/post/r_best_practices/
+
 ## References
