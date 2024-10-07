@@ -1943,3 +1943,53 @@
   publisher = {Cambridge University Press},
   isbn = {0-521-88068-8}
 }
+
+
+@article{greenlandPenalizationBiasReduction2015,
+  title = {Penalization, Bias Reduction, and Default Priors in Logistic and Related Categorical and Survival Regressions},
+  author = {Greenland, Sander and Mansournia, Mohammad Ali},
+  year = {2015},
+  journal = {Statistics in Medicine},
+  volume = {34},
+  number = {23},
+  pages = {3133--3143},
+  issn = {1097-0258},
+  doi = {10.1002/sim.6537},
+  urldate = {2024-10-07},
+  abstract = {Penalization is a very general method of stabilizing or regularizing estimates, which has both frequentist and Bayesian rationales. We consider some questions that arise when considering alternative penalties for logistic regression and related models. The most widely programmed penalty appears to be the Firth small-sample bias-reduction method (albeit with small differences among implementations and the results they provide), which corresponds to using the log density of the Jeffreys invariant prior distribution as a penalty function. The latter representation raises some serious contextual objections to the Firth reduction, which also apply to alternative penalties based on t-distributions (including Cauchy priors). Taking simplicity of implementation and interpretation as our chief criteria, we propose that the log-F(1,1) prior provides a better default penalty than other proposals. Penalization based on more general log-F priors is trivial to implement and facilitates mean-squared error reduction and sensitivity analyses of penalty strength by varying the number of prior degrees of freedom. We caution however against penalization of intercepts, which are unduly sensitive to covariate coding and design idiosyncrasies. Copyright {\copyright} 2015 John Wiley \& Sons, Ltd.},
+  copyright = {Copyright {\copyright} 2015 John Wiley \& Sons, Ltd.},
+  langid = {english},
+  keywords = {Bayes estimators,bias correction,Firth bias reduction,Jeffreys prior,logistic regression,maximum likelihood,penalized likelihood,regularization,shrinkage,sparse data,stabilization},
+  file = {/home/bolker/Documents/zotero_new/storage/D4DUY9CU/Greenland and Mansournia - 2015 - Penalization, bias reduction, and default priors in logistic and related categorical and survival re.pdf;/home/bolker/Documents/zotero_new/storage/4XSMVM4R/sim.html}
+}
+
+@inproceedings{firthGeneralizedLinearModels1992,
+  title = {Generalized Linear Models and {Jeffreys} Priors: An Iterative Weighted Least-Squares Approach},
+  booktitle = {Computational Statistics},
+  author = {Firth, D.},
+  editor = {Dodge, Yadolah and Whittaker, Joe},
+  year = {1992},
+  pages = {553--557},
+  publisher = {Physica-Verlag HD},
+  address = {Heidelberg},
+  doi = {10.1007/978-3-662-26811-7_76},
+  abstract = {Use of the Jeffreys invariant prior in generalized linear models has been studied recently by a number of authors. In models with canonical link, the posterior mode has asymptotic bias of smaller order than that of the maximum likelihood estimate. In this paper a new algorithm for calculation of the posterior mode is developed. The algorithm makes use of the iterative weighted least-squares method commonly used for maximum likelihood calculations, so that implementation is possible in standard regression software, such as GLIM. Comparison is made with a more `direct' approach using Newton's method, found to be easily implemented in the object-oriented modelling environment of LISP-STAT.},
+  isbn = {978-3-662-26811-7},
+  langid = {english}
+}
+
+@article{kosmidisJeffreyspriorPenaltyFiniteness2021,
+  title = {Jeffreys-Prior Penalty, Finiteness and Shrinkage in Binomial-Response Generalized Linear Models},
+  author = {Kosmidis, Ioannis and Firth, David},
+  year = {2021},
+  month = mar,
+  journal = {Biometrika},
+  volume = {108},
+  number = {1},
+  pages = {71--82},
+  issn = {0006-3444},
+  doi = {10.1093/biomet/asaa052},
+  urldate = {2024-10-07},
+  abstract = {Penalization of the likelihood by Jeffreys' invariant prior, or a positive power thereof, is shown to produce finite-valued maximum penalized likelihood estimates in a broad class of binomial generalized linear models. The class of models includes logistic regression, where the Jeffreys-prior penalty is known additionally to reduce the asymptotic bias of the maximum likelihood estimator, and models with other commonly used link functions, such as probit and log-log. Shrinkage towards equiprobability across observations, relative to the maximum likelihood estimator, is established theoretically and studied through illustrative examples. Some implications of finiteness and shrinkage for inference are discussed, particularly when inference is based on Wald-type procedures. A widely applicable procedure is developed for computation of maximum penalized likelihood estimates, by using repeated maximum likelihood fits with iteratively adjusted binomial responses and totals. These theoretical results and methods underpin the increasingly widespread use of reduced-bias and similarly penalized binomial regression models in many applied fields.},
+  file = {/home/bolker/Documents/zotero_new/storage/A4JYY5TM/Kosmidis and Firth - 2021 - Jeffreys-prior penalty, finiteness and shrinkage in binomial-response generalized linear models.pdf;/home/bolker/Documents/zotero_new/storage/MM5X58C2/5880219.html}
+}

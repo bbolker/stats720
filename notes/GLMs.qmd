@@ -212,6 +212,7 @@ names(binomial())
 * Hauck-Donner effect screws up Wald tests
 * likelihood ratio tests still OK (sort of)
 * Firth logistic regression (`brglm2` package), Bayesian priors (`arm::bayesglm`)
+* refs: @firthGeneralizedLinearModels1992, @heinzeSolution2002, @greenlandPenalizationBiasReduction2015, @kosmidisJeffreyspriorPenaltyFiniteness2021
 
 ## Zero-inflation/hurdle models
 
