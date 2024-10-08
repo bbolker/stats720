@@ -44,20 +44,27 @@ library(parameters)
 - equivalent to imposing iid Gaussian priors on each element of $\bbeta$
 - lasso (and elastic net, which is a convex combination of L2 and L1 penalties) are popular because they **induce sparsity**
    - *likelihood surfaces* are non-convex with cusps at zero
-   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding); can't use *only* linear algebra
+   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding, see @friedmanRegularization2010b); can't use *only* linear algebra
 - can generalize from penalized LM to penalized GLM
 
-##  [Andrew Gelman on variable selection](https://statmodeling.stat.columbia.edu/2023/07/18/when-your-regression-model-has-interactions-do-you-need-to-include-all-the-corresponding-main-effects/#comment-2238997)
+## Variable selection 
+
+Variable selection has some characteristics in common with multicollinearity and conditional Normality, i.e. that people generally overestimate its importance.
+
+[Andrew Gelman on variable selection](https://statmodeling.stat.columbia.edu/2023/07/18/when-your-regression-model-has-interactions-do-you-need-to-include-all-the-corresponding-main-effects/#comment-2238997):
 
 > Variable selection (that is, setting some coefficients to be exactly zero) can be useful for various reasons, including:
+
 > * It’s a simple form of regularization.
 > * It can reduce costs in future data collection.
 > Variable selection can be fine as a means to an end. Problems can arise if it’s taken too seriously, for example as an attempt to discover a purported parsimonious true model.
 
+Variable selection can also be viewed as **inducing sparsity** in a model; thus it can also be computationally useful ...
+
 ## Choosing penalty strength
 
 * typically by *cross-validation*
-* leave-one-out (LOOCV) vs $k$-fold
+* leave-one-out (LOOCV) vs $k$-fold: bias/variance tradeoff (@jamesintroduction2013 \S 5.1.4)
 
 ## Practical points
 
@@ -104,6 +111,14 @@ $$
 * `glmnet` is very good
 * `ridge`, `lmridge`, ... (`library(sos); findFn("{ridge regression}")1)
 * need to give `y` and `X` directly (although see [glmnetUtils package](https://CRAN.R-project.org/package=glmnetUtils))
+
+## More on penalization
+
+* we've already seen it 
+* also described as *regularization*, *shrinkage* estimator, or as equivalent to imposing a Bayesian prior
+* complete separation
+* could use it for forcing negative binomial parameter away from $\theta = \infty$ ?
+* latter will use to mitigate *singular* mixed-model fits (variance = 0)
 
 ## Tangent: how do I know if an R package is any good?
 

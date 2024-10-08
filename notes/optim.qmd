@@ -19,6 +19,8 @@ $$
 <!-- typically renders in docs/ dir  -->
 
 ```{r pkgs, message = FALSE}
+library(RTMB)
+library(bbmle)
 ```
 
 ## References
@@ -76,7 +78,6 @@ all.equal(opt1$par, unname(par2), tolerance = 1e-3)
 * better accessor methods (`coef()`, `vcov()`, `broom::tidy()`, `profile()`, `confint()`, `predict()`, ...)
 
 ```{r}
-library(bbmle)
 names(par0) <- parnames(nll) <- paste0("beta", 1:ncol(X))
 confint(mle2(nll, par0))
 ```
@@ -97,7 +98,56 @@ mle2(breaks~dpois(exp(eta)),
 
 ## Template Model Builder and autodiff
 
-* TBW ...
+* everything is better with gradients
+* **finite difference** gradients (R default) are terrible (expensive and inaccurate)
+* FD vs symbolic vs automatic/algorithm
+* magic/chain rule; *cheap gradient* principle [@kristensenTMB2016]
+
+## deriv() in base R
+
+Useful, illustrative, but limited
+
+```{r}
+deriv(expression(cos(x*sin(x^2))), "x")
+```
+
+## RTMB package
+
+```{r}
+data("prussian", package = "pscl")
+prussmin <- prussian[1:3,]
+X2 <- model.matrix(~ factor(year), data = prussmin)
+par2 <- list(beta = rep(0, ncol(X2)))
+f2 <- function(pars) {
+    getAll(pars)  ## this is like with() or attach()
+    mu <- exp(X2 %*% beta)
+    -sum(dpois(prussmin$y, lambda = mu, log = TRUE))
+}
+```
+
+```{r echo=FALSE}
+tape2 <- RTMB::MakeTape(f2, par2)
+plot(igraph::graph_from_adjacency_matrix(tape2$graph()),
+     layout=igraph::layout_as_tree, vertex.size = 5)
+```
+
+```{r echo=FALSE}
+X2 <- model.matrix(~ factor(year), data = prussian)
+par2 <- list(beta = rep(0, ncol(X2)))
+f2 <- function(pars) {
+    getAll(pars)  ## this is like with() or attach()
+    mu <- exp(X2 %*% beta)
+    -sum(dpois(prussian$y, lambda = mu, log = TRUE))
+}
+```
+
+```{r}
+ff2 <- RTMB::MakeADFun(f2, par2)
+ff2$fn()
+ff2$gr()
+```
+
+Can use `f2$fn()`, `f2$gr()` to get function and gradient vector efficiently.
 
 ## References
 
