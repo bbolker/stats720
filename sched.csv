@@ -4,10 +4,10 @@ week, start_date, topic, readings, assignments, notes
 3,2024-09-17,linear models 2,,,
 4,2024-09-24,GLMs 1,,[HW2](assignments/hw2.html) (due 11 Oct),[GLMs](notes/GLMs.html)([PDF](notes/GLMs.pdf))
 5,2024-10-01,GLMs 2,,,[optimization/minimization stuff](notes/optim.html)([PDF](notes/optim.pdf))
-6,2024-10-08,Penalization and regularization 1,,,[ridge/mixed](notes/ridge_mixed.html)([PDF](notes/ridge_mixed.pdf))
+6,2024-10-08,GLMs and optimization,,,
  ,2024-10-11,**midterm test**,,,
  ,2024-10-15,midterm recess,,,
-7,2024-10-22,Penalization and regularization 2,,,
+7,2024-10-22,Penalization and regularization,,,[ridge/mixed](notes/ridge_mixed.html)([PDF](notes/ridge_mixed.pdf))
 9,2024-10-29,Mixed models 1,,,
 10,2024-11-05,Mixed models 2,,,
 11,2024-11-12,Mixed models 3,,,

@@ -44,8 +44,8 @@ library(parameters)
 - equivalent to imposing iid Gaussian priors on each element of $\bbeta$
 - lasso (and elastic net, which is a convex combination of L2 and L1 penalties) are popular because they **induce sparsity**
    - *likelihood surfaces* are non-convex with cusps at zero
-   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding, see @friedmanRegularization2010b); can't use *only* linear algebra
-- can generalize from penalized LM to penalized GLM
+   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding, see @friedmanRegularization2010b); can't use pure linear algebra or pure gradient descent/quasi-Newton
+- generalizing from penalized LM to penalized GLM isn't too hard
 
 ## Variable selection 
 
@@ -65,6 +65,7 @@ Variable selection can also be viewed as **inducing sparsity** in a model; thus 
 
 * typically by *cross-validation*
 * leave-one-out (LOOCV) vs $k$-fold: bias/variance tradeoff (@jamesintroduction2013 \S 5.1.4)
+    * small folds (LOO); low bias (sample size $\approx$ total), but lots of overlap (correlation) between training sets, so high variance. Large folds (e.g. 2-fold), *vice versa*
 
 ## Practical points
 
@@ -101,7 +102,7 @@ $$
 
 * inference from penalized models is really hard
 * classical CIs for ridge are **identical** to OLS [@obenchainClassical1977]
-   > ridge techniques do not generally yield ``new'' normal theory statistical inferences: in particular, ridging does not necessarily produce ``shifted'' confidence regions.
+   > ridge techniques do not generally yield "new" normal theory statistical inferences: in particular, ridging does not necessarily produce "shifted" confidence regions.
 * **no free lunch** (i.e., no true narrowing of CIs/decreased uncertainty without additional assumptions)
 * post-selection inference is a big deal but requires very strong assumptions (asymptotic, 'gap')
 * prediction intervals are often neglected (conformal prediction, jackknife+ [@barberPredictive2021]): [MAPIE](https://mapie.readthedocs.io/en/latest/)
@@ -109,12 +110,12 @@ $$
 ## Practical
 
 * `glmnet` is very good
-* `ridge`, `lmridge`, ... (`library(sos); findFn("{ridge regression}")1)
-* need to give `y` and `X` directly (although see [glmnetUtils package](https://CRAN.R-project.org/package=glmnetUtils))
+* `ridge`, `lmridge`, ... (`library(sos); findFn("{ridge regression}")`)
+* need to give `y` and `X` directly as in `[g]lm.fit()` (although see [glmnetUtils package](https://CRAN.R-project.org/package=glmnetUtils))
 
 ## More on penalization
 
-* we've already seen it 
+* we've already seen it (for dealing with complete separation)
 * also described as *regularization*, *shrinkage* estimator, or as equivalent to imposing a Bayesian prior
 * complete separation
 * could use it for forcing negative binomial parameter away from $\theta = \infty$ ?
@@ -134,7 +135,7 @@ $$
 * based on a single observation, $\y$, of a *multivariate* response with dimension $m \ge 3$, shrinking the value (usually toward zero) is a better estimate of the mean than the value itself (!)
 
 $$
-\hat \mu(X_1, \ldots, X_n) = \left(1-\frac{(p-2) \sigma^2/n}{||\bar X_n||^2}\right) \bar X_n
+\hat \mu(X_1, \ldots, X_n) = \left(1-\frac{(m-2) \sigma^2/n}{||\bar X_n||^2}\right) \bar X_n
 $$
 
 * (connected to recurrence of random walks in $d \le 2$, non-recurrence in $d\ge 3$ ...)
@@ -163,11 +164,11 @@ If we use a prior with $\mu_i \sim N(\mu, \tau^2)$ (assuming residual variance i
 $$
 \begin{split}
 E(\mu_i|X_i) & = \mu + \frac{\tau^2}{\tau^2+1}(X_i - \mu) \\
-var(\mu_i|X_i) & = \frac{\tau^2}{\tau^2+1}
+\textrm{Var}(\mu_i|X_i) & = \frac{\tau^2}{\tau^2+1}
 \end{split}
 $$
 
-But we still have to estimate $\tau$ (or $\tau^2/(\tau^2+1)$ from the data).
+But we still have to estimate $\tau$ (or $\tau^2/(\tau^2+1)$) from the data.
 
 ## MVN version
 
@@ -196,9 +197,9 @@ where $\btheta$ is a vector of parameters that defines the covariance matrix $\S
 
 ## How do we estimate this?
 
-* can use EM algorithm (e.g. see [here](https://stt.msu.edu/users/pszhong/Lecture_23_Spring_2017.pdf), or the [lmm package](https://github.com/jinghuazhao/R/tree/master/lmm))
+* expectation-maximization (EM) algorithm (e.g. see [here](https://stt.msu.edu/users/pszhong/Lecture_23_Spring_2017.pdf), or the [lmm package](https://github.com/jinghuazhao/R/tree/master/lmm))
 * Or by linear algebra. For LMMs, we do a more complicated version of *data augmentation*.
-* given a value for the random-effects variance, we can calculate the log-likelihood in one step (see
+* given a value for the random-effects variance, we can calculate the log-likelihood in one step [@batesFitting2015a]
 * large, sparse matrix computation
 * has to be done *repeatedly*
 * most efficient if we analyze the matrix and permute to optimize structure [@batesFitting2015a]
@@ -230,14 +231,21 @@ $$
 
 * blockwise
 * what's the best way to parameterize a positive-(semi)definite matrix? [@pinheiroUnconstrained1996a]
-* Cholesky decomposition with 
-* scaled or unscaled?
-* Cholesky or log-Cholesky scale?
-* separating correlation and SD vectors: [glmmTMB](https://glmmtmb.github.io/glmmTMB/articles/covstruct.html#unstructured):
+* Cholesky decomposition:
+   * scaled or unscaled?
+   * Cholesky or log-Cholesky scale?
+   * separating correlation and SD vectors: [glmmTMB](https://glmmtmb.github.io/glmmTMB/articles/covstruct.html#unstructured):
 
 $$
 \Sigma = D^{-1/2} L L^\top D^{-1/2}, \quad D = \textrm{diag}(L L^\top)
 $$
+
+## Key references
+
+* @hastieElements2009 for ridge/lasso/elastic net
+* @batesFitting2015a for linear algebra underlying LMMs; incomplete MS on GLMM implementation [here](https://github.com/bbolker/asaglmm/blob/master/papers/glmer.pdf)
+* @vanhouwelingenShrinkage2001 for the connections between James-Stein, ridge and other penalties, and mixed models
+* @brooksglmmTMB2017 (and @kristensenTMB2016) for `glmmTMB`
 
 ## References
 
