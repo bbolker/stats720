@@ -3295,7 +3295,11 @@ window.Quarto = {
 <ul>
 <li>In practice people just try both (or elastic net)</li>
 <li>Conjecture: whether ridge or lasso is a better <em>predictive</em> model in a particular case depends on the <em>effect size spectrum</em></li>
+<li><span class="citation" data-cites="vanhouwelingenShrinkage2001">van Houwelingen (<a href="#ref-vanhouwelingenShrinkage2001" role="doc-biblioref">2001</a>)</span>: &gt; The performance of any of these shrinkage estimators depends on the true value of <span class="math inline">\(\mu_1 , \dots, \mu_k\)</span> . Simulation studies can never cover all possibilities. For given <span class="math inline">\(\mu_1 , \dots , \mu_k\)</span> that procedure performs best for which the corresponding prior model gives the best fit. Therefore, simulation studies that prove superiority of a particular procedure should always be mistrusted. They only show that the author managed to find some <span class="math inline">\(\mu\)</span>-configuration for which his procedures work[s] best. …</li>
 </ul>
+<blockquote class="blockquote">
+<p>… the LASSO will behave well if the <span class="math inline">\(\beta\)</span>s look like coming from a double exponential distribution, that is many close to zero and some very big. The classic Ridge Regression will behave better if the histogram of the <span class="math inline">\(\beta\)</span>s look more normal.</p>
+</blockquote>
 </section>
 <section id="ridge-by-data-augmentation" class="level2">
 <h2 class="anchored" data-anchor-id="ridge-by-data-augmentation">Ridge by data augmentation</h2>
@@ -3479,7 +3483,7 @@ Barber, Rina Foygel, Emmanuel J. Candès, Aaditya Ramdas, and Ryan J. Tibshirani
 Bates, Douglas, Martin Mächler, Ben Bolker, and Steve Walker. 2015. <span>“Fitting <span>Linear Mixed-Effects Models Using</span> Lme4.”</span> <em>Journal of Statistical Software</em> 67 (October): 1–48. <a href="https://doi.org/10.18637/jss.v067.i01">https://doi.org/10.18637/jss.v067.i01</a>.
 </div>
 <div id="ref-brooksglmmTMB2017" class="csl-entry" role="listitem">
-Brooks, Mollie E., Kasper Kristensen, Koen J. van Benthem, Arni Magnusson, Casper W. Berg, Anders Nielsen, Hans J. Skaug, Martin Machler, and Benjamin M. Bolker. 2017. <span>“<span class="nocase">glmmTMB</span> Balances Speed and Flexibility Among Packages for Zero-Inflated Generalized Linear Mixed Modeling.”</span> <em>The R Journal</em> 9 (2): 378–400. <a href="https://doi.org/10.3929/ethz-b-000240890">https://doi.org/10.3929/ethz-b-000240890</a>.
+Brooks, Mollie E., Kasper Kristensen, Koen J. van Benthem, Arni Magnusson, Casper W. Berg, Anders Nielsen, Hans J. Skaug, Martin Mächler, and Benjamin M. Bolker. 2017. <span>“<span class="nocase">glmmTMB</span> Balances Speed and Flexibility Among Packages for Zero-Inflated Generalized Linear Mixed Modeling.”</span> <em>The R Journal</em> 9 (2): 378–400. <a href="https://doi.org/10.3929/ethz-b-000240890">https://doi.org/10.3929/ethz-b-000240890</a>.
 </div>
 <div id="ref-friedmanRegularization2010b" class="csl-entry" role="listitem">
 Friedman, Jerome H., Trevor Hastie, and Rob Tibshirani. 2010. <span>“Regularization <span>Paths</span> for <span>Generalized Linear Models</span> via <span>Coordinate Descent</span>.”</span> <em>Journal of Statistical Software</em> 33 (February): 1–22. <a href="https://doi.org/10.18637/jss.v033.i01">https://doi.org/10.18637/jss.v033.i01</a>.
@@ -3491,7 +3495,7 @@ Harris, Naftali. 2013. <span>“Visualizing the <span>James-Stein Estimator</spa
 Hastie, Trevor, Robert Tibshirani, and J. H Friedman. 2009. <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>. <span>New York</span>: <span>Springer</span>. <a href="https://hastie.su.domains/Papers/ESLII.pdf">https://hastie.su.domains/Papers/ESLII.pdf</a>.
 </div>
 <div id="ref-jamesintroduction2013" class="csl-entry" role="listitem">
-James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2013. <em>An Introduction to Statistical Learning</em>. Vol. 112. Springer.
+James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2013. <em>An Introduction to Statistical Learning</em>. Springer.
 </div>
 <div id="ref-kristensenTMB2016" class="csl-entry" role="listitem">
 Kristensen, Kasper, Anders Nielsen, Casper W. Berg, Hans Skaug, and Bradley M. Bell. 2016. <span>“<span>TMB</span> : Automatic Differentiation and <span>Laplace</span> Approximation.”</span> <em>Journal of Statistical Software</em> 70 (5). <a href="https://doi.org/10.18637/jss.v070.i05">https://doi.org/10.18637/jss.v070.i05</a>.

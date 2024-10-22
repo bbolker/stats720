@@ -1,0 +1,86 @@
+---
+title: "notes on HW 2"
+---
+
+```{r pkgs, message = FALSE}
+library(pscl)
+library(DHARMa)
+library(bbmle)
+library(arm)
+```
+
+I don't want to take the time to go over these general points in class, so here they are summarized; feel free to ask questions in class or in office hours.
+
+### contraception data
+
+* There's no need to make predictor variables (such as `urban`) numeric; in general, it's best to leave categorical predictors as predictor (and not construct dummy variables etc. by hand). The example of `use`, a *response* variable for a logistic regression, is a special case.
+* When exploring binomial data I like to use
+```{r, eval=FALSE}
+geom_smooth(method = "gam", method.args = list(family = quasibinomial))
+```
+(or `family=quasipoisson` for count data) to get a smooth curve that's constrained within the required bounds ([0,1] for binomial, positive for count)
+* I was a little surprised at how few people considered splines for the `age` predictor, given that you have a lot of data/parameters to play with (also given that exploratory analysis shows a clear nonlinear pattern with respect to age, e.g. 
+
+
+```{r, eval = FALSE}
+glm(use_num ~ (ns(age, df = 6) + urban + livch)^2, family = binomial,
+    data = Contraception)
+```
+* if you do use splines, you probably don't want to try to use a dot-whisker plot/interpret the coefficients (you might use a dot-whisker plot for the *non-spline* coefficients); in particular, the spline coefficients can't usually be lined up with any particular part of the predictor distribution
+* you need to be sure what `dotwhisker::dwplot` is using. It may be useful to construct your own tibble (e.g. using `broom::tidy()`) and pass it to `dwplot`, so that you can control/know what you're getting (some `tidy` methods have `conf.method` argument).
+* you should be suspicious (of separation/Hauck-Donner effect/etc.) any time you see coefficients on a log-like scale (log-odds or log) of $|\beta|>10$ (or CIs extending that far), unless the scale of the predictor variable is weird
+
+### gopher tortoises
+
+* offsets don't work with `bbmle` formulas via `parameter` - they're silently ignored (I wasn't thinking of this when I wrote the assignment, but I did warn you that R packages handle offsets inconsistently ....)
+
+## penalization:
+
+* Smaller CIs don't necessarily mean  the model is "better" - they indicate a different set of assumptions (we would have to ask about the actual *coverage* of the CIs to know if they were actually better.
+* the "convergence issue" that people noted in profiling `bayesglm` results is actually an incompatibility between `bayesglm` and the profiling methods (S3 defaults)
+
+
+```{r}
+data("endometrial", package = "brglm2")
+m1 <- bayesglm(HG ~ NV +PI+EH ,family=binomial(link=logit), data = endometrial)
+
+library(bbmle)
+X <- model.matrix(~ NV +PI+EH, data = endometrial)
+prsc <- with(endometrial, 2.5/c(diff(range(NV)), 2*sd(PI), 2*sd(EH)))
+nllfun <- function(beta) {
+    nll <- -sum(dbinom(endometrial$HG, prob = plogis(X %*% beta), size = 1,
+                       log = TRUE))
+    nlprior <- -sum(dcauchy(beta[-1], scale=prsc, log = TRUE))
+    return(nll + nlprior)
+}
+parnames(nllfun) <- names(coef(m1))
+pars <- rep(0, length(coef(m1)))
+names(pars) <- names(coef(m1))
+m2 <- mle2(nllfun, start = pars, method = "BFGS")
+cbind(coef(m2), coef(m1))
+```
+Close (not quite as close as I'd like).  Now I can compute profile CIs:
+
+```{r}
+confint(m2, maxsteps = 1000)
+```
+
+(Haven't checked this against the other approaches ...)
+
+## zero-inflation
+
+Despite the fact that the zero-inflation tests don't pick up any need for zero-inflation, the full zero-inflated model is actually much better ...
+
+```{r}
+m1 <- MASS::glm.nb(art ~ fem + mar + kid5 + phd + ment,
+                   data = bioChemists)
+testZeroInflation(m1)
+m2 <- zeroinfl(art ~ fem + mar + kid5 + phd + ment | 1,
+               dist = "negbin",
+               data = bioChemists)
+m3 <- zeroinfl(art ~ fem + mar + kid5 + phd + ment |
+                   fem + mar + kid5 + phd + ment,
+               dist = "negbin",
+               data = bioChemists)
+AICtab(m1, m2, m3, mnames = c("nb", "zinb1", "zinb_full"))
+```

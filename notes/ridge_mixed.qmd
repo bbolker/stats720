@@ -82,6 +82,10 @@ Variable selection can also be viewed as **inducing sparsity** in a model; thus 
 
 - In practice people just try both (or elastic net)
 - Conjecture: whether ridge or lasso is a better *predictive* model in a particular case depends on the *effect size spectrum*
+- @vanhouwelingenShrinkage2001:
+   > The performance of any of these shrinkage estimators depends on the true value of $\mu_1 , \dots, \mu_k$ . Simulation studies can never cover all possibilities. For given $\mu_1 , \dots , \mu_k$ that procedure performs best for which the corresponding prior model gives the best fit. Therefore, simulation studies that prove superiority of a particular procedure should always be mistrusted. They only show that the author managed to find some $\mu$-configuration for which his procedures work[s] best. ...
+
+> ... the LASSO will behave well if the $\beta$s look like coming from a double exponential distribution, that is many close to zero and some very big. The classic Ridge Regression will behave better if the histogram of the $\beta$s look more normal.
 
 ## Ridge by data augmentation
 
