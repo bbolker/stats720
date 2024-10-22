@@ -39,12 +39,12 @@ library(parameters)
 ## Ridge in a nutshell
 
 - **penalized** models: instead of minimizing SSQ = $\sum ((\y-\X\bbeta)_i)^2$, minimize SSQ + $\lambda ||\bbeta||_2$ (ridge)
-- or + $||\bbeta||_1$ (lasso)
+- or + $\lambda ||\bbeta||_1$ (lasso)
 - optimize *bias-variance tradeoff*
 - equivalent to imposing iid Gaussian priors on each element of $\bbeta$
 - lasso (and elastic net, which is a convex combination of L2 and L1 penalties) are popular because they **induce sparsity**
    - *likelihood surfaces* are non-convex with cusps at zero
-   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem nonlinear; we need to use a different algorithm (coordinate descent/soft thresholding, see @friedmanRegularization2010b); can't use pure linear algebra or pure gradient descent/quasi-Newton
+   - optimization with non-convex surfaces is a nuisance because it makes the basic optimization problem harder; we need to use a different algorithm (e.g. coordinate descent with *soft thresholding*, see @friedmanRegularization2010b); can't use pure linear algebra or pure gradient descent/quasi-Newton
 - generalizing from penalized LM to penalized GLM isn't too hard
 
 ## Variable selection 
@@ -59,11 +59,11 @@ Variable selection has some characteristics in common with multicollinearity and
 > * It can reduce costs in future data collection.
 > Variable selection can be fine as a means to an end. Problems can arise if it’s taken too seriously, for example as an attempt to discover a purported parsimonious true model.
 
-Variable selection can also be viewed as **inducing sparsity** in a model; thus it can also be computationally useful ...
+Variable selection is a way of **inducing sparsity** in a model; thus it can also be computationally useful ...
 
 ## Choosing penalty strength
 
-* typically by *cross-validation*
+* in ML/predictive contexts, typically by *cross-validation*
 * leave-one-out (LOOCV) vs $k$-fold: bias/variance tradeoff (@jamesintroduction2013 \S 5.1.4)
     * small folds (LOO); low bias (sample size $\approx$ total), but lots of overlap (correlation) between training sets, so high variance. Large folds (e.g. 2-fold), *vice versa*
 
@@ -81,11 +81,12 @@ Variable selection can also be viewed as **inducing sparsity** in a model; thus 
 ## Ridge vs lasso
 
 - In practice people just try both (or elastic net)
-- Conjecture: whether ridge or lasso is a better *predictive* model in a particular case depends on the *effect size spectrum*
+- Whether ridge or lasso is a better *predictive* model in a particular case depends on the *effect size spectrum*
 - @vanhouwelingenShrinkage2001:
-   > The performance of any of these shrinkage estimators depends on the true value of $\mu_1 , \dots, \mu_k$ . Simulation studies can never cover all possibilities. For given $\mu_1 , \dots , \mu_k$ that procedure performs best for which the corresponding prior model gives the best fit. Therefore, simulation studies that prove superiority of a particular procedure should always be mistrusted. They only show that the author managed to find some $\mu$-configuration for which his procedures work[s] best. ...
 
-> ... the LASSO will behave well if the $\beta$s look like coming from a double exponential distribution, that is many close to zero and some very big. The classic Ridge Regression will behave better if the histogram of the $\beta$s look more normal.
+> The performance of any of these shrinkage estimators depends on the true value of $\mu_1 , \dots, \mu_k$ . Simulation studies can never cover all possibilities. For given $\mu_1 , \dots , \mu_k$ that procedure performs best for which the corresponding prior model gives the best fit. Therefore, simulation studies that prove superiority of a particular procedure should always be mistrusted. They only show that the author managed to find some $\mu$-configuration for which his procedures work[s] best. ...
+
+> ... the LASSO will behave well if the $\beta$s look like coming from a double exponential distribution, that is many close to zero and some very big. The classic Ridge Regression will behave better if the histogram of the $\beta$s look[s] more normal.
 
 ## Ridge by data augmentation
 
@@ -108,7 +109,7 @@ $$
 * classical CIs for ridge are **identical** to OLS [@obenchainClassical1977]
    > ridge techniques do not generally yield "new" normal theory statistical inferences: in particular, ridging does not necessarily produce "shifted" confidence regions.
 * **no free lunch** (i.e., no true narrowing of CIs/decreased uncertainty without additional assumptions)
-* post-selection inference is a big deal but requires very strong assumptions (asymptotic, 'gap')
+* post-selection inference is a big deal (see work by Witten, Hastie, others) but requires strong assumptions (asymptotic, magnitude of smallest non-zero $\beta$)
 * prediction intervals are often neglected (conformal prediction, jackknife+ [@barberPredictive2021]): [MAPIE](https://mapie.readthedocs.io/en/latest/)
 
 ## Practical
@@ -119,11 +120,11 @@ $$
 
 ## More on penalization
 
-* we've already seen it (for dealing with complete separation)
+
 * also described as *regularization*, *shrinkage* estimator, or as equivalent to imposing a Bayesian prior
-* complete separation
+* we've already seen it (for dealing with complete separation)
 * could use it for forcing negative binomial parameter away from $\theta = \infty$ ?
-* latter will use to mitigate *singular* mixed-model fits (variance = 0)
+* we'll use  a different form of penalization later to mitigate *singular* mixed-model fits (variance = 0)
 
 ## Tangent: how do I know if an R package is any good?
 
@@ -136,20 +137,20 @@ $$
 ## James-Stein estimators
 
 * more formally, why is ridge better?
-* based on a single observation, $\y$, of a *multivariate* response with dimension $m \ge 3$, shrinking the value (usually toward zero) is a better estimate of the mean than the value itself (!)
+* based on a single observation, $\y$, of a *multivariate* response with dimension $m \ge 3$, shrinking the value (usually toward zero) is a better estimate of the mean (lower mean squared error) than the value itself.
 
 $$
-\hat \mu(X_1, \ldots, X_n) = \left(1-\frac{(m-2) \sigma^2/n}{||\bar X_n||^2}\right) \bar X_n
+\hat \mu(X_1, \ldots, X_n) = \max \left(0, \left(1-\frac{(m-2) \sigma^2/n}{||\bar X_n||^2}\right) \right) \bar X_n
 $$
 
 * (connected to recurrence of random walks in $d \le 2$, non-recurrence in $d\ge 3$ ...)
-* "paradox": the quantities in the vector don't have to have anything to do with each other (and, we can shrink to any point, not necessarily zero ...)
+* "paradox": the quantities in the vector don't have to have anything to do with each other
 
-From @antogniniUnderstanding2021:
+From @antogniniUnderstanding2021: typical points in a cloud of uncertainty are farther from zero than the mean is
 
 ![](../pix/stein1.png)
 
-From @harrisVisualizing2013:
+From @harrisVisualizing2013: effects of J-S shrinkage
 
 ![](../pix/stein2.png)
 
@@ -249,7 +250,6 @@ $$
 * @hastieElements2009 for ridge/lasso/elastic net
 * @batesFitting2015a for linear algebra underlying LMMs; incomplete MS on GLMM implementation [here](https://github.com/bbolker/asaglmm/blob/master/papers/glmer.pdf)
 * @vanhouwelingenShrinkage2001 for the connections between James-Stein, ridge and other penalties, and mixed models
-* @brooksglmmTMB2017 (and @kristensenTMB2016) for `glmmTMB`
 
 ## References
 
