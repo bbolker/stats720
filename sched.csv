@@ -8,7 +8,7 @@ week, start_date, topic, readings, assignments, notes
  ,2024-10-11,**midterm test**,,,
  ,2024-10-15,midterm recess,,,
 7,2024-10-22,Penalization and regularization 2,,,
-9,2024-10-29,Mixed models 1,,,
+9,2024-10-29,Mixed models 1,,[HW3](assignments/hw3.html),[GLMMs](notes/glmms.html)([PDF](notes/glmms.pdf))
 10,2024-11-05,Mixed models 2,,,
 11,2024-11-12,Mixed models 3,,,
 12,2024-11-19,Additive models 1,,,

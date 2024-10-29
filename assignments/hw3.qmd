@@ -5,7 +5,7 @@ date: today
 date-format: "D MMM YYYY"
 ---
 
-**Due:** Monday November 6. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+**Due:** Tuesday November 5. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 **Please make sure your code is reproducible**:
 
@@ -23,25 +23,38 @@ library(lme4)
 library(lmerTest)
 library(glmmTMB)
 library(broom.mixed)
+library(pbkrtest)
+library(patchwork)
 ```
 
 If your code isn't reproducible I will return it immediately and ask you to fix it.
 
 In general, if I ask you to compare results "qualitatively", you should consider the possibilities "identical or practically identical" (i.e., equivalent up to a tolerance of $\approx 10^{-4}$); "very similar" (equivalent up to a tolerance of 0.01); "slightly different" (equivalent up to 0.1) or "different". (If $p$-values are printed as e.g. `< 2e-16` for two different models/approaches, you can call them "identical or practically identical".)  `all.equal(..., tolerance = 0)` may be useful for making these comparisons, although different packages may yield slightly different structures that makes comparison difficult. (In this case, using `broom.mixed::tidy()` may be useful since it tends to lead to more similar data structures ...)
 
-Consider the `Early` data set from the `mlmRev` package. (`mlmRev` cites @singerApplied2003 for this data set. Singer and Willett in turn cite @burchinalEarly1997. It's hard to tell exactly where/whether these data are described in the original paper; the summary statistics from this data set line up *approximately* with the summary statistics given for "Bayley MDI" cognitive scores in Table 1, but not exactly.
+Consider the `ScotsSec` data set from the `mlmRev` package. 
 
 ```{r plot}
-ggplot(Early, aes(age, cog, colour = trt)) + geom_line(aes(group = id))
+gg0 <- ggplot(ScotsSec, aes(y = attain, colour = sex)) + stat_sum(alpha = 0.5) +
+    stat_summary(aes(group=interaction(sex, primary)), geom = "line", fun=mean)
+gg1 <- gg0 + aes(x=factor(social))
+gg2 <- gg0 + aes(x=verbal)
+gg1 + gg2
 ```
 
-a. Using both `lmer` (from `lmerTest`) and `lme` (from `nlme`), with the default REML estimation, fit a random-slope linear mixed model with `cog` as the response variable, `age` and `trt` as fixed effects, `id` as the grouping variable and the intercept and effect of `age` varying among individuals. For `lme`, use the argument `lmeControl(opt = "optim")`. `lmer` will give you warnings; that's expected, and we'll resolve that problem later. Based on the log-likelihoods, which package is getting a better fit?
-b. Extract the fixed-effect coefficients and create a coefficient plot (e.g., using `dotwhisker::dwplot()` or `broom.mixed` plus `ggplot2`), making sure to scale the coefficients (or the predictor variables). Looking at the coefficient summaries, how much do the estimated values and SEs (and therefore Wald CIs) vary between packages? How much do the estimated denominator degrees of freedom (`ddf`) vary?
-c. Compare the estimated denominator df (`ddf`) for the `lmer` fit with the Satterthwaite vs. Kenward-Roger approximations. In this particular example, how important are these differences?
-d. For the `lmer` fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use `ranef` or `tidy(..., effects = "ran_vals")`
-e. Explain why it does not make sense to treat `trt` as a random variable
-f. Explain why it would be weird to leave the fixed effect of `age` out of the model while retaining the random variation of `age` across `id` (i.e., fitting a model like `cog ~ 1 + trt + (1 + age | id)`).
-h. Using `lmerTest` (and REML estimation), fit reduced models with all of the same fixed effects but with (1) independent intercept and age variation across subjects, (2) intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models. Use parametric bootstrap (with `pbkrtest::PBmodcomp` or implementing it yourself) to do likelihood ratio tests comparing the nested series of models (correlated slope/intercept, independent slope/intercept, intercept only); that is, compare the full/correlated model to the independent model, and the independent model to the model with only intercept. Why are standard LRT/AIC testing problematic in the second comparison (independent slope/intercept vs intercept only) but **not** the first (correlated vs independent slope/intercept)?
+a. Using `lmer` (from `lmerTest`, with the default `REML=TRUE`), fit a linear mixed model with educational attainment (`attain`) as the response variable, `social` (as a factor), `sex`, and `verbal` as (additive) fixed effects, primary school (`primary`) as the grouping variable, and with all three of the fixed effects also varying among primary schools.
+b. You will get a singular fit. Simplify the model, stepwise, by one of two methods, until it's no longer singular. Either:
+* find the random-effects term with the smallest estimated variance and discard it; **or**
+* run `rePCA()` on the fitted model. Find the variable most strongly associated with the eigenvector of the smallest eigenvalue (i.e., look for the largest entry in the last column of the eigenvector matrix) and discard it.
+c. Use both `performance::check_model()` and `DHARMa` to run diagnostics on your model. What do you conclude? What aspects 
+c. Fit the same model with `nlme::lme()` and with `glmmTMB` (make sure to specify `REML=TRUE` to match the defaults for `lme` and `lmer`.
+d. Create a named list of your three models. Use `purrr::map_dfr(mod_list, glance, .id = "model")` to compare the overall model fits.
+e. Use `purrr::map_dfr(mod_list, ~tidy(., effects = "fixed"), .id = "model") |> dplyr::arrange(term)` to extract the coefficients. Qualitatively compare the estimates, standard errors, df, and p-values among packages. 
+f. Use `ggplot2` with the table you created, or `dotwhisker::dwplot()` with `effects = "fixed"`, to generate a coefficient plot of the fixed effects. (Do *not* use `by_2sd=TRUE` [there appears to be a bug somewhere ...]; if you want to separate the scales, use `+ facet_wrap(~term, scale = "free")` to see each set of parameters in its own sub-plot.
+g. Use `coef(summary(<lme4_model>))` with `ddf = "Satterthwaite"` and `ddf = "Kenward-Roger"` to compare these two approaches to computing denominator df.  How do these compare with each other, and with the results from `lme`? In this example, how practically important are these differences?
+h. For the `lmer` fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use `ranef` or `tidy(..., effects = "ran_vals")`
+e. Explain why it does not make sense to treat `social` as a random-effects grouping variable
+f. Explain why it would be weird to leave the fixed effect of `social` out of the model while retaining the random variation of `sex` across schools (i.e., fitting a model like `attain ~ 1 + social + verbal + (1 + sex | primary)`).
+g. Using `lmerTest` (and REML estimation), fit reduced models with all of the same fixed effects but with random effects intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models (i.e., testing the effect of variation in sex effects across primary schools). Then, use parametric bootstrapping (with `pbkrtest::PBmodcomp` or implementing it yourself) to compare the models.  Why is standard LRT/AIC testing problematic here?
 
 ## References
 

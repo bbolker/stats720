@@ -1,0 +1,393 @@
+---
+title: "GLMMs and related"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+<!-- typically renders in docs/ dir  -->
+
+```{r pkgs, message = FALSE, echo = FALSE}
+## it's nice to include packages at the top
+## (and NOT automatically install them)
+## try not to carry over packages you don't use
+library(ggplot2); theme_set(theme_bw())
+## diagnostics
+library(performance)
+library(DHARMa)
+library(lmerTest)
+library(plotrix) ## axis.break
+## downstream model evaluation
+library(broom)
+library(dotwhisker)
+library(emmeans)
+library(effects)
+library(marginaleffects)
+library(parameters)
+library(lattice)
+## library(ggeffects)
+```
+
+## Intercept random effects
+
+$$
+\begin{split}
+y_{ij} & = \beta_0 + \beta_1 x_{ij} + \epsilon_{0,ij} + \epsilon_{1,j} \\
+& = (\beta_0 + \epsilon_{1,j}) + \beta_1 x_{ij} + \epsilon_{1,j} \\
+\epsilon_{0,ij} & \sim \textrm{Normal}(0,\sigma_0^2) \\
+\epsilon_{1,j} & \sim \textrm{Normal}(0,\sigma_1^2)
+\end{split}
+$$
+
+- Could have multiple, nested levels of random effects  
+(genotype within population within region ...), or *crossed* REs
+- formula: `y ~ 1 + x + (1 | g)`
+
+## Random-slopes model
+
+$$
+\begin{split}
+y_{ij} & = \beta_0 + \beta_1 x_{ij} + \epsilon_{0,ij} + \epsilon_{1,j} +
+\epsilon_{2,j} x_{ij} \\
+& = (\beta_0 + \epsilon_{1,j}) + (\beta_1 + \epsilon_{2,j}) x_{ij} + \epsilon_{0,ij}  \\
+\epsilon_{0,ij} & \sim \textrm{Normal}(0,\sigma_0^2) \\
+\{\epsilon_{1,j}, \epsilon_{2,j}\} & \sim \textrm{MVN}(0,\Sigma)
+\end{split}
+$$
+
+- variation in the *effect* of a treatment or covariate across groups
+- estimate the correlation between the intercept and slope
+- formula: `y ~ 1 + x + (1 + x | g)`
+
+## General definition
+
+$$
+\begin{split}
+\underbrace{Y_i}_{\text{response}} & \sim \overbrace{\text{Distr}}^{\substack{\text{conditional} \\ \text{distribution}}}(\underbrace{g^{-1}(\eta_i)}_{\substack{\text{inverse} \\ \text{link} \\ \text{function}}},\underbrace{\phi}_{\substack{\text{scale} \\ \text{parameter}}}) \\
+\underbrace{\boldsymbol \eta}_{\substack{\text{linear} \\ \text{predictor}}} & 
+ = 
+\underbrace{\boldsymbol X \boldsymbol \beta}_{\substack{\text{fixed} \\ \text{effects}}} + 
+\underbrace{\boldsymbol Z \boldsymbol b}_{\substack{\text{random} \\ \text{effects}}}
+\\
+\underbrace{\boldsymbol b}_{\substack{\text{conditional} \\ \text{modes}}}  & 
+\sim \text{MVN}(\boldsymbol 0, \underbrace{\Sigma(\boldsymbol \theta)}_{\substack{\text{covariance} \\ \text{matrix}}})
+\end{split}
+$$
+
+* the structure of $Z$ and $\Sigma$ reflect one or more underlying categorical *grouping variables* (*clusters*, *blocks*, subjects, etc. etc.) or combinations thereof
+
+## What are random effects?
+
+A method for …
+
+-   accounting for correlations among observations within clusters
+-   compromising between\
+    *complete pooling* (no among-cluster variance)\
+     and *fixed effects* (large among-cluster variance)
+-   handling levels selected at random from a larger population
+-   sharing information among levels (*shrinkage
+    estimation*)
+-   estimating variability among clusters
+-   allowing predictions for unmeasured clusters
+
+## Random-effect myths
+
+-   clusters must always be sampled at random
+-   a complete sample cannot be treated as a random effect
+-   random effects are always a *nuisance variable*
+-   nothing can be said about the predictions of a random effect
+-   you should always use a random effect no matter how few levels you
+have
+
+## Why use random effects? (inferential/philosophical)
+
+When you: 
+
+- **do** want to
+     - quantify variation among groups
+     - make predictions about unobserved groups
+- have (randomly) sampled clusters from a larger population 
+- have clusters that are **exchangeable**
+- **don't** want to
+     - test hypotheses about differences between particular clusters
+
+## Why use random effects? (practical) [@Crawley2002; @gelman_analysis_2005]
+
+- want to combine information across groups
+- have variation in information per cluster (number of samples or noisiness);
+- have a categorical predictor that is a nuisance variable (i.e., it is not of direct interest, but should be controlled for).
+- have more than 5-6 groups, or regularizing/using priors (otherwise, use fixed)
+
+## Avoiding MM
+
+* for *nested* designs: compute cluster means [@murtaugh_simplicity_2007] 
+* use fixed effects (or *two-stage models*) when there are
+     * many samples per cluster
+     * few clusters
+
+## Maximum likelihood estimation
+
+-   Best fit is a compromise between two components\
+    (consistency of data with fixed effects and conditional modes;
+    consistency of random effect with RE distribution)
+- $\underbrace{{\cal L}(\bbeta,\btheta)}_{\substack{\text{marginal} \\ \text{likelihood}}} = \int \underbrace{{\cal L}(\y|\beta,b)}_{\substack{\text{conditional} \\ \text{likelihood}}} \cdot {\cal L}(\bb|\Sigma(\theta)) \, d\bb$
+
+
+## ...
+
+```{r plotex,message=FALSE}
+set.seed(101)
+dd <- data.frame(f=gl(5,5))
+dd$y <- simulate(~1+(1|f),newdata=dd,
+                 family=gaussian,seed=101,
+                 newparams=list(theta=1,beta=0,sigma=1))[[1]]
+ggplot(dd,aes(x=f,y=y))+geom_point()+
+    stat_summary(fun=mean,geom="point",size=3,colour="blue",
+                 pch=3)+
+     geom_point(data=subset(dd,y<(-2)),colour="red",size=2)+
+         theme_update(panel.grid.major=element_blank(),
+                      panel.grid.minor=element_blank())
+```
+
+## Shrinkage: *Arabidopsis* example
+
+```{r arabshrink,fig.height=6,fig.width=8}
+load("../data/Banta.RData")
+z<- subset(dat.tf,amd=="clipped" & nutrient=="1")
+m1 <- glm(total.fruits~gen-1,data=z,family="poisson")
+m2 <- glmer(total.fruits~1+(1|gen),data=z,family="poisson")
+tt <- table(z$gen)
+rr <- unlist(ranef(m2)$gen)[order(coef(m1))]+fixef(m2)
+m1s <- sort(coef(m1))
+m1s[1:2] <- rep(-5,2)
+gsd <- attr(VarCorr(m2)$gen,"stddev")
+gm <- fixef(m2)
+nseq <- seq(-3,6,length.out=50)
+sizefun <- function(x,smin=0.5,smax=3,pow=2) {
+    smin+(smax-smin)*((x-min(x))/diff(range(x)))^pow
+}
+nv <- dnorm(nseq,mean=gm,sd=gsd)
+##
+op <- par(las=1,cex=1.5,bty="l")
+plot(exp(m1s),xlab="Genotype",ylab="Mean fruit set",
+     axes=FALSE,xlim=c(-0.5,25),log="y",yaxs="i",xpd=NA,
+     pch=16,cex=0.5)
+axis(side=1)
+axis(side=2,at=c(exp(-5),0.1,1,10,20),
+     labels=c(0,0.1,1,10,20),cex=0.8)
+##     ylim=c(-3,5))
+polygon(c(rep(0,50),nv*10),exp(c(rev(nseq),nseq)),col="gray",xpd=NA)
+n <- tt[order(coef(m1))]
+points(exp(rr),pch=16,col=adjustcolor("red",alpha=0.5),
+       cex=sizefun(n),xpd=NA)
+## text(seq_along(rr),rr,n,pos=3,xpd=NA,cex=0.6)
+box()
+plotrix::axis.break(axis=2,breakpos=exp(-4))
+legend("bottomright",
+       c("group mean","shrinkage est."),
+       pch=16,pt.cex=c(1,2),
+       col=c("black",adjustcolor("red",alpha=0.5)),
+       bty="n")
+par(op)
+```
+
+## Shrinkage in a random-slopes model
+
+From Christophe Lalanne, see [here](https://stats.stackexchange.com/questions/51186/what-would-be-an-illustrative-picture-for-linear-mixed-models):
+
+```{r sleepstudy_shrinkage, echo=FALSE}
+library(lme4)
+data(sleepstudy)
+
+## Fit individual regression lines for each subject
+dfrm <- coef(lmList(Reaction ~ Days | Subject, sleepstudy))
+
+## Estimate parameters of a random intercept and random intercept and slope model
+m1 <- lmer(Reaction ~ Days + (1 | Subject), data=sleepstudy)
+m2 <- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+
+## Put all estimates (intercept + slope for each model) into the same data.frame
+dfrm <- cbind.data.frame(dfrm,
+                         as.data.frame(coef(m1)[["Subject"]]),
+                         as.data.frame(coef(m2)[["Subject"]]))
+
+## Kernel density estimates for the distribution of individual intercepts
+intcpt.dens <- list()
+idx <- seq(1, ncol(dfrm), by=2)
+for (i in seq_along(idx))
+  intcpt.dens[[i]] <- density(as.numeric(dfrm[,idx[i]]), adj=1.4)
+len <- length(intcpt.dens[[1]]$x)
+
+## Show all
+cols <- c("grey30", "#D95F02", "#669999")
+xyplot(Reaction ~ Days, data=sleepstudy,
+       xlim=c(0, 8), ylim=c(150, 450), ylab="Fitted reaction time",
+       scales=list(x=list(at=seq(0, 8, by=1))),
+       key=list(corner=c(0,1), text=list(c("within-group",
+                                 "random intercept",
+                                 "random intercept and slope"),
+                                 col=cols, cex=0.8)),
+       panel=function(...) {
+         apply(dfrm[,1:2], 1, panel.abline, col=cols[1], alpha=.5, lwd=1.2)
+         apply(dfrm[,3:4], 1, panel.abline, col=cols[2], alpha=.5, lwd=1.2)
+         for (i in seq_along(idx))
+         panel.lines(x=c(intcpt.dens[[i]]$y*100, rep(0, len)),
+                     y=c(intcpt.dens[[i]]$x, rev(intcpt.dens[[i]]$x)), col=cols[i], lwd=1.8)
+})
+```
+
+## Estimation
+
+- we need to compute an integral
+- in *linear* mixed models the integral goes away (replaced by fancy linear algebra)
+- deterministic
+    - various approximate integrals [@breslow_whither_2004]:  
+penalized quasi-likelihood, Laplace, Gauss-Hermite quadrature, … [@biswas2015];  
+    - more care needed for large variance, small clusters (e.g. binary data)
+    - flexibility and speed vs. accuracy
+- stochastic (Monte Carlo): frequentist and Bayesian [@booth_maximizing_1999; @sung_monte_2007; @ponciano_hierarchical_2009]. MCMC, importance sampling
+    - (much) slower but flexible and accurate
+
+# Model specification
+
+## Model formula
+
+* specify as `(t|g)`; `t` is the *varying term* and `g` is the *grouping factor*
+* for intercepts (`1|g`) [**scalar random effects**], just the indicator matrix
+* for more complex models (random slopes), take the *Khatri-Rao* product of the model matrix of the term with the indicator matrix of `g`
+* concatenate multiple random effects terms into a single `Z` matrix
+* all *varying terms* within a term can be correlated
+* random effect *blocks* are independent (block diagonal)
+* RE *terms* are independent (block diagonal)
+
+## Complexities
+
+* how many/which grouping variables?
+* **crossed** or **nested** ?
+* what terms vary within each group?
+* e.g. psychology experiments: only one grouping variable (subject), but terms can be complicated (priming $\times$ stimulus)
+* e.g. teaching evaluations: students and professors are crossed random effects
+   
+## What is the maximal model?
+
+- Which effects vary *within* which groups?
+- If effects don't vary within groups, then we *can't* estimate among-group variation in the effect
+     - convenient, but less powerful
+- e.g. female rats exposed to different doses of radiation, multiple pups per mother, multiple measurements per pup (labeled by time). Maximal model ... ?
+- Maximal model is often impractical/unfeasible
+   - *Culcita* (coral-reef) example: randomized-block design, so each treatment (none/crabs/shrimp/both) is repeated in every block; thus `(treat|block)` is maximal
+   - CBPP data: each herd is measured in every period, so in principle we could use `(period|herd)`, not just `(1|herd)`
+   
+## Singular fits
+
+* variances equal to zero, or non-positive-definite correlation matrices
+* too little data (== too little signal)
+* simple case: 1-way ANOVA example
+* can be (very) non-obvious in larger models
+* `rePCA()`
+
+## Convergence problems
+
+* indication of *some* kind of numerical issues
+* scale/center variables
+* simplify model?
+* try different packages/optimizers: `allFit()`
+
+## Simplifying models
+
+* Lots of disagreement on how to do this
+* @barrRandom2013 ("keep it maximal"); simplify until non-singular
+* @batesParsimonious2015, @matuschekBalancing2017: stepwise reduction
+
+## Simplification strategies
+
+* drop varying terms
+* drop correlations between terms (center first!)
+* reduce complexity from "general positive-definite": **compound symmetric** models, etc.
+
+# Inference
+
+## Wald tests/CIs
+
+* need to know the "denominator degrees of freedom"
+* "between-within"/"containment"
+* Satterthwaite approximation
+* Kenward-Roger correction [@stroup_rethinking_2014]; `pbkrtest` package
+
+## Likelihood ratio tests/profiling
+
+## Nonparametric bootstrap
+
+- Bootstrapping: slow, but gold standard for frequentist models
+- Need to respect structure when resampling
+   - Residual bootstrapping for LMMs
+   - Nested resampling where possible
+- `lmeresampler` package
+
+## Parametric bootstrap
+
+- works for any model (including crossed-RE GLMMs)
+- fit null model to data
+- simulate “data” from null model
+- fit null and working model, compute likelihood difference
+- repeat to estimate null distribution\
+- assumes model correctly specified
+- `bootMer()`, `pbkrtest` package
+
+## How do we estimate this?
+
+* can use EM algorithm (e.g. see [here](https://stt.msu.edu/users/pszhong/Lecture_23_Spring_2017.pdf), or the [lmm package](https://github.com/jinghuazhao/R/tree/master/lmm))
+* Or by linear algebra. For LMMs, we do a more complicated version of *data augmentation*.
+* given a value for the random-effects variance, we can calculate the log-likelihood in one step (see
+* large, sparse matrix computation
+* has to be done *repeatedly*
+* most efficient if we analyze the matrix and permute to optimize structure [@batesFitting2015a]
+* then we need to do some kind of search over the space of variances
+* derivatives are available in particular special cases
+
+## constructing the covariance matrix
+
+* what's the best way to parameterize a positive-(semi)definite matrix? [@pinheiroUnconstrained1996a]
+* Cholesky decomposition
+   * scaled or unscaled?
+   * Cholesky or log-Cholesky scale?
+* separating correlation and SD vectors: [glmmTMB](https://glmmtmb.github.io/glmmTMB/articles/covstruct.html#unstructured):
+
+$$
+\Sigma = D^{-1/2} L L^\top D^{-1/2}, \quad D = \textrm{diag}(L L^\top)
+$$
+
+## Zero-inflation models
+
+* discrete (finite) mixture model; *structural* and *sampling* zeros
+* e.g. for Z-I Poisson
+$$
+\begin{split}
+\textrm{Prob}(0) & = p_Z + (1-p_Z) \exp(-\lambda) \\
+\textrm{Prob}(x) & = (1-p_Z) \cdot \frac{\lambda^x \exp(-\lambda)}{x!}, \qquad x > 0
+\end{split}
+$$
+
+## Key references
+
+* @batesFitting2015a
+* @bolkerGeneralized2015
+* [GLMM FAQ](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html)
+* [mixed models task view](https://cran.r-project.org/web/views/MixedModels.html)
+
+## References
+
+::: {#refs}
+:::
+
