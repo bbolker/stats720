@@ -45,7 +45,7 @@ a. Using `lmer` (from `lmerTest`, with the default `REML=TRUE`), fit a linear mi
 b. You will get a singular fit. Simplify the model, stepwise, by one of two methods, until it's no longer singular. Either:
 * find the random-effects term with the smallest estimated variance and discard it; **or**
 * run `rePCA()` on the fitted model. Find the variable most strongly associated with the eigenvector of the smallest eigenvalue (i.e., look for the largest entry in the last column of the eigenvector matrix) and discard it.
-c. Use both `performance::check_model()` and `DHARMa` to run diagnostics on your model. What do you conclude? What aspects 
+c. Use both `performance::check_model()` and `DHARMa` to run diagnostics on your model. What do you conclude? What aspects of the `check_model()` results differ from what is shown for a (non-mixed, fixed-effects-only) linear model? (That is, what subplots are added to or dropped from the display?)
 c. Fit the same model with `nlme::lme()` and with `glmmTMB` (make sure to specify `REML=TRUE` to match the defaults for `lme` and `lmer`.
 d. Create a named list of your three models. Use `purrr::map_dfr(mod_list, glance, .id = "model")` to compare the overall model fits.
 e. Use `purrr::map_dfr(mod_list, ~tidy(., effects = "fixed"), .id = "model") |> dplyr::arrange(term)` to extract the coefficients. Qualitatively compare the estimates, standard errors, df, and p-values among packages. 
