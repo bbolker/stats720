@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-10-28">
 
 <title>homework 3</title>
 <style>
@@ -3235,7 +3234,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">28 Oct 2024</p>
+      <p class="date">4 Nov 2024</p>
     </div>
   </div>
   
@@ -3300,7 +3299,7 @@ window.Quarto = {
 <li>Use <code>coef(summary(&lt;lme4_model&gt;))</code> with <code>ddf = &quot;Satterthwaite&quot;</code> and <code>ddf = &quot;Kenward-Roger&quot;</code> to compare these two approaches to computing denominator df. How do these compare with each other, and with the results from <code>lme</code>? In this example, how practically important are these differences?</li>
 <li>For the <code>lmer</code> fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use <code>ranef</code> or <code>tidy(..., effects = &quot;ran_vals&quot;)</code></li>
 <li>Explain why it does not make sense to treat <code>social</code> as a random-effects grouping variable</li>
-<li>Explain why it would be weird to leave the fixed effect of <code>social</code> out of the model while retaining the random variation of <code>sex</code> across schools (i.e., fitting a model like <code>attain ~ 1 + social + verbal + (1 + sex | primary)</code>).</li>
+<li>Explain why it would be weird to leave the fixed effect of <code>sex</code> out of the model while retaining the random variation of <code>sex</code> across schools (i.e., fitting a model like <code>attain ~ 1 + social + verbal + (1 + sex | primary)</code>).</li>
 <li>Using <code>lmerTest</code> (and REML estimation), fit reduced models with all of the same fixed effects but with random effects intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models (i.e., testing the effect of variation in sex effects across primary schools). Then, use parametric bootstrapping (with <code>pbkrtest::PBmodcomp</code> or implementing it yourself) to compare the models. Why is standard LRT/AIC testing problematic here?</li>
 </ol>
 <section id="references" class="level2">

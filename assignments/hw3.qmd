@@ -53,7 +53,7 @@ f. Use `ggplot2` with the table you created, or `dotwhisker::dwplot()` with `eff
 g. Use `coef(summary(<lme4_model>))` with `ddf = "Satterthwaite"` and `ddf = "Kenward-Roger"` to compare these two approaches to computing denominator df.  How do these compare with each other, and with the results from `lme`? In this example, how practically important are these differences?
 h. For the `lmer` fit, plot the random effect of age for each level (deviation of the slope from the population-level slope) against the corresponding random intercept. (You can use `ranef` or `tidy(..., effects = "ran_vals")`
 e. Explain why it does not make sense to treat `social` as a random-effects grouping variable
-f. Explain why it would be weird to leave the fixed effect of `social` out of the model while retaining the random variation of `sex` across schools (i.e., fitting a model like `attain ~ 1 + social + verbal + (1 + sex | primary)`).
+f. Explain why it would be weird to leave the fixed effect of `sex` out of the model while retaining the random variation of `sex` across schools (i.e., fitting a model like `attain ~ 1 + social + verbal + (1 + sex | primary)`).
 g. Using `lmerTest` (and REML estimation), fit reduced models with all of the same fixed effects but with random effects intercept variation only. Use (parametric) likelihood ratio tests or AIC to compare the models (i.e., testing the effect of variation in sex effects across primary schools). Then, use parametric bootstrapping (with `pbkrtest::PBmodcomp` or implementing it yourself) to compare the models.  Why is standard LRT/AIC testing problematic here?
 
 ## References
