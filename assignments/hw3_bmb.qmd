@@ -1,0 +1,143 @@
+---
+title: "homework 3: BMB's version"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  html:
+   embed-resources: true
+---
+
+```{r pkgs, message=FALSE}
+library(tidyverse)
+library(ggplot2); theme_set(theme_bw())
+library(nlme)
+library(lmerTest)
+library(glmmTMB)
+library(broom.mixed)
+library(buildmer)
+library(car) ## for ellipse()
+```
+
+```{r}
+data("ScotsSec", package = "mlmRev")
+m_full <- lmer(attain ~ verbal + sex + social +
+                   (1 + verbal + sex + social | primary),
+               data = ScotsSec)
+```
+
+Out of curiosity, I'm going to see what the `buildmer` package does with this model:
+
+
+```{r}
+m_b <- buildmer(attain ~ verbal + sex + social +
+                   (1 + verbal + sex + social | primary),
+                data = ScotsSec)
+(bm_form <- formula(m_b))
+```
+Conveniently, it ends up in the same place (with default settings) ...
+However, `m_b` now has class "buildmer", so you can't do things like `tidy` it ... refit the model ...
+
+```{r}
+m_red <- update(m_full, formula = bm_form)
+```
+
+---
+
+```{r}
+m_lme <- lme(attain ~ verbal + sex + social, random = ~1 + sex | primary,
+    data = ScotsSec) 
+tidy(m_lme, effects = "fixed") |> dplyr::select(term, df)
+```
+
+I have a hacked version of the algorithm that `nlme` uses to calculate df, which 
+works slightly better for random-slopes models (for more discussion see the
+[relevant section of the GLMM FAQ](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#why-doesnt-lme4-display-denominator-degrees-of-freedomp-values-what-other-options-do-i-have):
+
+```{r}
+source("https://bbolker.github.io/mixedmodels-misc/R/calcDenDF.R")
+calcDenDF(~verbal + social + sex, data=ScotsSec, random = ~ sex | primary)
+```
+It correctly identifies that 
+
+```{r}
+ddf_methods <- c("Satterthwaite", "Kenward-Roger")
+names(ddf_methods) <- ddf_methods ## so purrr::map(.id) works
+ddf_methods |>
+    purrr::map_dfr(\(ddfm) tidy(m_red, ddf = ddfm, effects = "fixed"), .id = "method") |>
+    dplyr::select(method, term, df) |>
+    tidyr::pivot_wider(names_from = method, values_from = df)
+```
+
+We can see that `calcDenDF` still gets the intercept wrong (should be $\approx$ 150, not $\approx$ 3000 ...) but at least `SexF` is right ...
+
+---
+
+What about random effects?
+
+```{r}
+rr <- ranef(m_red)$primary
+str(rr)
+```
+
+Extract conditional ("posterior") covariance matrices:
+
+```{r}
+cvar <- attr(rr, "postVar")
+```
+
+```{r}
+ellipse_fun <- function(rr, cvar, radius = 0.2, id = "Subject") {
+    purrr::map_dfr(1:nrow(rr),
+                   function(i) { car::ellipse(center=unlist(rr[i,]), shape = cvar[,,i],
+                                              radius = radius, draw = FALSE) |>
+                                     as.data.frame()
+               },
+               .id = id)
+}
+```
+
+```{r}
+gg0 <- ggplot(rr, aes(x=`(Intercept)`, y = sexF)) + geom_point()
+gg0 + geom_polygon(data=ellipse_fun(rr, cvar), aes(x = x, y = y, group = Subject),
+                 alpha = 0.1, fill = "blue", colour = NA)
+```
+
+The sizes of these ellipses are based on what's pretty, not on a 95% CI. Here are the 95% CIs (I had to add the vertical (sexF)
+error bars to convince myself that the ellipse CI calculation was right ...
+
+```{r}
+rrt <- tidy(m_red, effects = "ran_vals") |> 
+    dplyr::select(term, estimate, std.error, level) |>
+    pivot_wider(names_from = "term", values_from = c("estimate", "std.error")) |>
+    rename(int = "estimate_(Intercept)", sexF = "estimate_sexF", int_sd = "std.error_(Intercept)", sexF_sd = "std.error_sexF")
+
+gg0 + geom_polygon(data=ellipse_fun(rr, cvar, radius = sqrt(qchisq(df=2, 0.95))),
+                   aes(x = x, y = y, group = Subject),
+                   alpha = 0.01, fill = "blue", colour = NA) +
+    geom_linerange(data=rrt, aes(x=int, ymin = sexF - 1.96*sexF_sd, ymax = sexF + 1.96*sexF_sd), alpha = 0.1)
+```
+
+Note that our conclusions about the correlation between random slopes and intercepts **depend on the contrasts for the factor**
+(or in the case of a continuous covariate on the centering/zero point); by default, our two latent variables per group are
+(intercept) "expected deviation of male attainment from the population mean" and "expected deviation of F-M attainment difference
+from the population mean". The observed negative correlation says that schools with lower than average male scores have the females surpassing
+the males by more than average (upper left corner) and *vice versa*.
+
+If we change to sum-to-zero contrasts (analogous to centering a continuous predictor), the negative correlation disappears (although there is still
+a negative correlation between the intercept and slope *within* groups).
+
+```{r}
+ss2 <- ScotsSec
+contrasts(ss2$sex) <- contr.sum(2)
+m_red_contr <- update(m_red, data = ss2)
+rr2 <- ranef(m_red_contr)$primary
+cvar2 <- attr(rr2, "postVar")
+```
+
+```{r}
+## note that the name of the `sex` parameter has changed (sigh)
+ggplot(rr2, aes(x=`(Intercept)`, y = sex1)) + geom_point() +
+    geom_polygon(data=ellipse_fun(rr2, cvar), aes(x = x, y = y, group = Subject),
+                 alpha = 0.1, fill = "blue", colour = NA)
+```
