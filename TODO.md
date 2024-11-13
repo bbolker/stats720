@@ -1,7 +1,9 @@
 # Stat 720 TODO
 
-## new
+Notes: Laplace approx, AGHQ, Sigma/Z equivalence, parameterizations (paper on Laplace approx?)
 
+Notes: 
+## new
 
 Yee and Wild (1996), JRSSB 58: 481-493
 
