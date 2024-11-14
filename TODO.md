@@ -1,9 +1,9 @@
 # Stat 720 TODO
 
+
 Notes: Laplace approx, AGHQ, Sigma/Z equivalence, parameterizations (paper on Laplace approx?)
 
-Notes: 
-## new
+* RTMB examples of mixed models
 
 Yee and Wild (1996), JRSSB 58: 481-493
 
