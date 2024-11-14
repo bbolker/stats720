@@ -1,0 +1,69 @@
+---
+title: "GLMMs and related"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+<!-- typically renders in docs/ dir  -->
+
+```{r pkgs, message = FALSE, echo = FALSE}
+## it's nice to include packages at the top
+## (and NOT automatically install them)
+## try not to carry over packages you don't use
+library(ggplot2); theme_set(theme_bw())
+## diagnostics
+library(performance)
+library(DHARMa)
+library(lmerTest)
+library(plotrix) ## axis.break
+## downstream model evaluation
+library(broom)
+library(dotwhisker)
+library(emmeans)
+library(effects)
+library(marginaleffects)
+library(parameters)
+library(lattice)
+## library(ggeffects)
+```
+
+## Separation of 
+
+## Laplace approximation
+
+## RTMB code for mixed models
+
+```{r}
+library(RTMB)
+library(reformulas)
+data("sleepstudy", package = "lme4")
+form <- Reaction ~ Days + (Days | Subject)
+X <- model.matrix(Reaction ~ Days, data = sleepstudy)
+fr <- model.frame(subbars(form), data = sleepstudy)
+reTrms <- mkReTrms(findbars(form), fr = fr)
+Z <- reTrms$Z
+ff <- function(pars) {
+    
+}
+```
+## Key references
+
+* @walkerFitting
+
+## References
+
+::: {#refs}
+:::
+
