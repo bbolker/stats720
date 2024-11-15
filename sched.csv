@@ -10,7 +10,7 @@ week, start_date, topic, readings, assignments, notes
 7,2024-10-22,Penalization and regularization,,,[ridge/mixed](notes/ridge_mixed.html)([PDF](notes/ridge_mixed.pdf))
 9,2024-10-29,Mixed models 1,,[HW3](assignments/hw3.html),[GLMMs](notes/glmms.html)([PDF](notes/glmms.pdf))
 10,2024-11-05,Mixed models 2,,,[GLMM simplification](http://bbolker.github.io/mixedmodels-misc/simplify.html)
-11,2024-11-12,Mixed models 3,,,
+11,2024-11-12,Mixed models 3,,,[GLMM extras](notes/glmms_extra.html)([PDF](notes/glmms_extra.pdf))
 12,2024-11-19,Additive models 1,,,
 13,2024-11-21,Additive models 2,,,
 14,2024-11-26,Wrap-up,,,

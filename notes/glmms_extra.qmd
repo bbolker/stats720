@@ -14,6 +14,8 @@ format:
 $$
 {{< include mathsymbols.tex >}}
 $$
+\newcommand{\bbest}{\hat \bb}
+\newcommand{\llik}{{\cal L}}
 :::
 
 <!-- typically renders in docs/ dir  -->
@@ -39,13 +41,151 @@ library(lattice)
 ## library(ggeffects)
 ```
 
-## Separation of 
+## Digression: Restricted maximum likelihood
+
+* We usually do ML
+* Remember the ML estimate for SD, $\sum(x-\bar x)^2/n$ (biased), and the *Bessel correction* $\sum(x-\bar x)^2/(n-1)$
+* REML is analogous; integrates over the fixed effects, removes bias
+* substitute REML estimate of $\hat \theta$ into ML expression to get ``REML'' estimate of $\hat \beta$
+* points to remember
+   * usually gives a better estimate of RE variances (unbiased in simple cases)
+   * harder to implement for GLMMs
+   * **never compare REML-fitted models that differ in their fixed effects**
+
+# Estimation, continued
+
+## In general
+
+* We can evaluate the marginal likelihood $\llik(\theta,\beta) = P(y|\beta,\theta)$, with the latent variables integrated out, via standard linear algebra
+* For the linear mixed model we can also profile out the fixed effects $\beta$ so we have just $\llik(\theta)$
+* we can do this *approximately* for GLMMs, for speed (see [here](https://kaskr.github.io/adcomp/_book/Appendix.html)
+
+## Linear mixed models
+
+* solve linear algebra, classically via *Henderson's equations* [@henderson_1982]; rearranged by @batesFitting2015a:
+   > In a complex model fit to a large data set, the dominant calculation in the evaluation of the profiled deviance (Equation 35) or REML criterion (Equation 42) is this sparse Cholesky factorization (Equation 18). The factorization is performed in two phases; a symbolic phase and a numeric phase. The symbolic phase, in which the fill-reducing permutation $P$ is determined along with the positions of the nonzeros in $L_\theta$, does not depend on the value of $\theta$. It only depends on the positions of the nonzeros in $Z \Lambda_\theta$. The numeric phase uses $\theta$ to determine the numeric values of the nonzeros in $L_\theta$
+
+Briefly, we can do this:
+   
+![](pix/chol_perm.png) 
+
+From [Stack Overflow](https://stackoverflow.com/q/29603982/190277), ultimately from [Lieven Vandenberghe's notes](https://web.archive.org/web/20160116205217/http://www.seas.ucla.edu/~vandenbe/103/lectures/chol.pdf)
+
+## GLMMs
+
+Hierarchy of increasing accuracy/difficulty:
+
+* Penalized quasi-likelihood
+* Laplace approximation
+* (adaptive) Gauss-Hermite quadrature
+* Bayes! (Gibbs sampling, Hamiltonian Monte Carlo)
+
+Accuracy of approximations depends on effective sample size *per cluster* [@stringerFitting2022b, @biswas2015
+
+Key references: 
+
+@breslow_whither_2004, @walkerFitting, @madsenIntroduction2011
+
+## Penalized quasi-likelihood
+
+@breslow_whither_2004
+
+> As usual when software for complicated statistical inference procedures is broadly disseminated, there is potential for abuse and misinterpretation. In spite of the fact that PQL was initially advertised as a procedure for approximate inference in GLMMs, and its tendency to give seriously biased estimates of variance components and a fortiori regression parameters with binary outcome data was emphasized in multiple publications [5, 6, 24], some statisticians seemed to ignore these warnings and to think of PQL as synonymous with GLMM.
+
+* Laplace approximation (see next section) applied to *quasi-likelihood*
+* in practice: does the same iterative algorithm as IRLS, but with a weighted LMM rather than a weighted least-squares fit
 
 ## Laplace approximation
 
+* Second-order Taylor approximation of the conditional likelihood $\llik(\bb)$ around $bbest$
+* Once we do this, doing the integral is easy
+* procedure:
+   * solve the "inner optimization" (find $\bbest$)
+   * get the conditional log-likelihood and the determinant of the Hessian
+* TMB and RTMB can do this automatically!
+
+
+## 
+
+$$
+{\llik} (\theta, \bb, \y) \approx {\llik}(\theta, \bbest, \y) - \frac{1}{2}
+(\bb - \bbest)^\top \HH (\bb - \bbest)
+$$
+
+We can write the integral as
+
+$$
+\begin{split}
+   & \log \int \exp(\llik(\theta, \bbest) - \frac{1}{2} (\bb - \bbest)^\top \HH (\bb - \bbest)) \, d\bb \\
+ = & \llik(.) + \log \int \exp( - \frac{1}{2} (\bb - \bbest)^\top \HH (\bb - \bbest)) \, d\bb  \\
+ = & \llik(.) + \log \left| \frac{(2 \pi)^q}{\HH(\bbest)}\right|^{1/2} \int \exp( \frac{Q}{(2\pi)^{q/2} | \HH^{-1}(\bbest)|^{1/2}} ) \, d\bb \\
+= & \llik(.) - \frac{1}{2} \log(\HH) + (q/2) \log(2\pi)
+\end{split}
+$$
+
+## Gauss-Hermite quadrature
+
+* only possible when we can separate the data into conditionally independent chunks
+
+$$
+\begin{split}
+ & \int \llik(y|\bb,\beta) \llik(\bb|\theta) \, d\bb \\
+ = & \prod \int \llik(y_i|\bb_i,\beta) \llik(\bb_i|\theta) \, d\bb
+\end{split}
+$$
+where $y_i$, $\bb_i$ are the data points in the $i^\textrm{th}$ cluster and $\bb_i$ are the corresponding latent variables
+* only works for a *single* RE
+* `lme4` can only handle *scalar* REs; `GLMMadaptive` does vector REs as well
+* still need to know curvature: choose quadrature knots based on $\hat bb$ and $1/H
+
+
+## Bayes: Gibbs sampling
+
+* *Gibbs sampling* relies on being able to efficiently sample from the *conditional* posterior distribution, e.g. $\textrm{Post}(\bb|y, \theta)$ and $\textrm{Post}(\theta|y, \bb)$
+* `MCMCglmm` package
+   * fast(ish) sampling
+   * flexible
+   * priors must come from conjugate distributions (Gaussian, inverse-Gamma, inverse-Wishart)
+   
+## Bayes: Hamiltonian Monte Carlo
+
+* more efficient sampling
+* relies on knowing gradients (autodiff!)
+* not restricted to conjugate priors
+* Stan, `tmbstan`
+
+## First- and second-order specifications [@hefleyBasis2017]
+
+* "first-order" specification: all structure in $\Z$ matrix, i.e.
+
+$$
+\begin{split}
+	\y & \sim MVN(\X \bbeta + \Z \bb, \sigma_r^2 \I) \\
+	\bb & \sim MVN(0, \sigma_g^2 I)
+\end{split}	
+$$
+
+* "second-order" specification: we can write this out as
+
+$$
+\y \sim MVN(\X \bbeta, \sigma_g^2 \Z \Z^\top + \sigma_r^2 \I)
+$$
+
+In `lmer`, we distinguish between the *spherical random effects* $\uu$ (iid $N(0,1)$) and the *non-spherical random effects $\bb = \Lambda \uu$ ($\Sigma = \Lambda \Lambda^\top$).
+
+* example: phylogenetic mixed effects models
+
+## Covariance structures
+
+* see [covstruct vignette](https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html)
+* AR1, Ornstein-Uhlenbeck, Toeplitz, compound symmetric
+* Gaussian processes: Matérn, Gaussian, exponential
+* reduced-rank
+* "proportional" (e.g. phylogenetic)
+
 ## RTMB code for mixed models
 
-```{r}
+```{r rtmb}
 library(RTMB)
 library(reformulas)
 data("sleepstudy", package = "lme4")
@@ -53,11 +193,29 @@ form <- Reaction ~ Days + (Days | Subject)
 X <- model.matrix(Reaction ~ Days, data = sleepstudy)
 fr <- model.frame(subbars(form), data = sleepstudy)
 reTrms <- mkReTrms(findbars(form), fr = fr)
-Z <- reTrms$Z
+Z <- t(reTrms$Zt)
+us <- unstructured(2)
+nsubj <- length(levels(sleepstudy$Subject))
+pars0 <- list(beta = c(250,0), cor = 0, logsd = c(1,1,1),
+              b = rep(0, 2*nsubj))
+tmbdata <- list(y = sleepstudy$Reaction, X = X, Z = Z)
 ff <- function(pars) {
-    
+    getAll(pars,  tmbdata)
+    mu <- drop(X %*% beta + Z %*% b)
+    L1 <- -sum(dnorm(y, mean = mu, sd = exp(logsd[3]), log = TRUE))
+    bmat <- matrix(b, ncol=2, byrow=TRUE) 
+    L2 <- -sum(dmvnorm(bmat, mu = rep(0,2), Sigma = us$corr(cor),
+                       scale = exp(logsd[1:2]), log = TRUE))
+    return(L1 + L2)
 }
+ff(pars0)
+obj <- MakeADFun(ff, pars0)
+obj$fn()
+obj2 <- MakeADFun(ff, pars0, random = "b", silent = TRUE)
+with(obj2, nlminb(par, fn, gr))
+## check starting vals!
 ```
+
 ## Key references
 
 * @walkerFitting

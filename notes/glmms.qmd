@@ -16,6 +16,11 @@ $$
 $$
 :::
 
+```{r grf, include = FALSE}
+## BMB graphics weirdness
+options(bitmapType = "cairo")
+```
+
 <!-- typically renders in docs/ dir  -->
 
 ```{r pkgs, message = FALSE, echo = FALSE}
