@@ -14,7 +14,7 @@ format:
 $$
 {{< include mathsymbols.tex >}}
 $$
-\newcommand{\bbest}{\hat \bb}
+\newcommand{\bbest}{\tilde{\bb}}
 \newcommand{\llik}{{\cal L}}
 :::
 
@@ -119,7 +119,7 @@ $$
    & \log \int \exp(\llik(\theta, \bbest) - \frac{1}{2} (\bb - \bbest)^\top \HH (\bb - \bbest)) \, d\bb \\
  = & \llik(.) + \log \int \exp( - \frac{1}{2} (\bb - \bbest)^\top \HH (\bb - \bbest)) \, d\bb  \\
  = & \llik(.) + \log \left| \frac{(2 \pi)^q}{\HH(\bbest)}\right|^{1/2} \int \exp( \frac{Q}{(2\pi)^{q/2} | \HH^{-1}(\bbest)|^{1/2}} ) \, d\bb \\
-= & \llik(.) - \frac{1}{2} \log(\HH) + (q/2) \log(2\pi)
+= & \llik(.) - \frac{1}{2} \log(\HH) + \frac{q}{2} \log(2\pi)
 \end{split}
 $$
 
@@ -130,13 +130,14 @@ $$
 $$
 \begin{split}
  & \int \llik(y|\bb,\beta) \llik(\bb|\theta) \, d\bb \\
- = & \prod \int \llik(y_i|\bb_i,\beta) \llik(\bb_i|\theta) \, d\bb
+ = & \prod_i \int \llik(y_i|\bb_i,\beta) \llik(\bb_i|\theta) \, d\bb_i
 \end{split}
 $$
 where $y_i$, $\bb_i$ are the data points in the $i^\textrm{th}$ cluster and $\bb_i$ are the corresponding latent variables
+
 * only works for a *single* RE
 * `lme4` can only handle *scalar* REs; `GLMMadaptive` does vector REs as well
-* still need to know curvature: choose quadrature knots based on $\hat bb$ and $1/H
+* still need to know curvature: choose quadrature knots based on $\bbest$ and $1/H$
 
 
 ## Bayes: Gibbs sampling
@@ -185,7 +186,7 @@ In `lmer`, we distinguish between the *spherical random effects* $\uu$ (iid $N(0
 
 ## RTMB code for mixed models
 
-```{r rtmb}
+```{r rtmb, message = FALSE}
 library(RTMB)
 library(reformulas)
 data("sleepstudy", package = "lme4")

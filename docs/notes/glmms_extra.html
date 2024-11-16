@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-11-14">
+<meta name="dcterms.date" content="2024-11-15">
 
 <title>GLMMs and related</title>
 <style>
@@ -3256,7 +3256,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">14 Nov 2024</p>
+      <p class="date">15 Nov 2024</p>
     </div>
   </div>
   
@@ -3334,7 +3334,7 @@ window.Quarto = {
 <li>Once we do this, doing the integral is easy</li>
 <li>procedure:
 <ul>
-<li>solve the “inner optimization” (find <span class="math inline">\(\hat \mathbf b\)</span>)</li>
+<li>solve the “inner optimization” (find <span class="math inline">\(\tilde{\mathbf b}\)</span>)</li>
 <li>get the conditional log-likelihood and the determinant of the Hessian</li>
 </ul></li>
 <li>TMB and RTMB can do this automatically!</li>
@@ -3343,16 +3343,16 @@ window.Quarto = {
 <section id="section" class="level2">
 <h2 class="anchored" data-anchor-id="section"></h2>
 <p><span class="math display">\[
-{{\cal L}} (\theta, \mathbf b, \mathbf y) \approx {{\cal L}}(\theta, \hat \mathbf b, \mathbf y) - \frac{1}{2}
-(\mathbf b- \hat \mathbf b)^\top \mathbf H(\mathbf b- \hat \mathbf b)
+{{\cal L}} (\theta, \mathbf b, \mathbf y) \approx {{\cal L}}(\theta, \tilde{\mathbf b}, \mathbf y) - \frac{1}{2}
+(\mathbf b- \tilde{\mathbf b})^\top \mathbf H(\mathbf b- \tilde{\mathbf b})
 \]</span></p>
 <p>We can write the integral as</p>
 <p><span class="math display">\[
 \begin{split}
-   &amp; \log \int \exp({\cal L}(\theta, \hat \mathbf b) - \frac{1}{2} (\mathbf b- \hat \mathbf b)^\top \mathbf H(\mathbf b- \hat \mathbf b)) \, d\mathbf b\\
-= &amp; {\cal L}(.) + \log \int \exp( - \frac{1}{2} (\mathbf b- \hat \mathbf b)^\top \mathbf H(\mathbf b- \hat \mathbf b)) \, d\mathbf b\\
-= &amp; {\cal L}(.) + \log \left| \frac{(2 \pi)^q}{\mathbf H(\hat \mathbf b)}\right|^{1/2} \int \exp( \frac{Q}{(2\pi)^{q/2} | \mathbf H^{-1}(\hat \mathbf b)|^{1/2}} ) \, d\mathbf b\\
-= &amp; {\cal L}(.) - \frac{1}{2} \log(\mathbf H) + (q/2) \log(2\pi)
+   &amp; \log \int \exp({\cal L}(\theta, \tilde{\mathbf b}) - \frac{1}{2} (\mathbf b- \tilde{\mathbf b})^\top \mathbf H(\mathbf b- \tilde{\mathbf b})) \, d\mathbf b\\
+= &amp; {\cal L}(.) + \log \int \exp( - \frac{1}{2} (\mathbf b- \tilde{\mathbf b})^\top \mathbf H(\mathbf b- \tilde{\mathbf b})) \, d\mathbf b\\
+= &amp; {\cal L}(.) + \log \left| \frac{(2 \pi)^q}{\mathbf H(\tilde{\mathbf b})}\right|^{1/2} \int \exp( \frac{Q}{(2\pi)^{q/2} | \mathbf H^{-1}(\tilde{\mathbf b})|^{1/2}} ) \, d\mathbf b\\
+= &amp; {\cal L}(.) - \frac{1}{2} \log(\mathbf H) + \frac{q}{2} \log(2\pi)
 \end{split}
 \]</span></p>
 </section>
@@ -3364,9 +3364,14 @@ window.Quarto = {
 <p><span class="math display">\[
 \begin{split}
 &amp; \int {\cal L}(y|\mathbf b,\beta) {\cal L}(\mathbf b|\theta) \, d\mathbf b\\
-= &amp; \prod \int {\cal L}(y_i|\mathbf b_i,\beta) {\cal L}(\mathbf b_i|\theta) \, d\mathbf b
+= &amp; \prod_i \int {\cal L}(y_i|\mathbf b_i,\beta) {\cal L}(\mathbf b_i|\theta) \, d\mathbf b_i
 \end{split}
-\]</span> where <span class="math inline">\(y_i\)</span>, <span class="math inline">\(\mathbf b_i\)</span> are the data points in the <span class="math inline">\(i^\textrm{th}\)</span> cluster and <span class="math inline">\(\mathbf b_i\)</span> are the corresponding latent variables * only works for a <em>single</em> RE * <code>lme4</code> can only handle <em>scalar</em> REs; <code>GLMMadaptive</code> does vector REs as well * still need to know curvature: choose quadrature knots based on <span class="math inline">\(\hat bb\)</span> and $1/H</p>
+\]</span> where <span class="math inline">\(y_i\)</span>, <span class="math inline">\(\mathbf b_i\)</span> are the data points in the <span class="math inline">\(i^\textrm{th}\)</span> cluster and <span class="math inline">\(\mathbf b_i\)</span> are the corresponding latent variables</p>
+<ul>
+<li>only works for a <em>single</em> RE</li>
+<li><code>lme4</code> can only handle <em>scalar</em> REs; <code>GLMMadaptive</code> does vector REs as well</li>
+<li>still need to know curvature: choose quadrature knots based on <span class="math inline">\(\tilde{\mathbf b}\)</span> and <span class="math inline">\(1/H\)</span></li>
+</ul>
 </section>
 <section id="bayes-gibbs-sampling" class="level2">
 <h2 class="anchored" data-anchor-id="bayes-gibbs-sampling">Bayes: Gibbs sampling</h2>
@@ -3425,47 +3430,38 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="rtmb-code-for-mixed-models">RTMB code for mixed models</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RTMB)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reformulas)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: &#39;reformulas&#39;</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from &#39;package:lme4&#39;:
-
-    mkReTrms</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;sleepstudy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lme4&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> Reaction <span class="sc">~</span> Days <span class="sc">+</span> (Days <span class="sc">|</span> Subject)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Reaction <span class="sc">~</span> Days, <span class="at">data =</span> sleepstudy)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(<span class="fu">subbars</span>(form), <span class="at">data =</span> sleepstudy)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>reTrms <span class="ot">&lt;-</span> <span class="fu">mkReTrms</span>(<span class="fu">findbars</span>(form), <span class="at">fr =</span> fr)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">t</span>(reTrms<span class="sc">$</span>Zt)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>us <span class="ot">&lt;-</span> <span class="fu">unstructured</span>(<span class="dv">2</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nsubj <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">levels</span>(sleepstudy<span class="sc">$</span>Subject))</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>pars0 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">beta =</span> <span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">0</span>), <span class="at">cor =</span> <span class="dv">0</span>, <span class="at">logsd =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">b =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span><span class="sc">*</span>nsubj))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>tmbdata <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> sleepstudy<span class="sc">$</span>Reaction, <span class="at">X =</span> X, <span class="at">Z =</span> Z)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ff <span class="ot">&lt;-</span> <span class="cf">function</span>(pars) {</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getAll</span>(pars,  tmbdata)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> <span class="fu">drop</span>(X <span class="sc">%*%</span> beta <span class="sc">+</span> Z <span class="sc">%*%</span> b)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    L1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dnorm</span>(y, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="fu">exp</span>(logsd[<span class="dv">3</span>]), <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    bmat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(b, <span class="at">ncol=</span><span class="dv">2</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>) </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    L2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dmvnorm</span>(bmat, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">2</span>), <span class="at">Sigma =</span> us<span class="sc">$</span><span class="fu">corr</span>(cor),</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">scale =</span> <span class="fu">exp</span>(logsd[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]), <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(L1 <span class="sc">+</span> L2)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ff</span>(pars0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reformulas)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;sleepstudy&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lme4&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>form <span class="ot">&lt;-</span> Reaction <span class="sc">~</span> Days <span class="sc">+</span> (Days <span class="sc">|</span> Subject)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(Reaction <span class="sc">~</span> Days, <span class="at">data =</span> sleepstudy)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fr <span class="ot">&lt;-</span> <span class="fu">model.frame</span>(<span class="fu">subbars</span>(form), <span class="at">data =</span> sleepstudy)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>reTrms <span class="ot">&lt;-</span> <span class="fu">mkReTrms</span>(<span class="fu">findbars</span>(form), <span class="at">fr =</span> fr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Z <span class="ot">&lt;-</span> <span class="fu">t</span>(reTrms<span class="sc">$</span>Zt)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>us <span class="ot">&lt;-</span> <span class="fu">unstructured</span>(<span class="dv">2</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>nsubj <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">levels</span>(sleepstudy<span class="sc">$</span>Subject))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pars0 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">beta =</span> <span class="fu">c</span>(<span class="dv">250</span>,<span class="dv">0</span>), <span class="at">cor =</span> <span class="dv">0</span>, <span class="at">logsd =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">b =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span><span class="sc">*</span>nsubj))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>tmbdata <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> sleepstudy<span class="sc">$</span>Reaction, <span class="at">X =</span> X, <span class="at">Z =</span> Z)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ff <span class="ot">&lt;-</span> <span class="cf">function</span>(pars) {</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">getAll</span>(pars,  tmbdata)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> <span class="fu">drop</span>(X <span class="sc">%*%</span> beta <span class="sc">+</span> Z <span class="sc">%*%</span> b)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    L1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dnorm</span>(y, <span class="at">mean =</span> mu, <span class="at">sd =</span> <span class="fu">exp</span>(logsd[<span class="dv">3</span>]), <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    bmat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(b, <span class="at">ncol=</span><span class="dv">2</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>) </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    L2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dmvnorm</span>(bmat, <span class="at">mu =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">2</span>), <span class="at">Sigma =</span> us<span class="sc">$</span><span class="fu">corr</span>(cor),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                       <span class="at">scale =</span> <span class="fu">exp</span>(logsd[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]), <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(L1 <span class="sc">+</span> L2)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ff</span>(pars0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 67506.76</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(ff, pars0)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>obj<span class="sc">$</span><span class="fu">fn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(ff, pars0)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>obj<span class="sc">$</span><span class="fu">fn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 67506.76</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>obj2 <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(ff, pars0, <span class="at">random =</span> <span class="st">&quot;b&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(obj2, <span class="fu">nlminb</span>(par, fn, gr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>obj2 <span class="ot">&lt;-</span> <span class="fu">MakeADFun</span>(ff, pars0, <span class="at">random =</span> <span class="st">&quot;b&quot;</span>, <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(obj2, <span class="fu">nlminb</span>(par, fn, gr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$par
         beta         beta          cor        logsd        logsd        logsd 
@@ -3487,7 +3483,7 @@ function gradient
 $message
 [1] &quot;relative convergence (4)&quot;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## check starting vals!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## check starting vals!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="key-references" class="level2">
