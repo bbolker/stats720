@@ -1,6 +1,13 @@
 ---
 title: "Generalized additive (mixed) models"
 bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
 ---
 
 ::: {.content-hidden}
@@ -19,7 +26,7 @@ library(tidyverse)
 
 * generally a way to specify more complex (smooth) terms based on *individual* covariates: $\mu = \beta_0 + f_1(x_1) + f_2(x_2) + \ldots$
 * lots of ways to generate $f_i(x_i)$: kernel estimators, locally weighted polynomials, ... see @hastieGeneralized1990,  @hastieElements2009 (*backfitting algorithm* etc.)
-* we will focus on 
+* we will focus on the approach of @woodGeneralized2017, which is in some ways more restricted (everything is done explicitly via bases + latent Gaussian variables)
 
 ## Basis expansions
 
@@ -30,26 +37,27 @@ library(tidyverse)
 
 ## Spline degree
 
-```{r}
+```{r spline1, fig.width = 10}
 xvec <- seq(0, 1, length.out = 101)
-sfun <- function(d = 3, type = "bs", ...) {
-    if (type == "bs") {
-        X <- splines::bs(xvec, df = 10, degree = d)
-    } else {
-        X <- splines::ns(xvec, df = 10)
-    }
+sfun <- function(d = 3, type = c("bs", "ns"), lty = 1, ...) {
+    type <- match.arg(type)
+    X <- switch(type,
+                bs = splines::bs(xvec, df = 10, degree = d),
+                ns = splines::ns(xvec, df = 10) ## only cubic
+                )
 	par(bty = "l", las = 1) 
-	matplot(xvec, X, type = "l", lty = 1, ...)
+	matplot(xvec, X, type = "l", lty = lty, ...)
 }
+par(mfrow=c(1,2))
 sfun(d = 1, main = "degree-1")
-sfun(d = 2, main = "degree-2")
-sfun(d = 3, main = "degree-3")
+sfun(d = 2, main = "degree-2 and 3")
+sfun(d = 3, add = TRUE, lty = 2)
 ```
 
 ## spline terminology
 
 * **knots**: breakpoints (boundary, interior)
-* order-M (ESL): continuous derivatives up to order $M-2$ (cubic, $M=4$)
+* order-$M$ (ESL): continuous derivatives up to order $M-2$ (cubic, $M=4$)
 * typically $M=1$, 2, 4
 * number of knots = df (degrees of freedom) -1 -intercept
 
@@ -62,8 +70,8 @@ sfun(d = 3, main = "degree-3")
 
 ```{r b_vs_n, fig.width = 10}
 par(mfrow = c(1,2))
-sfun()
-sfun(type = "ns")
+sfun(main = "B-spline (no constraints)")
+sfun(type = "ns", main = "Natural B-spline")
 ```
 
 ## choosing knot locations
@@ -86,45 +94,44 @@ $$
 $$
 
 * defined on an infinite-dimensional space
-* minimizer is a natural cubic spline with knots at $x_i$
+* minimizer is a (natural?) cubic spline with knots at $x_i$
 
 $$
 (\y - \Z  \bb)^\top (\y - \Z \bb) + \lambda \bb^\top \OOmega \bb
 $$
 with $\{\OOmega\}_{jk} = \int \Z_j''(t) \Z_k''(t) \, dt$
-$$
+
 
 * **generalized** ridge regression: penalize by $\lambda \OOmega_N$ rather than $\lambda I$
-* same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix, and the "square root" (Cholesky factor) of $\OOmega_N$
+* could use same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix, and the "square root" (Cholesky factor) of $\OOmega_N$
 
 See @woodGeneralized2017, @perperogloureview2019a
-
-## connection to mixed models
-
-* note that $\lambda \bb^\top \OOmega \bb$ is equivalent to $(1/\sigma^2) \bb \Sigma'^{-1} \bb^\top$; if $\Sigma'$ is a *scaled* covariance matrix (i.e. $\Sigma = \sigma^2 \Sigma$), then this is the core of the MVN log-likelihood $\log {\cal L}(\bb|\Sigma)$ (all we're missing is a factor of $\textrm{Det}(\Sigma)^{-1/2}$ and a normalization constant)
-* So we can fit this with any of the mixed model machinery, provided we can set up the correct covariance matrix
 
 ## generalized cross-validation score
 
 * very close to AIC
 * @larsenGAM2015, @golubGeneralized1979
-* minimize $\textrm{RSS}/(\textrm{Tr}(\I-\bS(\lambda)))^2$, where $S$ is 
-* "a rotation-invariant version of PRESS" ($\sum (e_i/(1-h_{ii}))^2$)
+* minimize $\textrm{RSS}/(\textrm{Tr}(\I-\bS(\lambda)))^2$, where $S$ is "a rotation-invariant version of PRESS [predicted residual error sum of squares]" ($\sum (e_i/(1-h_{ii}))^2$)
 * replace RSS with approximation of deviance,
 $$
 || \sqrt{\W} (\z - \X \bbeta)||^2
 $$
 for generalized (non-Gaussian) models
 
+## connection to mixed models
+
+* note that $\lambda \bb^\top \OOmega \bb$ is equivalent to $(1/\sigma^2) \bb^\top \Sigma'^{-1} \bb$; if $\Sigma'$ is a *scaled* covariance matrix (i.e. $\Sigma = \sigma^2 \Sigma$), then this is the core of the MVN log-likelihood $\log {\cal L}(\bb|\Sigma)$ (all we're missing is a factor of $\textrm{Det}(\Sigma)^{-1/2}$ and a normalization constant)
+* So we can fit this with any of the mixed model machinery, provided we can set up the correct covariance matrix
+
 ## ML criterion, REML criterion
 
 * treat spline smoothing as a *mixed model* problem
-* spline (penalized) parameters are $\uu$
-* $y|u \sim N(\X\bbeta + \Z \uu, \sigma^2 \I)$; $\uu \sim N(0, (\sigma^2/\lambda) \W^{-1})$
-* where the $\W$ is the penalty matrix
-* corresponds to minimizing $||\y - \X\bbeta - \Z \uu||^2 + \lambda \uu^\top \W \uu$
-* "fixed effects are viewed as random effects with improper uniform priors and are integrated out" (Wood 2011)
+* spline (penalized) parameters are $\bb$
+* $y|u \sim N(\X\bbeta + \Z \bb, \sigma^2 \I)$; $\bb \sim N(0, (\sigma^2/\lambda) \W^{-1})$ where the $\W$ is the penalty matrix
+* corresponds to minimizing $||\y - \X\bbeta - \Z \bb||^2 + \lambda \bb^\top \W \bb$
+* REML: "fixed effects are viewed as random effects with improper uniform priors and are integrated out" (Wood 2011)
 * Laplace approximation
+* slower but generally preferred now
 
 ## practical stuff
 
@@ -132,6 +139,8 @@ for generalized (non-Gaussian) models
 * [gratia package](https://gavinsimpson.github.io/gratia/) (named after [Grace Wahba](https://en.wikipedia.org/wiki/Grace_Wahba)
 * available 'smooths' (bases + penalty terms): look for strings of the form `smooth.construct.*.smooth.spec`
 * although you can *theoretically* have as many knots as data points, fewer is often good enough/computationally efficient
+
+Available bases (using `apropos("smooth.construct")`):
 
 ```{r basis_choices, echo = FALSE}
 apropos("smooth.construct") |> gsub(pattern = "smooth\\.construct\\.|\\.smooth\\.spec", replacement = "") |> grep(pattern = "smooth", invert = TRUE, value = TRUE)
@@ -150,30 +159,36 @@ plot(g1)
 
 Check:
 
-```{r gam_check}
+```{r gam_check, fig.width = 10, fig.height =10}
 gam.check(g1)
 ```
 
-```{r draw_appraise}
+The `gratia` package has prettier versions:
+
+```{r draw_appraise, fig.width-8, fig.height -8}
 draw(g1)
 appraise(g1)
 ```
 
-```{r gam2}
-g2 <- gam(mpg ~ s(hp), data = mtcars, fit = FALSE)
-```
+**concurvity** (analogous to "collinearity"): [CV question](https://stats.stackexchange.com/questions/401401/what-is-the-acceptable-level-of-concurvity), @ramsayEffect2003; rule of thumb is that a value of (0.3? 0.5? 0.8?) suggests trouble ...
 
-**concurvity**: [CV question](https://stats.stackexchange.com/questions/401401/what-is-the-acceptable-level-of-concurvity), @ramsayEffect2003
-
-```{r}
+```{r convcurv}
 g3 <- gam(mpg ~ s(hp) + s(wt), data = mtcars)
 draw(g3)
 concurvity(g3)
 ```
 
-Many options: simple random effects (`bs = "re"`); *cyclic* splines (make $x(0) = x(T)$; `bs="cc"`) ; multidimensional splines (thin-plate, *tensor product* (`te()`); spherical (*Duchon*) splines (`bs = "sos"`); Markov random fields (`bs = "mrf"`); Gaussian processes (`bs = "gp"`); splines by category (`by=` argument); hierarchical splines [@pedersenHierarchical2019]; constrained splines (`scam` package, @pyaShape2015); *soap film* splines; etc etc etc etc ...
+Many options: simple random effects (`bs = "re"`); *cyclic* splines (make $x(0) = x(T)$; `bs="cc"`) ; multidimensional splines (thin-plate, *tensor product* (`te()`); spherical (*Duchon*) splines (`bs = "sos"`); Markov random fields (`bs = "mrf"`); Gaussian processes (`bs = "gp"`); splines by category (`by=` argument); constrained splines (`scam` package, @pyaShape2015); *soap film* splines; etc etc etc etc ...
+
+The paper by @pedersenHierarchical2019 on **hierarchical splines** is especially important.
 
 ![](pix/hgam.png)
+
+## example: rat birth weights 
+
+* see https://rpubs.com/bbolker/ratgrowthcurves
+
+![](pix/rats_gam.png)
 
 
 ## Duality between $\Z$ and correlation structure
@@ -185,9 +200,11 @@ Many options: simple random effects (`bs = "re"`); *cyclic* splines (make $x(0) 
 * e.g. latent-variable specification of an AR1 correlation structure
 * e.g. `phyloglmm`
 
-## Penalty matrices as 
+## Penalty matrices as fixed effects
 
-- @woodStable2004
+* can reparameterize latent variables to make them iid (and hence fittable with any random effects package)
+* variables in the *null space* of the smooth will turn into fixed effects
+* @woodStable2004
 
 ## Computational tricks
 

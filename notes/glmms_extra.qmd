@@ -16,6 +16,7 @@ $$
 $$
 \newcommand{\bbest}{\tilde{\bb}}
 \newcommand{\llik}{{\cal L}}
+\newcommand{\MVN}{{\textrm{MVN}}}
 :::
 
 <!-- typically renders in docs/ dir  -->
@@ -161,15 +162,15 @@ where $y_i$, $\bb_i$ are the data points in the $i^\textrm{th}$ cluster and $\bb
 
 $$
 \begin{split}
-	\y & \sim MVN(\X \bbeta + \Z \bb, \sigma_r^2 \I) \\
-	\bb & \sim MVN(0, \sigma_g^2 I)
+	\y & \sim \MVN(\X \bbeta + \Z \bb, \sigma_r^2 \I) \\
+	\bb & \sim \MVN(0, \sigma_g^2 I)
 \end{split}	
 $$
 
 * "second-order" specification: we can write this out as
 
 $$
-\y \sim MVN(\X \bbeta, \sigma_g^2 \Z \Z^\top + \sigma_r^2 \I)
+\y \sim \MVN(\X \bbeta, \sigma_g^2 \Z \Z^\top + \sigma_r^2 \I)
 $$
 
 In `lmer`, we distinguish between the *spherical random effects* $\uu$ (iid $N(0,1)$) and the *non-spherical random effects $\bb = \Lambda \uu$ ($\Sigma = \Lambda \Lambda^\top$).
