@@ -5,7 +5,7 @@ date: today
 date-format: "D MMM YYYY"
 ---
 
-**Due:** Friday December 8. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
+**Due:** Friday December 6. The ideal format for submission is an Rmarkdown or Quarto file, but you can submit it as a Jupyter notebook or as a code file with comments if you prefer. Push your submission to your github repository and send me a note on Piazza to let me know you've done it. You can use R or Python (although the instructions below are R-centric); if you want to use any other language, please check with me first.
 
 **Please make sure your code is reproducible**:
 
@@ -15,27 +15,45 @@ date-format: "D MMM YYYY"
 
 See also the [R style guide](https://bbolker.github.io/stats720/R_style.html).
 
-1. Analyze the `nepali` data set from the `faraway` package to understand the determinants of weight gain over time in Nepalese children.
+1. Return to the Olympics data set from [HW1](./hw1.html); now that you know about mixed models, you can include country as a random-effects grouping variable.
 
-* read the help page to see what the variables mean.
-* do **not** use height (`ht`) as a predictor (it is measured at the same time as weight, so it's not a variable you could use to predict)
-* convert the `sex` variable into a factor with levels "male" and "female"
-* plot the data in a sensible way, indicating (at least) age, weight, and distinguishing the data points measured for each child
-* fit an appropriate model (explain your choices)
-* check model diagnostics and evaluate them: explain what (if anything) is wrong, and adjust your model (if necessary) to try to fix those problems
-* explain the model results
-* plot the data in some sensible way (possibly using only a subset of the predictor variables) and overlay the predictions of the model, with confidence intervals (you can use e.g. `ggpredict` or `ggeffect` from the `ggeffects` package)
-* now that you've done your analysis, look at the original paper the data were taken from [@westEffects1997] and comment on the differences between your analyses and the one done in the paper
+a. After picking a response variable to use (e.g. total medals, gold medals, weighted medal count), and picking a set of fixed-effect predictor variables, describe the maximal model. (Note that a time series is a case where you can reasonably include time (year in this case) both as a fixed, continuous predictor variable (linear or spline-based trends) and as a random-effects grouping variable (to account for year-to-year variation that's not picked up by the fixed effect trends).)
+b. When does or doesn't it make sense to include a random effects term with grouping variable `country:year` (i.e. consider the number of observations per (country × year) combination and whether the response distribution has a scale parameter (e.g. Gaussian) or not (e.g. Poisson))?
+c. Specify what model you are going to try to fit initially (this could be the maximal model, or you could decide that the maximal model isn't practical and you're going to start with something simpler.
+d. Create some exploratory plots of the data that take your grouping variable(s) into account: for example, if you are plotting with year on the x-axis you could use `geom_line()` or `geom_smooth()` (possibly with `method="lm"` for a linear model or `method="glm", method.args = list(family = quasipoisson))` if you're thinking about a count-data response) and set the `aes(group = country)` or `aes(colour=country)`.  (If you choose to set colour or fill, you probably want to turn off the legends with, e.g., `+ theme(legend.position = "none")`, so that the legend doesn't take up the whole plot ...). For plots where the values aren't ordered on the x-axis (e.g. GDP or population) you could use `geom_path()` to connect points with a non-directed line, or `ggalt::geom_encircle()` or `stat_ellipse()`.
+e. Fit the model with the package of your choice; run diagnostics with `performance` or `DHARMa`; adjust the model if necessary (including dealing with singular fits and/or convergence warnings).
+f. Present your results graphically (e.g. with coefficient plots or effects plots). 
 
-2. Analyze the `Contraception` data set from the `mlmRev` package to analyze contraception use.
+2. Analyze the `toenail` data from the `HSAUR3` package [@debackerTwelve1998], following the same steps as above (you can skip part (b)). Use `outcome` as the response variable; it may be convenient for graphing etc. to convert this to a 0/1 variable (0 = "none or mild", 1 = "moderate or severe"). Use *either* `time` or `visit` in your model, not both.
+* in addition to the steps from the previous model, create a coefficient plot that compares the fixed-effect parameters from (a) a completely pooled analysis (i.e. using `glm`); (b) an analysis using penalized quasi-likelihood (with `MASS::glmmPQL`); (c) Laplace approximation; (d) adaptive Gauss-Hermite quadrature using 10 and 20 quadrature points (use `glmer` or `GLMMadaptive`); (e) credible intervals from a Bayesian model (using `MCMCglmm`, `rstanarm`, or `brms`).
+* State what priors are used in your Bayesian model.
 
-* do all the same steps as in the previous question (skipping the ones specific to the `nepali` data set). In this case, the relevant paper from the literature is @ngEstimation2006.
-* in addition to the steps from the previous model, create a coefficient plot that compares the fixed-effect parameters from (a) a completely pooled analysis (i.e. using `glm`); (b) an analysis using penalized quasi-likelihood (with `MASS::glmmPQL`); (c) Laplace approximation; (d) adaptive Gauss-Hermite quadrature using 20 quadrature points.
+Do **one** of the following two questions.
 
-3. Redo either of the above analyses using two different R packages that handle Bayesian MCMC analyses of GLMMs.
+3. Write a function `simfun(beta, theta, n_t, n_id)` that constructs a data set similar to the toenail data set, i.e. a Bernoulli response with two treatment groups, with each individual assigned to one treatment group and measured `n_t` times. Let `ttt` be a categorical variable with two levels; `id` be a grouping variable (factor) with `n_id` levels; `time` be an integer going from 0 to `n_t-1`; and fixed-effect parameters `beta` and random-effect parameters `theta`, with the formula `~ 1 + ttt*time + (1|id)`. See `lme4::simulate.merMod` or `glmmTMB::simulate_new` for functions that can generate such data.
+* Write a function `fitfun(data, nAGQ)` that fits a binomial GL(M)M to the data, using the same formula as above, and returns the fixed-effect coefficients with their confidence intervals. If `nAGQ==-2`, fit with a `glm` (pooled); if `nAGQ==-1`, fit with `MASS::glmmPQL`; if `nAGQ>=1`, plug this value into the `nAGQ` argument of `lme4::glmer()`, or `GLMMadaptive::mixed_model()`, to fit with Laplace (`nAGQ=1`) or AGHQ (`nAGQ>1`).
+* Run `fitfun(simfun(...))` function 100 times (use `replicate()` or a `for` loop) with `beta=c(-0.6,0,-0.2,-0.05)` and the random-effects standard deviation set to 0.2 (use this for `theta` if you're using `simulate()` from `lme4` or `log(0.2)` if you're using `simulate_new()` from `glmmTMB`); `n_t=5`; `n_id=300` and 100 times with the same parameters, but with `n_t` changed to 10. Compute the bias, variance, scaled RMSE (i.e., `sqrt(mean((estimated/true-1)^2))`), and coverage for for each method, for each number of time points, for `beta[2]` and `beta[4]` (the effect of treatment at time 0 and the effect of treatment on the slope). Present your results graphically.
 
-4. Do a simulation study to compare PQL, Laplace, and 20-point AGHQ.
+4. Write an RTMB function that fits the model from [this example](https://rpubs.com/bbolker/3423). Specifically:
 
-* Write a function `simfun(beta, theta, n, ngrp)` that constructs a data set with `n` observations where: `x` is a standard Normal deviate; `g` is a grouping variable (factor) with `ngrp` levels, with equal numbers of samples from each; `y` is a simulated Poisson deviate generated using fixed-effect parameters `beta` and random-effect parameters `theta`, with the formula `~ 1 + x + (1|g)`. See `lme4::simulate.merMod` or `glmmTMB::simulate_new` for functions that can generate such data.
-* Write a function `fitfun(data, nAGQ)` that fits a Poisson GLMM to the data, using the formula `y ~ 1 + x + (1|g)`, and returns the fixed-effect coefficients with their confidence intervals. If `nAGQ==-2`, fit with a `glm`; if `nAGQ==-1`, fit with `MASS::glmmPQL`; if `nAGQ>=1`, plug this value into the `nAGQ` argument of `glmer` to fit with Laplace (`nAGQ=1`) or AGHQ (`nAGQ>1`)
-* Run `fitfun(simfun(...))` function 100 times (use `replicate()` or a `for` loop) with `{beta=c(-2,0.5); theta = 1; n=500; ngrp=100}` and 100 times with the same parameters, but with `beta[1]` changed to 2. Compute the bias, variance, scaled RMSE (i.e., `sqrt(mean((estimated/true-1)^2))`), and coverage for `beta[2]` for each method, for each set of parameters.
+```{r}
+dd <- data.frame(Day = rep(c(0,2,4,6,8,10),each=9),
+                 Group = rep(rep(c("c","t1","t2"), each = 3), 6),
+                 Individual = rep(1:9,6),
+                 X = c(0.71,0.72,0.71,0.72,0.72,0.72,0.70,0.69,0.70,0.72,0.72,
+                       0.71,0.72,0.72,0.71,0.71,0.70,0.71,0.73,0.73,0.69,0.74,
+                       0.69,0.73,0.67,0.71,0.69,0.71,0.71,0.72,0.70,0.71,0.70,
+                       0.52,0.64,0.60,0.70,0.73,0.73,0.67,0.66,0.71,0.47,0.56,
+                       0.54,0.65,0.73,0.73,0.67,0.71,0.58,0.44,0.52,0.58))
+```
+(see the link for pictures).
+
+Fit the four-parameter logistic,  $\mu = a_L + \frac{a_R-a_L}{1+\exp(-(t-m)/s)}$, where:
+
+* $a_L$ is the left-hand asymptote, i.e. value as $t \to -\infty$;
+* $a_R$ is the right-hand asymptote, i.e. value as $t \to +\infty$;
+* $m$ is a location parameter ($\mu(m) = a_R + (a_R-a_L)/2$)
+* $s$ is a scale parameter
+
+Fit a single parameter for $a_L$; allow $a_R$, $m$, $s$ to vary by group; additionally allow a random effect of $a_R$, i.e. allow $a_R$ to vary by individual. You will need to set up three fixed-effect model matrices and one random-effect model matrix (use `model.matrix()` for the fixed-effect and random-effect matrices (it would be better practice to use `Matrix::sparse.model.matrix()` for the random-effect model matrix, but it may introduce some extra complications). Assume a Gaussian response with equal variance across groups. You'll need a `beta` parameter vector for each model parameter (or to partition a single `beta` parameter into four groups), length-1 for $a_L$ and length-3 (since there are three groups) for the other parameters; a `b` vector for the $a_R$ random effect; and standard deviation parameters for $a_R$ variation and for the residual standard deviation.
+

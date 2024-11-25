@@ -188,12 +188,12 @@ In `lmer`, we distinguish between the *spherical random effects* $\uu$ (iid $N(0
 ## RTMB code for mixed models
 
 ```{r rtmb, message = FALSE}
-library(RTMB)
-library(reformulas)
+library(RTMB)       ## autodiff and Laplace approximation
+library(reformulas) ## processing RE formulas
 data("sleepstudy", package = "lme4")
 form <- Reaction ~ Days + (Days | Subject)
 X <- model.matrix(Reaction ~ Days, data = sleepstudy)
-fr <- model.frame(subbars(form), data = sleepstudy)
+fr <- model.frame(subbars(form), data = sleepstudy)  ## get the necessary variables
 reTrms <- mkReTrms(findbars(form), fr = fr)
 Z <- t(reTrms$Zt)
 us <- unstructured(2)
@@ -202,10 +202,13 @@ pars0 <- list(beta = c(250,0), cor = 0, logsd = c(1,1,1),
               b = rep(0, 2*nsubj))
 tmbdata <- list(y = sleepstudy$Reaction, X = X, Z = Z)
 ff <- function(pars) {
-    getAll(pars,  tmbdata)
-    mu <- drop(X %*% beta + Z %*% b)
+    getAll(pars,  tmbdata)   ## unpacking the data and parameters
+    mu <- drop(X %*% beta + Z %*% b)  ## computing the linear predictor
+    ## the conditional likelihood
     L1 <- -sum(dnorm(y, mean = mu, sd = exp(logsd[3]), log = TRUE))
-    bmat <- matrix(b, ncol=2, byrow=TRUE) 
+    ## reshape the random effects
+    bmat <- matrix(b, ncol=2, byrow=TRUE)
+    ## likelihood of the latent variables
     L2 <- -sum(dmvnorm(bmat, mu = rep(0,2), Sigma = us$corr(cor),
                        scale = exp(logsd[1:2]), log = TRUE))
     return(L1 + L2)
@@ -213,8 +216,16 @@ ff <- function(pars) {
 ff(pars0)
 obj <- MakeADFun(ff, pars0)
 obj$fn()
-obj2 <- MakeADFun(ff, pars0, random = "b", silent = TRUE)
-with(obj2, nlminb(par, fn, gr))
+obj$gr()
+obj2 <- MakeADFun(ff, pars0,
+                  ## treat b as a random effect
+                  random = "b", silent = TRUE)
+obj2$fn()
+fit <- with(obj2, nlminb(par, fn, gr))
+library(lme4)
+fit2 <- lme4::lmer(Reaction ~ Days + (Days | Subject), data = sleepstudy)
+fixef(fit2)
+fit$par
 ## check starting vals!
 ```
 
