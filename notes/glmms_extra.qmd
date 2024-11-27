@@ -189,6 +189,7 @@ In `lmer`, we distinguish between the *spherical random effects* $\uu$ (iid $N(0
 
 ```{r rtmb, message = FALSE}
 library(RTMB)       ## autodiff and Laplace approximation
+library(Matrix)     ## handling sparse matrices
 library(reformulas) ## processing RE formulas
 data("sleepstudy", package = "lme4")
 form <- Reaction ~ Days + (Days | Subject)
