@@ -246,5 +246,7 @@ $$
 $$
 
 $$
-\tau = (\X^\top \X + \lambda \bS)^{−1} \X\top \X
+\tau = (\X^\top \X + \lambda \bS)^{−1} \X^\top \X
 $$
+
+## references

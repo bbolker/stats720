@@ -22,8 +22,7 @@ $$
 * $$P(\theta_1|y) = \iint P(\theta_1, \theta_2, \ldots|y) \, d\theta_2 \ldots d\theta_n)
 $$
 * can also look at bivariate distributions etc.
-* 
-
+* can propagate distributions to any derived quantity, e.g. model predictions: we have a sample of $\btheta$ values, so compute $f(\btheta)$ and get the full posterior distribution
 
 ## summary statistics
 
@@ -42,8 +41,9 @@ $$
 * scale dependence (continuous), aggregation dependence (categorical)
 * e.g. log-uniform vs uniform, logit-normal with wide variance
 * we usually assume independence, which can make trouble
-   * e.g. U(0,1) × U(0,1)
-* uniform priors are dicey ("Cromwell's rule")   
+   * e.g. U(0,1) × U(0,1) for baseline and treatment effect; what if we change fom `~1 + ttt` to `~0 + ttt` (i.e. treatment mean parameterization)?
+* uniform priors are dicey ("Cromwell's rule")
+* **prior predictive simulations**
 
 ## prior rules of thumb
 

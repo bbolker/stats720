@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-11-28">
+<meta name="dcterms.date" content="2024-11-29">
 
 <title>Rapid-fire bayes intro</title>
 <style>
@@ -3202,7 +3202,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">28 Nov 2024</p>
+      <p class="date">29 Nov 2024</p>
     </div>
   </div>
   
@@ -3221,7 +3221,7 @@ window.Quarto = {
 <li><span class="math display">\[P(\theta_1|y) = \iint P(\theta_1, \theta_2, \ldots|y) \, d\theta_2 \ldots d\theta_n)
 \]</span></li>
 <li>can also look at bivariate distributions etc.</li>
-<li></li>
+<li>can propagate distributions to any derived quantity, e.g. model predictions: we have a sample of <span class="math inline">\(\boldsymbol \theta\)</span> values, so compute <span class="math inline">\(f(\boldsymbol \theta)\)</span> and get the full posterior distribution</li>
 </ul>
 </section>
 <section id="summary-statistics" class="level2">
@@ -3246,9 +3246,10 @@ window.Quarto = {
 <li>e.g. log-uniform vs uniform, logit-normal with wide variance</li>
 <li>we usually assume independence, which can make trouble
 <ul>
-<li>e.g. U(0,1) × U(0,1)</li>
+<li>e.g. U(0,1) × U(0,1) for baseline and treatment effect; what if we change fom <code>~1 + ttt</code> to <code>~0 + ttt</code> (i.e. treatment mean parameterization)?</li>
 </ul></li>
 <li>uniform priors are dicey (“Cromwell’s rule”)</li>
+<li><strong>prior predictive simulations</strong></li>
 </ul>
 </section>
 <section id="prior-rules-of-thumb" class="level2">

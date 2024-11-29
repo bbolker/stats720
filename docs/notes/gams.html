@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-11-28">
+<meta name="dcterms.date" content="2024-11-29">
 
 <title>Generalized additive (mixed) models</title>
 <style>
@@ -3256,7 +3256,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">28 Nov 2024</p>
+      <p class="date">29 Nov 2024</p>
     </div>
   </div>
   
@@ -3504,7 +3504,7 @@ Basis dimension (k) checking results. Low p-value (k-index&lt;1) may
 indicate that k is too low, especially if edf is close to k&#39;.
 
         k&#39;  edf k-index p-value
-s(hp) 9.00 2.62    0.87    0.18</code></pre>
+s(hp) 9.00 2.62    0.87    0.15</code></pre>
 </div>
 </div>
 <p>The <code>gratia</code> package has prettier versions:</p>
@@ -3620,12 +3620,15 @@ estimate 2.534415e-18 0.4784240 0.7978191</code></pre>
 \sum_i (1 + \lambda D_{ii} )^{−1} = \textrm{tr}(\tau)
 \]</span></p>
 <p><span class="math display">\[
-\tau = ({\mathbf X}^\top {\mathbf X}+ \lambda \mathbf S)^{−1} {\mathbf X}\top {\mathbf X}
+\tau = ({\mathbf X}^\top {\mathbf X}+ \lambda \mathbf S)^{−1} {\mathbf X}^\top {\mathbf X}
 \]</span></p>
+</section>
+<section id="references" class="level2 unnumbered">
+
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">references</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-golubGeneralized1979" class="csl-entry" role="listitem">
 Golub, Gene H., Michael Heath, and Grace Wahba. 1979. <span>“Generalized <span>Cross-Validation</span> as a <span>Method</span> for <span>Choosing</span> a <span>Good Ridge Parameter</span>.”</span> <em>Technometrics</em> 21 (2): 215–23. <a href="https://doi.org/10.1080/00401706.1979.10489751">https://doi.org/10.1080/00401706.1979.10489751</a>.
 </div>
