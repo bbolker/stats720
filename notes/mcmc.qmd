@@ -51,7 +51,7 @@ df(v/alpha.V, df1 = 1, df2 = nu, ncp = (alpha.mu^2)/alpha.V)
 
 ## default priors/prior predictive simulations:
 
-* `rstanarm` default priors: https://cran.r-project.org/web/packages/rstanarm/vignettes/priors.html
+* `rstanarm` [default priors](https://cran.r-project.org/web/packages/rstanarm/vignettes/priors.html)
 
 Using the good old `sleepstudy` example:
 

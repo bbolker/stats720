@@ -1,5 +1,5 @@
 #! /bin/bash
-for i in intro lin_models unified GLMs ridge_mixed glmms glmms_extra mcmc gams optim; do
+for i in intro lin_models unified GLMs ridge_mixed glmms glmms_extra mcmc gams optim bayes; do
     for j in pdf html; do ## html docx pdf slides.html
     	make docs/notes/$i.$j
     done

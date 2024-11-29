@@ -1,0 +1,59 @@
+---
+title: "Rapid-fire bayes intro"
+bibliography: "../stats720.bib"
+date: today
+date-format: "D MMM YYYY"
+format:
+  pdf:
+    mainfont: TeX Gyre Pagella
+    include-in-header:
+     - text: \usepackage{marginnote}
+---
+
+::: {.content-hidden}
+$$
+{{< include mathsymbols.tex >}}
+$$
+:::
+
+## inference
+
+* typically based on *marginal distributions* (integrate over nuisance variables)
+* $$P(\theta_1|y) = \iint P(\theta_1, \theta_2, \ldots|y) \, d\theta_2 \ldots d\theta_n)
+$$
+* can also look at bivariate distributions etc.
+* 
+
+
+## summary statistics
+
+* location: mode vs mean vs median
+* interval/region: highest posterior density vs quantiles
+* for *symmetric unimodal* distributions, all equivalent
+* criteria:
+   * scale-independence
+   * robustness
+   * Bayesian coherence
+
+
+## priors
+
+* nothing is 'uninformative'
+* scale dependence (continuous), aggregation dependence (categorical)
+* e.g. log-uniform vs uniform, logit-normal with wide variance
+* we usually assume independence, which can make trouble
+   * e.g. U(0,1) × U(0,1)
+* uniform priors are dicey ("Cromwell's rule")   
+
+## prior rules of thumb
+
+* think about a reasonable range for the parameter $(L, U)$
+* consider a (univariate) Gaussian prior
+* $\pm 2 SD \approx 95\% range
+* mean = $(L+U)/2$; SD $\approx (U-L)/4$
+* could make tails fatter
+   * $t$, Cauchy
+* ... or thinner
+   * [power-exponential priors](https://github.com/bbolker/bbmisc/blob/master/Rmisc/powexp_prior.R)
+* easier/more universal for log/logit-scales
+* e.g. consider a proportional range from (0.001x to 1000x) $\to$ $(-3,3) \times \ln(10) = (-6.9, 6.9) \to \textrm{SD} = 6.9/2 = 3.45$

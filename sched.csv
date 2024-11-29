@@ -13,5 +13,5 @@ week, start_date, topic, readings, assignments, notes
 11,2024-11-12,Mixed models 3,,,[GLMM extras](notes/glmms_extra.html)([PDF](notes/glmms_extra.pdf))
 12,2024-11-19,Mixed models 4,,,
 14,2024-11-24,GAMs,,[HW4](assignments/hw4.html),[GAMs](notes/gams.html)([PDF](notes/gams.pdf))
-15,2024-12-02,MCMC,,,
+15,2024-12-02,Bayes/MCMC,,[Bayes](notes/bayes.html); [PDF](notes/bayes.pdf); [MCMC](notes/mcmc.html); [PDF](notes/mcmc.pdf); [Bayes intro notes for biologists](https://bbolker.github.io/bbmisc/bayes/),
 ,2024-12-16,Last assignment due,,,

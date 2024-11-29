@@ -39,11 +39,12 @@ library(tidyverse)
 
 ```{r spline1, fig.width = 10}
 xvec <- seq(0, 1, length.out = 101)
-sfun <- function(d = 3, type = c("bs", "ns"), lty = 1, ...) {
+sfun <- function(d = 3, type = c("bs", "ns", "rcs"), off = 1e-5, lty = 1, ...) {
     type <- match.arg(type)
     X <- switch(type,
                 bs = splines::bs(xvec, df = 10, degree = d),
-                ns = splines::ns(xvec, df = 10) ## only cubic
+                ns = splines::ns(xvec, df = 10), ## only cubic
+                rcs = rms::rcs(xvec, 10) + off
                 )
 	par(bty = "l", las = 1) 
 	matplot(xvec, X, type = "l", lty = lty, ...)
@@ -72,6 +73,14 @@ sfun(d = 3, add = TRUE, lty = 2)
 par(mfrow = c(1,2))
 sfun(main = "B-spline (no constraints)")
 sfun(type = "ns", main = "Natural B-spline")
+```
+
+## Truncated polynomial vs B-spline
+
+```{r rcs, warning = FALSE}
+par(mfrow=c(1,2))
+sfun(main = "B-spline (log scale)", log = "y")
+sfun(type = "rcs", log = "y", main = "rcs (with offset)")
 ```
 
 ## choosing knot locations
@@ -106,6 +115,7 @@ with $\{\OOmega\}_{jk} = \int \Z_j''(t) \Z_k''(t) \, dt$
 * could use same data augmentation methods as before except that now we use $\sqrt{\lambda} C$ where $C$ is a matrix, and the "square root" (Cholesky factor) of $\OOmega_N$
 
 See @woodGeneralized2017, @perperogloureview2019a
+
 
 ## generalized cross-validation score
 
@@ -213,3 +223,28 @@ The paper by @pedersenHierarchical2019 on **hierarchical splines** is especially
 * e.g. precision matrix of AR1 is tridiagonal with diagonal $1+\rho^2$, first off-diagonal elements $-\rho$ (see [here](https://haakonbakkagit.github.io/btopic120.html))
 * work with *reduced-rank* forms where necessary
 
+## Penalty matrices
+
+```{r pmat, fig.width = 10, message = FALSE}
+library(mgcv)
+library(Matrix)
+library(cowplot)
+dd <- data.frame(x = seq(0, 1, length.out = 101))
+bss <- smooth.construct.bs.smooth.spec(s(x, bs = "bs"),
+                                data = dd, knots = NULL)
+names(bss)
+par(mfrow=c(1,2))
+p1 <- image(Matrix(bss$S[[1]]))
+p2 <- ~matplot(bss$X, type = "l")
+plot_grid(p1, as_grob(p2))
+```
+
+## effective degrees of freedom
+
+$$
+\sum_i (1 + \lambda D_{ii} )^{−1} = \textrm{tr}(\tau)
+$$
+
+$$
+\tau = (\X^\top \X + \lambda \bS)^{−1} \X\top \X
+$$

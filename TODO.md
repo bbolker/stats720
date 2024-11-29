@@ -1,5 +1,14 @@
 # Stat 720 TODO
 
+rcs vs B-splines vs ns
+smoothing matrix for f''^2 penalty
+
+Bayes
+
+point to Bayes intro?
+
+----
+
 
 Notes: Laplace approx, AGHQ, Sigma/Z equivalence, parameterizations (paper on Laplace approx?)
 
